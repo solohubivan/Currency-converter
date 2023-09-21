@@ -20,7 +20,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-     //   длдлдлдбдбдббд
+     
     }
     
     private func setupUI() {
