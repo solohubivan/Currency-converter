@@ -87,12 +87,15 @@ struct _R {
     var accentColor: RswiftResources.ColorResource { .init(name: "AccentColor", path: [], bundle: bundle) }
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 1 images.
+  /// This `_R.image` struct is generated, and contains static references to 2 images.
   struct image {
     let bundle: Foundation.Bundle
 
     /// Image `headerBlue`.
     var headerBlue: RswiftResources.ImageResource { .init(name: "headerBlue", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `shareButtonImmage`.
+    var shareButtonImmage: RswiftResources.ImageResource { .init(name: "shareButtonImmage", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
   }
 
   /// This `_R.info` struct is generated, and contains static references to 1 properties.
@@ -183,6 +186,7 @@ struct _R {
 
     func validate() throws {
       if UIKit.UIImage(named: "headerBlue", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'headerBlue' is used in nib 'MainViewController', but couldn't be loaded.") }
+      if UIKit.UIImage(named: "shareButtonImmage", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'shareButtonImmage' is used in nib 'MainViewController', but couldn't be loaded.") }
     }
   }
 

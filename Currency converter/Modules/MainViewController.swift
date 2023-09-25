@@ -14,18 +14,22 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var sellBuyModeSegmntContrl: UISegmentedControl!
     @IBOutlet weak private var currencyInfoTableView: UITableView!
     @IBOutlet weak private var addCurrencyButton: UIButton!
-    @IBOutlet weak private var updateInfoLabel: UILabel!
+    @IBOutlet weak private var updatedInfoLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-     //test2
     }
+    
+    //MARK: - Setup UI
     
     private func setupUI() {
         setupMainTitleLabel()
         setupCurrencyShowView()
+        setupSwitchModeSegmentedControl()
+        setupAddCurrencyButton()
+        setupUpdateInfoLabel()
     }
     
     private func setupMainTitleLabel() {
@@ -41,9 +45,23 @@ class MainViewController: UIViewController {
         currencyShowView.applyShadow(opacity: 0.2, offset: CGSize(width: .zero, height: 5), radius: 2, cornerRadius: 10)
     }
     
-    private func sellBuyModeSegmContrl() {
+    private func setupSwitchModeSegmentedControl() {
         sellBuyModeSegmntContrl.setTitle("Sell", forSegmentAt: 0)
         sellBuyModeSegmntContrl.setTitle("Buy", forSegmentAt: 1)
+        sellBuyModeSegmntContrl.backgroundColor = .white
+        sellBuyModeSegmntContrl.selectedSegmentTintColor = UIColor(red: 0, green: 0.478, blue: 1, alpha: 1)
+        
+        let normalTextAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor(red: 0, green: 0.191, blue: 0.4, alpha: 1),
+            .font: R.font.latoRegular(size: 18)!
+        ]
+        sellBuyModeSegmntContrl.setTitleTextAttributes(normalTextAttributes, for: .normal)
+        
+        let selectedTextAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white,
+            .font: R.font.latoRegular(size: 18)!
+        ]
+        sellBuyModeSegmntContrl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
     }
     
     private func setupCurrencyInfoTableView() {
@@ -54,27 +72,40 @@ class MainViewController: UIViewController {
     }
     
     private func setupAddCurrencyButton() {
-        
+        addCurrencyButton.setAttributedTitle(createTitleNameForButton(text: "Add Currency", textSize: 13), for: .normal)
     }
     
-    private func createTitleNameForButton() -> NSAttributedString {
+    private func setupUpdateInfoLabel() {
+        updatedInfoLabel.text = "Last Updated"
+        updatedInfoLabel.font = R.font.latoRegular(size: 12)
+        updatedInfoLabel.textColor = UIColor(red: 0.342, green: 0.342, blue: 0.342, alpha: 1)
+    }
+    
+    //MARK: - Private Methods
+    
+    private func createTitleNameForButton(text: String, textSize: CGFloat) -> NSAttributedString {
+        let plusImage = UIImage(systemName: "plus.circle.fill") ?? UIImage()
+        
         let attributedString = NSMutableAttributedString()
         
-        let icon = NSTextAttachment()
-        icon.image = UIImage(named: "plus.circle.fill")
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: R.font.latoRegular(size: textSize)!,
+            .foregroundColor: UIColor.i007AFF
+        ]
         
-        let textString = NSAttributedString(string: "Add currency")
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = plusImage.withRenderingMode(.alwaysTemplate)
         
-        let attachmentString = NSAttributedString(attachment: icon)
-        attributedString.append(attachmentString)
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        let textString = NSAttributedString(string: text, attributes: textAttributes)
+        
+        attributedString.append(imageString)
+        attributedString.append(NSAttributedString(string: String("  ")))
         attributedString.append(textString)
         
         return attributedString
     }
-    
-    private func setupUpdateInfoButton() {
-        
-    }
+
 }
 /*
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
