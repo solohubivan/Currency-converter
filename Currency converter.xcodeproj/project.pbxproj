@@ -10,6 +10,9 @@
 		2276AA0B2AB9FF190003BECB /* Lato-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */; };
 		2276AA0D2ABA049F0003BECB /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */; };
 		2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */; };
+		22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */; };
+		22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */; };
+		22C2F9F62AC400E4001EBF87 /* Lato-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */; };
 		22D234192ABD696F009B2B8F /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D234182ABD696F009B2B8F /* UIColorExtensions.swift */; };
 		22D96E372AB3E70B003F17A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D96E362AB3E70B003F17A1 /* AppDelegate.swift */; };
 		22D96E392AB3E70B003F17A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D96E382AB3E70B003F17A1 /* SceneDelegate.swift */; };
@@ -27,8 +30,10 @@
 		1CBF47A3F71B56E6207391C1 /* Pods_Currency_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Currency_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ExtraBold.ttf"; sourceTree = "<group>"; };
 		2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
-		2276AA0E2ABA04B60003BECB /* Lato-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-SemiBold.ttf"; sourceTree = "<group>"; };
 		2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyValueTableViewCell.swift; sourceTree = "<group>"; };
+		22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyValueTableViewCell.xib; sourceTree = "<group>"; };
+		22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-SemiBold.ttf"; sourceTree = "<group>"; };
 		22D234182ABD696F009B2B8F /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		22D96E332AB3E70B003F17A1 /* Currency converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Currency converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D96E362AB3E70B003F17A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +60,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		223428982AC2E63C00DC5CEC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				22D96E3A2AB3E70B003F17A1 /* MainViewController.swift */,
+				22D96E4A2AB3F900003F17A1 /* MainViewController.xib */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		22997FC42AC24C7300B7D200 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */,
+				22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		22D96E2A2AB3E70B003F17A1 = {
 			isa = PBXGroup;
 			children = (
@@ -120,7 +143,7 @@
 			children = (
 				2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */,
 				2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */,
-				2276AA0E2ABA04B60003BECB /* Lato-SemiBold.ttf */,
+				22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -128,8 +151,8 @@
 		22D96E572AB40996003F17A1 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				22D96E3A2AB3E70B003F17A1 /* MainViewController.swift */,
-				22D96E4A2AB3F900003F17A1 /* MainViewController.xib */,
+				223428982AC2E63C00DC5CEC /* Main */,
+				22997FC42AC24C7300B7D200 /* Cells */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -213,10 +236,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				22D96E432AB3E70C003F17A1 /* LaunchScreen.storyboard in Resources */,
+				22C2F9F62AC400E4001EBF87 /* Lato-SemiBold.ttf in Resources */,
 				2276AA0D2ABA049F0003BECB /* Lato-Regular.ttf in Resources */,
 				22D96E522AB40016003F17A1 /* Localizable.strings in Resources */,
 				2276AA0B2AB9FF190003BECB /* Lato-ExtraBold.ttf in Resources */,
 				22D96E4B2AB3F900003F17A1 /* MainViewController.xib in Resources */,
+				22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */,
 				22D96E402AB3E70C003F17A1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -293,6 +318,7 @@
 				2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */,
 				22D96E372AB3E70B003F17A1 /* AppDelegate.swift in Sources */,
 				22D96E392AB3E70B003F17A1 /* SceneDelegate.swift in Sources */,
+				22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */,
 				22D96E502AB3FF01003F17A1 /* R.generated.swift in Sources */,
 				22D234192ABD696F009B2B8F /* UIColorExtensions.swift in Sources */,
 			);

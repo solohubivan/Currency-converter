@@ -12,6 +12,9 @@ let R = _R(bundle: Bundle(for: BundleFinder.self))
 
 struct _R {
   let bundle: Foundation.Bundle
+
+  let reuseIdentifier = reuseIdentifier()
+
   var string: string { .init(bundle: bundle, preferredLanguages: nil, locale: nil) }
   var color: color { .init(bundle: bundle) }
   var image: image { .init(bundle: bundle) }
@@ -87,9 +90,12 @@ struct _R {
     var accentColor: RswiftResources.ColorResource { .init(name: "AccentColor", path: [], bundle: bundle) }
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 2 images.
+  /// This `_R.image` struct is generated, and contains static references to 3 images.
   struct image {
     let bundle: Foundation.Bundle
+
+    /// Image `chevronRight`.
+    var chevronRight: RswiftResources.ImageResource { .init(name: "chevronRight", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
     /// Image `headerBlue`.
     var headerBlue: RswiftResources.ImageResource { .init(name: "headerBlue", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
@@ -146,7 +152,7 @@ struct _R {
     }
   }
 
-  /// This `_R.font` struct is generated, and contains static references to 2 fonts.
+  /// This `_R.font` struct is generated, and contains static references to 3 fonts.
   struct font: Sequence {
     let bundle: Foundation.Bundle
 
@@ -156,8 +162,11 @@ struct _R {
     /// Font `Lato-Regular`.
     var latoRegular: RswiftResources.FontResource { .init(name: "Lato-Regular", bundle: bundle, filename: "Lato-Regular.ttf") }
 
+    /// Font `Lato-SemiBold`.
+    var latoSemiBold: RswiftResources.FontResource { .init(name: "Lato-SemiBold", bundle: bundle, filename: "Lato-SemiBold.ttf") }
+
     func makeIterator() -> IndexingIterator<[RswiftResources.FontResource]> {
-      [latoExtraBold, latoRegular].makeIterator()
+      [latoExtraBold, latoRegular, latoSemiBold].makeIterator()
     }
     func validate() throws {
       for font in self {
@@ -166,7 +175,7 @@ struct _R {
     }
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 2 resource files.
+  /// This `_R.file` struct is generated, and contains static references to 3 resource files.
   struct file {
     let bundle: Foundation.Bundle
 
@@ -175,11 +184,17 @@ struct _R {
 
     /// Resource file `Lato-Regular.ttf`.
     var latoRegularTtf: RswiftResources.FileResource { .init(name: "Lato-Regular", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `Lato-SemiBold.ttf`.
+    var latoSemiBoldTtf: RswiftResources.FileResource { .init(name: "Lato-SemiBold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
   }
 
-  /// This `_R.nib` struct is generated, and contains static references to 1 nibs.
+  /// This `_R.nib` struct is generated, and contains static references to 2 nibs.
   struct nib {
     let bundle: Foundation.Bundle
+
+    /// Nib `CurrencyValueTableViewCell`.
+    var currencyValueTableViewCell: RswiftResources.NibReferenceReuseIdentifier<CurrencyValueTableViewCell, CurrencyValueTableViewCell> { .init(name: "CurrencyValueTableViewCell", bundle: bundle, identifier: "CurrencyValuesTableViewCell") }
 
     /// Nib `MainViewController`.
     var mainViewController: RswiftResources.NibReference<UIKit.UIView> { .init(name: "MainViewController", bundle: bundle) }
@@ -188,6 +203,13 @@ struct _R {
       if UIKit.UIImage(named: "headerBlue", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'headerBlue' is used in nib 'MainViewController', but couldn't be loaded.") }
       if UIKit.UIImage(named: "shareButtonImmage", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'shareButtonImmage' is used in nib 'MainViewController', but couldn't be loaded.") }
     }
+  }
+
+  /// This `_R.reuseIdentifier` struct is generated, and contains static references to 1 reuse identifiers.
+  struct reuseIdentifier {
+
+    /// Reuse identifier `CurrencyValuesTableViewCell`.
+    let currencyValuesTableViewCell: RswiftResources.ReuseIdentifier<CurrencyValueTableViewCell> = .init(identifier: "CurrencyValuesTableViewCell")
   }
 
   /// This `_R.storyboard` struct is generated, and contains static references to 1 storyboards.
