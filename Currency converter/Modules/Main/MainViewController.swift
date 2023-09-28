@@ -28,6 +28,7 @@ class MainViewController: UIViewController {
         setupMainTitleLabel()
         setupCurrencyShowView()
         setupSwitchModeSegmentedControl()
+        setupCurrencyInfoTableView()
         setupAddCurrencyButton()
         setupUpdateInfoLabel()
     }
@@ -65,10 +66,10 @@ class MainViewController: UIViewController {
     }
     
     private func setupCurrencyInfoTableView() {
- //       currencyInfoTableView.dataSource = self
- //       currencyInfoTableView.delegate = self
+        currencyInfoTableView.dataSource = self
+        currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
-   //     currencyInfoTableView.register(UINib(nibName: Constants.nibNameCustomCell, bundle: nil), forCellReuseIdentifier: Constants.cellIdentifier)
+        currencyInfoTableView.register(UINib(nibName: "CurrencyValueTableViewCell", bundle: nil), forCellReuseIdentifier: "CurrencyValuesTableViewCell")
     }
     
     private func setupAddCurrencyButton() {
@@ -107,16 +108,19 @@ class MainViewController: UIViewController {
     }
 
 }
-/*
+
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyValuesTableViewCell", for: indexPath) as! CurrencyValueTableViewCell
+        
+        
+        return cell
     }
     
     
 }
-*/
+
