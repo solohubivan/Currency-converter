@@ -7,23 +7,23 @@
 
 import UIKit
 
+struct CurrencyCellViewModel {
+    let currencyName: String
+    let currencyValue: Double
+}
+
 class CurrencyValueTableViewCell: UITableViewCell {
-    
 
     @IBOutlet weak var currencyNameLabel: UILabel!
     @IBOutlet weak var currencyValueTF: UITextField!
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        setupCurrencyName()
         setupCurrencyTextField()
     }
     //MARK: - SetupUI
-    
-    private func setupCurrencyName() {
-        currencyNameLabel.attributedText = createTitleNameForLabel(text: "USD")
-    }
     
     private func setupCurrencyTextField() {
         currencyValueTF.delegate = self
@@ -40,7 +40,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
     
     //MARK: - Private Methods
     
-    private func createTitleNameForLabel(text: String) -> NSAttributedString {
+    public func createTitleNameForLabel(text: String) -> NSAttributedString {
         let chevronImage = R.image.chevronRight()
         
         let attributedString = NSMutableAttributedString()
@@ -97,5 +97,9 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         textField.layer.borderWidth = .zero
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.currencyValueTF.endEditing(true)
     }
 }

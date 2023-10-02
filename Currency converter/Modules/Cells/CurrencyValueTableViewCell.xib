@@ -18,28 +18,31 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Can-Kk-Nrh">
-                        <rect key="frame" x="115" y="0.0" width="339" height="44"/>
+                        <rect key="frame" x="128" y="0.0" width="326" height="44"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="f1i-V3-dR5"/>
+                            <constraint firstAttribute="height" constant="44" id="GR0-At-Zgk"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40b-os-Y8K" userLabel="CurrencyNameLabel">
-                        <rect key="frame" x="16" y="0.0" width="42" height="21"/>
+                        <rect key="frame" x="16" y="0.0" width="55" height="20.333333333333332"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="55" id="99Z-5h-oh6"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="40b-os-Y8K" secondAttribute="bottom" id="2SP-WN-0pZ"/>
+                    <constraint firstAttribute="bottom" secondItem="40b-os-Y8K" secondAttribute="bottom" constant="16" id="2SP-WN-0pZ"/>
                     <constraint firstAttribute="trailing" secondItem="Can-Kk-Nrh" secondAttribute="trailing" constant="16" id="CtC-mc-UIa"/>
                     <constraint firstItem="Can-Kk-Nrh" firstAttribute="leading" secondItem="40b-os-Y8K" secondAttribute="trailing" constant="57" id="NLp-lD-084"/>
                     <constraint firstItem="40b-os-Y8K" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="OyF-4M-o92"/>
                     <constraint firstItem="40b-os-Y8K" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="WzN-YT-kFl"/>
                     <constraint firstItem="Can-Kk-Nrh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="svW-qD-EIi"/>
-                    <constraint firstAttribute="bottom" secondItem="Can-Kk-Nrh" secondAttribute="bottom" id="wHB-Mr-Bm4"/>
+                    <constraint firstAttribute="bottom" secondItem="Can-Kk-Nrh" secondAttribute="bottom" constant="16" id="wHB-Mr-Bm4"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

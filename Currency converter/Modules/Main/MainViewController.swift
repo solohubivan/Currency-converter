@@ -6,6 +6,12 @@
 //
 
 import UIKit
+import Reachability
+
+protocol MainViewProtocol: AnyObject {
+    func updateUI(with currencyData: CurrencyData)
+}
+
 
 class MainViewController: UIViewController {
     
@@ -16,12 +22,34 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var addCurrencyButton: UIButton!
     @IBOutlet weak private var updatedInfoLabel: UILabel!
     
+    private var presenter: MainVCPresenterProtocol!
+    
+    private let defaultCurrencies = ["UAH", "USD", "EUR"]
+    private var currencies: [String] = []
+    
+    var activeCurrencies: [String: Double] = [:]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        presenter = MainVCPresenter(view: self)
+        checkInternetConnectionAndGetData()
+        
+        currencies = defaultCurrencies
+        
         setupUI()
     }
-    
+   /*
+    private func getCurrencyDefaultValues() {
+        for currency in currencies {
+            if let exchangeRate = currencyData.conversion_rates[currency] {
+                activeCurrencies[currency] = exchangeRate
+            }
+        }
+        print(activeCurrencies)
+    }
+*/
     //MARK: - Setup UI
     
     private func setupUI() {
@@ -66,6 +94,7 @@ class MainViewController: UIViewController {
     }
     
     private func setupCurrencyInfoTableView() {
+        currencyInfoTableView.isHidden = false
         currencyInfoTableView.dataSource = self
         currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
@@ -73,54 +102,75 @@ class MainViewController: UIViewController {
     }
     
     private func setupAddCurrencyButton() {
-        addCurrencyButton.setAttributedTitle(createTitleNameForButton(text: "Add Currency", textSize: 13), for: .normal)
+        addCurrencyButton.setAttributedTitle(presenter.createTitleNameForButton(text: "Add Currency", textSize: 13), for: .normal)
     }
     
     private func setupUpdateInfoLabel() {
-        updatedInfoLabel.text = "Last Updated"
         updatedInfoLabel.font = R.font.latoRegular(size: 12)
         updatedInfoLabel.textColor = UIColor(red: 0.342, green: 0.342, blue: 0.342, alpha: 1)
     }
     
     //MARK: - Private Methods
     
-    private func createTitleNameForButton(text: String, textSize: CGFloat) -> NSAttributedString {
-        let plusImage = UIImage(systemName: "plus.circle.fill") ?? UIImage()
-        
-        let attributedString = NSMutableAttributedString()
-        
-        let textAttributes: [NSAttributedString.Key: Any] = [
-            .font: R.font.latoRegular(size: textSize)!,
-            .foregroundColor: UIColor.i007AFF
-        ]
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = plusImage.withRenderingMode(.alwaysTemplate)
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        let textString = NSAttributedString(string: text, attributes: textAttributes)
-        
-        attributedString.append(imageString)
-        attributedString.append(NSAttributedString(string: String("  ")))
-        attributedString.append(textString)
-        
-        return attributedString
+    private func checkInternetConnectionAndGetData() {
+        let reachability = try! Reachability()
+        if reachability.connection == .wifi || reachability.connection == .cellular {
+            
+            presenter.getCurrencyData()
+        } else {
+            showNoInternetAlert()
+        }
     }
+    
+    private func showNoInternetAlert() {
+        let alertController = UIAlertController(
+            title: "No internet connection",
+            message: "Please allow this app to internet access",
+            preferredStyle: .alert)
 
+        let cancelAction = UIAlertAction(title: "Use Offline", style: .cancel, handler: nil)
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(settingsURL)
+                }
+            }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(settingsAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        return currencies.count
     }
-    
+ 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyValuesTableViewCell", for: indexPath) as! CurrencyValueTableViewCell
         
-        
+        let currencyName = currencies[indexPath.row]
+        cell.currencyNameLabel.attributedText = cell.createTitleNameForLabel(text: currencyName)
+
         return cell
     }
-    
-    
 }
 
+extension MainViewController: MainViewProtocol {
+    func updateUI(with currencyData: CurrencyData) {
+        
+        updatedInfoLabel.text = presenter.configureLastUpdatedLabel()
+        
+        
+        
+   //     getCurrencyDefaultValues()
+        
+    }
+}
+
+extension MainViewController {
+    private enum Constants {
+        
+    }
+}

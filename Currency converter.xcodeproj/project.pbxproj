@@ -10,8 +10,10 @@
 		2276AA0B2AB9FF190003BECB /* Lato-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */; };
 		2276AA0D2ABA049F0003BECB /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */; };
 		2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */; };
+		228080342AC840530090CC2C /* CurrencyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228080332AC840530090CC2C /* CurrencyData.swift */; };
 		22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */; };
 		22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */; };
+		22A022442AC969D700C53A2F /* MainVCPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A022432AC969D700C53A2F /* MainVCPresenter.swift */; };
 		22C2F9F62AC400E4001EBF87 /* Lato-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */; };
 		22D234192ABD696F009B2B8F /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D234182ABD696F009B2B8F /* UIColorExtensions.swift */; };
 		22D96E372AB3E70B003F17A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D96E362AB3E70B003F17A1 /* AppDelegate.swift */; };
@@ -31,8 +33,10 @@
 		2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ExtraBold.ttf"; sourceTree = "<group>"; };
 		2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		228080332AC840530090CC2C /* CurrencyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyData.swift; sourceTree = "<group>"; };
 		22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyValueTableViewCell.swift; sourceTree = "<group>"; };
 		22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyValueTableViewCell.xib; sourceTree = "<group>"; };
+		22A022432AC969D700C53A2F /* MainVCPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVCPresenter.swift; sourceTree = "<group>"; };
 		22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-SemiBold.ttf"; sourceTree = "<group>"; };
 		22D234182ABD696F009B2B8F /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		22D96E332AB3E70B003F17A1 /* Currency converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Currency converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +69,8 @@
 			children = (
 				22D96E3A2AB3E70B003F17A1 /* MainViewController.swift */,
 				22D96E4A2AB3F900003F17A1 /* MainViewController.xib */,
+				228080332AC840530090CC2C /* CurrencyData.swift */,
+				22A022432AC969D700C53A2F /* MainVCPresenter.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -316,6 +322,8 @@
 			files = (
 				22D96E3B2AB3E70B003F17A1 /* MainViewController.swift in Sources */,
 				2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */,
+				228080342AC840530090CC2C /* CurrencyData.swift in Sources */,
+				22A022442AC969D700C53A2F /* MainVCPresenter.swift in Sources */,
 				22D96E372AB3E70B003F17A1 /* AppDelegate.swift in Sources */,
 				22D96E392AB3E70B003F17A1 /* SceneDelegate.swift in Sources */,
 				22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */,
