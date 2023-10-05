@@ -6,3 +6,15 @@
   
 */
 
+//MARK: - MainViewController
+"currency_converter" = "Currency Converter";
+"sell" = "Sell";
+"buy" = "Buy";
+"add_currency" = "Add Currency";
+"no_internet_connection" = "No internet connection";
+"please_allow_this_app_to_internet_access" = "Please allow this app to internet access";
+"use_offline" = "Use Offline";
+"settings" = "Settings";
+
+//MARK: - MainVCPresenter
+"last_updated" = "Last Updated";

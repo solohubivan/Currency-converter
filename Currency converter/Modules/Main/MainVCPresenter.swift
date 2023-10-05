@@ -13,6 +13,7 @@ protocol MainVCPresenterProtocol: AnyObject {
     func getCurrencyData()
     func createTitleNameForButton(text: String, textSize: CGFloat) -> NSAttributedString
     func configureLastUpdatedLabel() -> String
+    func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString
 }
 
 
@@ -25,6 +26,29 @@ class MainVCPresenter: MainVCPresenterProtocol {
         self.view = view
     }
     
+    func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
+        let chevronImage = R.image.chevronRight()
+        
+        let attributedString = NSMutableAttributedString()
+        
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: R.font.latoRegular(size: 14)!,
+            .foregroundColor: UIColor.hex003166
+        ]
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = chevronImage
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        let textString = NSAttributedString(string: text, attributes: textAttributes)
+        
+        attributedString.append(textString)
+        attributedString.append(NSAttributedString(string: String("   ")))
+        attributedString.append(imageString)
+        
+        return attributedString
+    }
+    
     func configureLastUpdatedLabel() -> String {
         let dateInfo = (currencyData.time_last_update_utc)
         var result = ""
@@ -34,19 +58,19 @@ class MainVCPresenter: MainVCPresenterProtocol {
         outputFormatter.dateFormat = "dd MMM yyyy h:mm a"
         
         if let date = inputFormatter.date(from: dateInfo) {
-            result = "Last Updated \n" + outputFormatter.string(from: date)
+            result = "\(R.string.localizable.last_updated()) \n" + outputFormatter.string(from: date)
         }
         return result
     }
     
      func createTitleNameForButton(text: String, textSize: CGFloat) -> NSAttributedString {
-        let plusImage = UIImage(systemName: "plus.circle.fill") ?? UIImage()
+        let plusImage = UIImage(systemName: Constants.iconPlus) ?? UIImage()
         
         let attributedString = NSMutableAttributedString()
         
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: R.font.latoRegular(size: textSize)!,
-            .foregroundColor: UIColor.i007AFF
+            .foregroundColor: UIColor.hex007AFF
         ]
         
         let imageAttachment = NSTextAttachment()
@@ -84,5 +108,11 @@ class MainVCPresenter: MainVCPresenterProtocol {
             }
         }
         task.resume()
+    }
+}
+
+extension MainVCPresenter {
+    private enum Constants {
+        static let iconPlus: String = "plus.circle.fill"
     }
 }

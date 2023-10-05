@@ -76,9 +76,54 @@ struct _R {
     }
 
 
-    /// This `_R.string.localizable` struct is generated, and contains static references to 0 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 9 localization keys.
     struct localizable {
       let source: RswiftResources.StringResource.Source
+
+      /// Value: Add Currency
+      ///
+      /// Key: add_currency
+      var add_currency: RswiftResources.StringResource { .init(key: "add_currency", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Buy
+      ///
+      /// Key: buy
+      var buy: RswiftResources.StringResource { .init(key: "buy", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Currency Converter
+      ///
+      /// Key: currency_converter
+      var currency_converter: RswiftResources.StringResource { .init(key: "currency_converter", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Last Updated
+      ///
+      /// Key: last_updated
+      var last_updated: RswiftResources.StringResource { .init(key: "last_updated", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: No internet connection
+      ///
+      /// Key: no_internet_connection
+      var no_internet_connection: RswiftResources.StringResource { .init(key: "no_internet_connection", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Please allow this app to internet access
+      ///
+      /// Key: please_allow_this_app_to_internet_access
+      var please_allow_this_app_to_internet_access: RswiftResources.StringResource { .init(key: "please_allow_this_app_to_internet_access", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Sell
+      ///
+      /// Key: sell
+      var sell: RswiftResources.StringResource { .init(key: "sell", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Settings
+      ///
+      /// Key: settings
+      var settings: RswiftResources.StringResource { .init(key: "settings", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Use Offline
+      ///
+      /// Key: use_offline
+      var use_offline: RswiftResources.StringResource { .init(key: "use_offline", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
     }
   }
 

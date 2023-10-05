@@ -8,7 +8,7 @@
 import UIKit
 
 struct CurrencyCellViewModel {
-    let currencyName: String
+    let currencyName: NSAttributedString
     let currencyValue: Double
 }
 
@@ -16,7 +16,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
 
     @IBOutlet weak var currencyNameLabel: UILabel!
     @IBOutlet weak var currencyValueTF: UITextField!
-
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,45 +24,23 @@ class CurrencyValueTableViewCell: UITableViewCell {
         setupCurrencyTextField()
     }
     //MARK: - SetupUI
+    func configureCell(with viewModel: CurrencyCellViewModel) {
+        currencyNameLabel.attributedText = viewModel.currencyName
+        currencyValueTF.text = "\(viewModel.currencyValue)"
+    }
     
     private func setupCurrencyTextField() {
         currencyValueTF.delegate = self
         currencyValueTF.borderStyle = .none
         currencyValueTF.clearButtonMode = .whileEditing
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: Int(currencyValueTF.frame.height)))
+        let paddingView = UIView(frame: CGRect(x: .zero, y: .zero, width: 16, height: Int(currencyValueTF.frame.height)))
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
         currencyValueTF.layer.cornerRadius = 6
-        currencyValueTF.layer.backgroundColor = UIColor(red: 0.98, green: 0.969, blue: 0.992, alpha: 1).cgColor
+        currencyValueTF.layer.backgroundColor = UIColor.hexFAF7FD.cgColor
         currencyValueTF.font = R.font.latoSemiBold(size: 14)
-        currencyValueTF.textColor = UIColor(red: 0, green: 0.191, blue: 0.4, alpha: 1)
+        currencyValueTF.textColor = UIColor.hex003166
     }
-    
-    //MARK: - Private Methods
-    
-    public func createTitleNameForLabel(text: String) -> NSAttributedString {
-        let chevronImage = R.image.chevronRight()
-        
-        let attributedString = NSMutableAttributedString()
-        
-        let textAttributes: [NSAttributedString.Key: Any] = [
-            .font: R.font.latoRegular(size: 14)!,
-            .foregroundColor: UIColor(red: 0, green: 0.191, blue: 0.4, alpha: 1)
-        ]
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = chevronImage
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        let textString = NSAttributedString(string: text, attributes: textAttributes)
-        
-        attributedString.append(textString)
-        attributedString.append(NSAttributedString(string: String("   ")))
-        attributedString.append(imageString)
-        
-        return attributedString
-    }
-    
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
@@ -70,7 +48,7 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentText: NSString = textField.text! as NSString
         let newText = currentText.replacingCharacters(in: range, with: string)
-        
+
         if newText == "." {
             textField.text = "0."
             return false
@@ -85,13 +63,13 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
             if pointCount > 1 {
                 return false
             }
-        
+
         return true
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor(red: 0, green: 0.48, blue: 1, alpha: 1).cgColor
+        textField.layer.borderColor = UIColor.hex007AFF.cgColor
         return true
     }
     

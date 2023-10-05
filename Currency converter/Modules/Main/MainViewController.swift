@@ -24,10 +24,9 @@ class MainViewController: UIViewController {
     
     private var presenter: MainVCPresenterProtocol!
     
-    private let defaultCurrencies = ["UAH", "USD", "EUR"]
-    private var currencies: [String] = []
+    private var currencies = ["UAH", "USD", "EUR"]
+    private var currencyValues: [Double] = []
     
-    var activeCurrencies: [String: Double] = [:]
     
     
     override func viewDidLoad() {
@@ -36,33 +35,22 @@ class MainViewController: UIViewController {
         presenter = MainVCPresenter(view: self)
         checkInternetConnectionAndGetData()
         
-        currencies = defaultCurrencies
-        
         setupUI()
     }
-   /*
-    private func getCurrencyDefaultValues() {
-        for currency in currencies {
-            if let exchangeRate = currencyData.conversion_rates[currency] {
-                activeCurrencies[currency] = exchangeRate
-            }
-        }
-        print(activeCurrencies)
-    }
-*/
+    
     //MARK: - Setup UI
     
     private func setupUI() {
         setupMainTitleLabel()
         setupCurrencyShowView()
         setupSwitchModeSegmentedControl()
-        setupCurrencyInfoTableView()
+   //     setupCurrencyInfoTableView()
         setupAddCurrencyButton()
         setupUpdateInfoLabel()
     }
     
     private func setupMainTitleLabel() {
-        mainTitleLabel.text = "Currency Converter"
+        mainTitleLabel.text = R.string.localizable.currency_converter()
         mainTitleLabel.font = R.font.latoExtraBold(size: 24)
         mainTitleLabel.textColor = .white
     }
@@ -75,13 +63,12 @@ class MainViewController: UIViewController {
     }
     
     private func setupSwitchModeSegmentedControl() {
-        sellBuyModeSegmntContrl.setTitle("Sell", forSegmentAt: 0)
-        sellBuyModeSegmntContrl.setTitle("Buy", forSegmentAt: 1)
+        sellBuyModeSegmntContrl.setTitle(R.string.localizable.sell(), forSegmentAt: .zero)
+        sellBuyModeSegmntContrl.setTitle(R.string.localizable.buy(), forSegmentAt: 1)
         sellBuyModeSegmntContrl.backgroundColor = .white
-        sellBuyModeSegmntContrl.selectedSegmentTintColor = UIColor(red: 0, green: 0.478, blue: 1, alpha: 1)
-        
+        sellBuyModeSegmntContrl.selectedSegmentTintColor = UIColor.hex007AFF
         let normalTextAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor(red: 0, green: 0.191, blue: 0.4, alpha: 1),
+            .foregroundColor: UIColor.hex003166,
             .font: R.font.latoRegular(size: 18)!
         ]
         sellBuyModeSegmntContrl.setTitleTextAttributes(normalTextAttributes, for: .normal)
@@ -94,7 +81,6 @@ class MainViewController: UIViewController {
     }
     
     private func setupCurrencyInfoTableView() {
-        currencyInfoTableView.isHidden = false
         currencyInfoTableView.dataSource = self
         currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
@@ -102,12 +88,12 @@ class MainViewController: UIViewController {
     }
     
     private func setupAddCurrencyButton() {
-        addCurrencyButton.setAttributedTitle(presenter.createTitleNameForButton(text: "Add Currency", textSize: 13), for: .normal)
+        addCurrencyButton.setAttributedTitle(presenter.createTitleNameForButton(text: R.string.localizable.add_currency(), textSize: 13), for: .normal)
     }
     
     private func setupUpdateInfoLabel() {
         updatedInfoLabel.font = R.font.latoRegular(size: 12)
-        updatedInfoLabel.textColor = UIColor(red: 0.342, green: 0.342, blue: 0.342, alpha: 1)
+        updatedInfoLabel.textColor = UIColor.hex575757
     }
     
     //MARK: - Private Methods
@@ -124,12 +110,12 @@ class MainViewController: UIViewController {
     
     private func showNoInternetAlert() {
         let alertController = UIAlertController(
-            title: "No internet connection",
-            message: "Please allow this app to internet access",
+            title: R.string.localizable.no_internet_connection(),
+            message: R.string.localizable.please_allow_this_app_to_internet_access(),
             preferredStyle: .alert)
 
-        let cancelAction = UIAlertAction(title: "Use Offline", style: .cancel, handler: nil)
-        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+        let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel, handler: nil)
+        let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(settingsURL)
                 }
@@ -140,6 +126,16 @@ class MainViewController: UIViewController {
 
         present(alertController, animated: true, completion: nil)
     }
+   /*
+    private func convertCurrency(fromCurrency: String, toCurrency: String, amount: Double) -> Double? {
+        guard let fromRate = activeCurrencies[fromCurrency],
+              let toRate = activeCurrencies[toCurrency] else {
+            return nil
+        }
+
+        return (amount / Double(fromRate)) * Double(toRate)
+    }
+    */
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
@@ -151,8 +147,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyValuesTableViewCell", for: indexPath) as! CurrencyValueTableViewCell
         
         let currencyName = currencies[indexPath.row]
-        cell.currencyNameLabel.attributedText = cell.createTitleNameForLabel(text: currencyName)
-
+        cell.currencyNameLabel.attributedText = presenter.createTitleNameForCurrencyLabel(text: currencyName)
+        
+    //    let currencyValue = currencyValues[indexPath.row]
+        
+    //    let viewModel = CurrencyCellViewModel(currencyName: presenter.createTitleNameForCurrencyLabel(text: currencyName), currencyValue: currencyValue)
+    //    cell.configureCell(with: viewModel)
+        
         return cell
     }
 }
@@ -160,12 +161,15 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 extension MainViewController: MainViewProtocol {
     func updateUI(with currencyData: CurrencyData) {
         
+        for currency in currencies {
+            if let exchangeRate = currencyData.conversion_rates[currency] {
+                currencyValues.append(exchangeRate)
+            }
+        }
+
         updatedInfoLabel.text = presenter.configureLastUpdatedLabel()
-        
-        
-        
-   //     getCurrencyDefaultValues()
-        
+        setupCurrencyInfoTableView()
+        currencyInfoTableView.reloadData()
     }
 }
 
