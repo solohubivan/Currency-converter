@@ -17,13 +17,39 @@ protocol MainVCPresenterProtocol: AnyObject {
 }
 
 
-class MainVCPresenter: MainVCPresenterProtocol {
+class MainPresenter: MainVCPresenterProtocol {
     
     private var currencyData = CurrencyData()
     private weak var view: MainViewProtocol?
     
+    private var currencyValues: [Double] = []
+    
     init(view: MainViewProtocol) {
         self.view = view
+    }
+    
+    func updateCurencyValue(at index: Int, with newValue: String) {
+        guard index >= 0 && index < currencyValues.count else {
+                return
+            }
+        if let newValueDouble = Double(newValue) {
+            // Обновляем значение для выбранной валюты
+            currencyValues[index] = newValueDouble
+                
+            // Рассчитываем новые значения для остальных валют
+            for i in 0..<currencyValues.count {
+                if i != index {
+                    // Вычисляем новое значение для текущей валюты
+                    let exchangeRate = currencyValues[i] / currencyValues[index]
+                        
+                    // Обновляем значение для этой валюты
+                    currencyValues[i] = exchangeRate
+                }
+            }
+                
+            // Уведомляем view о необходимости обновить интерфейс
+            view?.updateUI(with: currencyData)
+        }
     }
     
     func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
@@ -111,7 +137,7 @@ class MainVCPresenter: MainVCPresenterProtocol {
     }
 }
 
-extension MainVCPresenter {
+extension MainPresenter {
     private enum Constants {
         static let iconPlus: String = "plus.circle.fill"
     }
