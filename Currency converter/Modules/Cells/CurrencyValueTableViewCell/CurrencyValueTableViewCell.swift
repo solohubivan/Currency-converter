@@ -17,13 +17,16 @@ class CurrencyValueTableViewCell: UITableViewCell {
     @IBOutlet weak var currencyNameLabel: UILabel!
     @IBOutlet weak var currencyValueTF: UITextField!
     
+
+    var textFieldValueChanged: ((_ inputedValue: String?) -> Void)?
+    var cellIndex: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         setupCurrencyTextField()
     }
-    //MARK: - SetupUI
+    
     func configureCell(with viewModel: CurrencyCellViewModel) {
         currencyNameLabel.attributedText = viewModel.currencyName
         currencyValueTF.text = "\(viewModel.currencyValue)"
@@ -33,6 +36,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.delegate = self
         currencyValueTF.borderStyle = .none
         currencyValueTF.clearButtonMode = .whileEditing
+        currencyValueTF.keyboardType = .decimalPad
         let paddingView = UIView(frame: CGRect(x: .zero, y: .zero, width: 16, height: Int(currencyValueTF.frame.height)))
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
@@ -75,6 +79,12 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         textField.layer.borderWidth = .zero
+        textFieldValueChanged?(textField.text)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.endEditing(true)
+        return true
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
