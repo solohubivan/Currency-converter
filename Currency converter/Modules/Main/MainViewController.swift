@@ -10,6 +10,7 @@ import Reachability
 
 protocol MainViewProtocol: AnyObject {
     func updateUI(with currencyData: CurrencyData)
+    func updateTableInfo(with values: [Double])
 }
 
 
@@ -24,15 +25,14 @@ class MainViewController: UIViewController {
     
     private var presenter: MainVCPresenterProtocol!
     
-    private var currencies = ["UAH", "USD", "EUR"]
-    private var currencyValues: [Double] = []
-    
+    private var defaultCurrencies = ["UAH", "USD", "EUR"]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter = MainVCPresenter(view: self)
+        presenter = MainPresenter(view: self)
+        
         checkInternetConnectionAndGetData()
         
         setupUI()
@@ -44,7 +44,7 @@ class MainViewController: UIViewController {
         setupMainTitleLabel()
         setupCurrencyShowView()
         setupSwitchModeSegmentedControl()
-   //     setupCurrencyInfoTableView()
+        setupCurrencyInfoTableView()
         setupAddCurrencyButton()
         setupUpdateInfoLabel()
     }
@@ -84,11 +84,18 @@ class MainViewController: UIViewController {
         currencyInfoTableView.dataSource = self
         currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
-        currencyInfoTableView.register(UINib(nibName: "CurrencyValueTableViewCell", bundle: nil), forCellReuseIdentifier: "CurrencyValuesTableViewCell")
+        currencyInfoTableView.register(UINib(nibName: "CurrencyValueTableViewCell", bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
     }
     
     private func setupAddCurrencyButton() {
         addCurrencyButton.setAttributedTitle(presenter.createTitleNameForButton(text: R.string.localizable.add_currency(), textSize: 13), for: .normal)
+    }
+    
+    @IBAction func presentCurrencyListVC(_ sender: Any) {
+        let currencyListVC = CurrencyListViewController()
+        currencyListVC.presenter = self.presenter
+        currencyListVC.modalPresentationStyle = .formSheet
+        present(currencyListVC, animated: true)
     }
     
     private func setupUpdateInfoLabel() {
@@ -126,33 +133,27 @@ class MainViewController: UIViewController {
 
         present(alertController, animated: true, completion: nil)
     }
-   /*
-    private func convertCurrency(fromCurrency: String, toCurrency: String, amount: Double) -> Double? {
-        guard let fromRate = activeCurrencies[fromCurrency],
-              let toRate = activeCurrencies[toCurrency] else {
-            return nil
-        }
+    
 
-        return (amount / Double(fromRate)) * Double(toRate)
-    }
-    */
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currencies.count
+        return defaultCurrencies.count
     }
  
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyValuesTableViewCell", for: indexPath) as! CurrencyValueTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
         
-        let currencyName = currencies[indexPath.row]
+        let currencyName = defaultCurrencies[indexPath.row]
         cell.currencyNameLabel.attributedText = presenter.createTitleNameForCurrencyLabel(text: currencyName)
+
+        cell.cellIndex = indexPath.row
         
-    //    let currencyValue = currencyValues[indexPath.row]
-        
-    //    let viewModel = CurrencyCellViewModel(currencyName: presenter.createTitleNameForCurrencyLabel(text: currencyName), currencyValue: currencyValue)
-    //    cell.configureCell(with: viewModel)
+        cell.textFieldValueChanged = { [weak self] newValue in
+            guard let self = self else { return }
+            self.presenter.updateCalculatedCurencyValue(with: newValue, at: cell.cellIndex)
+        }
         
         return cell
     }
@@ -160,21 +161,21 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MainViewController: MainViewProtocol {
     func updateUI(with currencyData: CurrencyData) {
-        
-        for currency in currencies {
-            if let exchangeRate = currencyData.conversion_rates[currency] {
-                currencyValues.append(exchangeRate)
-            }
-        }
 
         updatedInfoLabel.text = presenter.configureLastUpdatedLabel()
-        setupCurrencyInfoTableView()
-        currencyInfoTableView.reloadData()
+    }
+    
+    func updateTableInfo(with values: [Double]) {
+        for (index, value) in values.enumerated() {
+            if let cell = currencyInfoTableView.cellForRow(at: IndexPath(row: index, section: .zero)) as? CurrencyValueTableViewCell {
+                cell.currencyValueTF.text = String(value)
+            }
+        }
     }
 }
 
 extension MainViewController {
     private enum Constants {
-        
+        static let currencyValuesCellIdentifier: String = "CurrencyValuesTableViewCell"
     }
 }

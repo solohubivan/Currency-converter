@@ -1,5 +1,5 @@
 //
-//  MainVCPresenter.swift
+//  MainPresenter.swift
 //  Currency converter
 //
 //  Created by Ivan Solohub on 01.10.2023.
@@ -14,6 +14,8 @@ protocol MainVCPresenterProtocol: AnyObject {
     func createTitleNameForButton(text: String, textSize: CGFloat) -> NSAttributedString
     func configureLastUpdatedLabel() -> String
     func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString
+    func updateCalculatedCurencyValue(with newValue: String?, at index: Int)
+    func getCurrenciesListData() -> [String]
 }
 
 
@@ -21,35 +23,46 @@ class MainPresenter: MainVCPresenterProtocol {
     
     private var currencyData = CurrencyData()
     private weak var view: MainViewProtocol?
+
     
+    private var currencies = ["UAH", "USD", "EUR"]
     private var currencyValues: [Double] = []
+    private var convertedResult: [Double] = []
+    
+    private var currenciesListData: [String] = []
+
     
     init(view: MainViewProtocol) {
         self.view = view
     }
     
-    func updateCurencyValue(at index: Int, with newValue: String) {
-        guard index >= 0 && index < currencyValues.count else {
+    func getCurrenciesListData() -> [String] {
+        return currenciesListData
+    }
+    
+    func updateCalculatedCurencyValue(with newValue: String?, at index: Int) {
+        guard let newValue = newValue, let inputedValue = Double(newValue) else {
                 return
             }
-        if let newValueDouble = Double(newValue) {
-            // Обновляем значение для выбранной валюты
-            currencyValues[index] = newValueDouble
-                
-            // Рассчитываем новые значения для остальных валют
-            for i in 0..<currencyValues.count {
-                if i != index {
-                    // Вычисляем новое значение для текущей валюты
-                    let exchangeRate = currencyValues[i] / currencyValues[index]
-                        
-                    // Обновляем значение для этой валюты
-                    currencyValues[i] = exchangeRate
+        var resultValues: [Double] = currencyValues
+
+        guard index >= 0 && index < resultValues.count else {
+                return
+            }
+            for i in 0..<resultValues.count {
+                if i == index {
+                    resultValues[i] = inputedValue
+                } else {
+                    resultValues[i] = inputedValue / currencyValues[index] * currencyValues[i]
                 }
             }
-                
-            // Уведомляем view о необходимости обновить интерфейс
-            view?.updateUI(with: currencyData)
-        }
+        
+        convertedResult = resultValues
+        convertedResult = convertedResult.map { value in
+                return Double(String(format: "%.2f", value)) ?? 0.0
+            }
+        
+        view?.updateTableInfo(with: convertedResult)
     }
     
     func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
@@ -123,7 +136,15 @@ class MainPresenter: MainVCPresenterProtocol {
             
             do {
                 self.currencyData = try JSONDecoder().decode(CurrencyData.self, from: data!)
-        //        print(self.currencyData)
+                
+                self.currenciesListData = Array(self.currencyData.conversion_rates.keys)
+                
+                
+                for currency in self.currencies {
+                    if let exchangeRate = self.currencyData.conversion_rates[currency] {
+                        self.currencyValues.append(exchangeRate)
+                    }
+                }
                 
                 DispatchQueue.main.async {
                     self.view?.updateUI(with: self.currencyData)

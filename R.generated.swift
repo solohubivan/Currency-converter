@@ -197,7 +197,7 @@ struct _R {
     }
   }
 
-  /// This `_R.font` struct is generated, and contains static references to 3 fonts.
+  /// This `_R.font` struct is generated, and contains static references to 5 fonts.
   struct font: Sequence {
     let bundle: Foundation.Bundle
 
@@ -210,8 +210,14 @@ struct _R {
     /// Font `Lato-SemiBold`.
     var latoSemiBold: RswiftResources.FontResource { .init(name: "Lato-SemiBold", bundle: bundle, filename: "Lato-SemiBold.ttf") }
 
+    /// Font `SFProText-Regular`.
+    var sfProTextRegular: RswiftResources.FontResource { .init(name: "SFProText-Regular", bundle: bundle, filename: "SFProText-Regular.ttf") }
+
+    /// Font `SFProText-Semibold`.
+    var sfProTextSemibold: RswiftResources.FontResource { .init(name: "SFProText-Semibold", bundle: bundle, filename: "SFProText-Semibold.ttf") }
+
     func makeIterator() -> IndexingIterator<[RswiftResources.FontResource]> {
-      [latoExtraBold, latoRegular, latoSemiBold].makeIterator()
+      [latoExtraBold, latoRegular, latoSemiBold, sfProTextRegular, sfProTextSemibold].makeIterator()
     }
     func validate() throws {
       for font in self {
@@ -220,7 +226,7 @@ struct _R {
     }
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 3 resource files.
+  /// This `_R.file` struct is generated, and contains static references to 5 resource files.
   struct file {
     let bundle: Foundation.Bundle
 
@@ -232,11 +238,20 @@ struct _R {
 
     /// Resource file `Lato-SemiBold.ttf`.
     var latoSemiBoldTtf: RswiftResources.FileResource { .init(name: "Lato-SemiBold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `SFProText-Regular.ttf`.
+    var sfProTextRegularTtf: RswiftResources.FileResource { .init(name: "SFProText-Regular", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `SFProText-Semibold.ttf`.
+    var sfProTextSemiboldTtf: RswiftResources.FileResource { .init(name: "SFProText-Semibold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
   }
 
-  /// This `_R.nib` struct is generated, and contains static references to 2 nibs.
+  /// This `_R.nib` struct is generated, and contains static references to 3 nibs.
   struct nib {
     let bundle: Foundation.Bundle
+
+    /// Nib `CurrencyListViewController`.
+    var currencyListViewController: RswiftResources.NibReference<UIKit.UIView> { .init(name: "CurrencyListViewController", bundle: bundle) }
 
     /// Nib `CurrencyValueTableViewCell`.
     var currencyValueTableViewCell: RswiftResources.NibReferenceReuseIdentifier<CurrencyValueTableViewCell, CurrencyValueTableViewCell> { .init(name: "CurrencyValueTableViewCell", bundle: bundle, identifier: "CurrencyValuesTableViewCell") }
@@ -245,6 +260,7 @@ struct _R {
     var mainViewController: RswiftResources.NibReference<UIKit.UIView> { .init(name: "MainViewController", bundle: bundle) }
 
     func validate() throws {
+      if #available(iOS 13.0, *) { if UIKit.UIImage(systemName: "chevron.backward") == nil { throw RswiftResources.ValidationError("[R.swift] System image named 'chevron.backward' is used in nib 'CurrencyListViewController', but couldn't be loaded.") } }
       if UIKit.UIImage(named: "headerBlue", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'headerBlue' is used in nib 'MainViewController', but couldn't be loaded.") }
       if UIKit.UIImage(named: "shareButtonImmage", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'shareButtonImmage' is used in nib 'MainViewController', but couldn't be loaded.") }
     }
