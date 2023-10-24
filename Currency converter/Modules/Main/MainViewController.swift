@@ -11,6 +11,8 @@ import Reachability
 protocol MainViewProtocol: AnyObject {
     func updateUI(with currencyData: CurrencyData)
     func updateTableInfo(with values: [Double])
+    
+    func reloadDataCurrencyInfoTable()
 }
 
 
@@ -24,8 +26,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var updatedInfoLabel: UILabel!
     
     private var presenter: MainVCPresenterProtocol!
-    
-    private var defaultCurrencies = ["UAH", "USD", "EUR"]
     
     
     override func viewDidLoad() {
@@ -56,15 +56,15 @@ class MainViewController: UIViewController {
     }
     
     private func setupCurrencyShowView() {
-        currencyShowView.layer.cornerRadius = 10
+        currencyShowView.layer.cornerRadius = Constants.viewCornerRadius
         currencyShowView.backgroundColor = .white
         
-        currencyShowView.applyShadow(opacity: 0.2, offset: CGSize(width: .zero, height: 5), radius: 2, cornerRadius: 10)
+        currencyShowView.applyShadow(opacity: Constants.viewShadowOpacity, offset: CGSize(width: .zero, height: Constants.viewShadowHeight), radius: Constants.viewShadowRadius, cornerRadius: Constants.viewCornerRadius)
     }
     
     private func setupSwitchModeSegmentedControl() {
         sellBuyModeSegmntContrl.setTitle(R.string.localizable.sell(), forSegmentAt: .zero)
-        sellBuyModeSegmntContrl.setTitle(R.string.localizable.buy(), forSegmentAt: 1)
+        sellBuyModeSegmntContrl.setTitle(R.string.localizable.buy(), forSegmentAt: Constants.firstSegment)
         sellBuyModeSegmntContrl.backgroundColor = .white
         sellBuyModeSegmntContrl.selectedSegmentTintColor = UIColor.hex007AFF
         let normalTextAttributes: [NSAttributedString.Key: Any] = [
@@ -84,7 +84,7 @@ class MainViewController: UIViewController {
         currencyInfoTableView.dataSource = self
         currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
-        currencyInfoTableView.register(UINib(nibName: "CurrencyValueTableViewCell", bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
+        currencyInfoTableView.register(UINib(nibName: Constants.currencyInfoTableNibName, bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
     }
     
     private func setupAddCurrencyButton() {
@@ -139,13 +139,14 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return defaultCurrencies.count
+        
+        return presenter.getActiveCurrenciesForTable().count
     }
  
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
         
-        let currencyName = defaultCurrencies[indexPath.row]
+        let currencyName = presenter.getActiveCurrenciesForTable()[indexPath.row]
         cell.currencyNameLabel.attributedText = presenter.createTitleNameForCurrencyLabel(text: currencyName)
 
         cell.cellIndex = indexPath.row
@@ -172,10 +173,23 @@ extension MainViewController: MainViewProtocol {
             }
         }
     }
+    
+    func reloadDataCurrencyInfoTable() {
+        currencyInfoTableView.reloadData()
+    }
 }
 
 extension MainViewController {
     private enum Constants {
         static let currencyValuesCellIdentifier: String = "CurrencyValuesTableViewCell"
+        static let currencyInfoTableNibName: String = "CurrencyValueTableViewCell"
+        
+        static let viewCornerRadius: CGFloat = 10
+        
+        static let firstSegment: Int = 1
+        
+        static let viewShadowOpacity: Float = 0.2
+        static let viewShadowHeight: CGFloat = 5
+        static let viewShadowRadius: CGFloat = 2
     }
 }

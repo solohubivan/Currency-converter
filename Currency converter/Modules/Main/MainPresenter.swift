@@ -15,25 +15,62 @@ protocol MainVCPresenterProtocol: AnyObject {
     func configureLastUpdatedLabel() -> String
     func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString
     func updateCalculatedCurencyValue(with newValue: String?, at index: Int)
+    func getActiveCurrenciesForTable() -> [String]
+    func getDefaultCurrencies() -> [String]
     func getCurrenciesListData() -> [String]
+    func addCurrency(_ currency: String)
 }
 
 
 class MainPresenter: MainVCPresenterProtocol {
     
     private var currencyData = CurrencyData()
+    private var defaultCurrenciesData = DefaultCurrenciesData()
+    
     private weak var view: MainViewProtocol?
 
-    
+    private var defaultCurrenciesNames = ["UAH", "USD", "EUR"]
     private var currencies = ["UAH", "USD", "EUR"]
+    private var currenciesListData: [String] = []
+    
+    private var purchaseCurrencies: [Double] = []
+    private var sellingCurrensies: [Double] = []
+    private var otherAllCurrensiesValues: [Double] = []
+    
+    private var defaultCurrenciesValues: [Double] = []
+    
     private var currencyValues: [Double] = []
     private var convertedResult: [Double] = []
     
-    private var currenciesListData: [String] = []
-
+    
     
     init(view: MainViewProtocol) {
         self.view = view
+    }
+    
+    //MARK: - Public methods
+
+    func addCurrency(_ currency: String) {
+        guard !currencies.contains(currency) else {
+            return
+        }
+        currencies.append(currency)
+
+        view?.reloadDataCurrencyInfoTable()
+        
+        updateCurrencyValuesForNewCurrencies()
+        
+        print(currencyValues)
+        print(currencies)
+    }
+    
+    
+    func getDefaultCurrencies() -> [String] {
+        return defaultCurrenciesNames
+    }
+    
+    func getActiveCurrenciesForTable() -> [String] {
+        return currencies
     }
     
     func getCurrenciesListData() -> [String] {
@@ -46,7 +83,7 @@ class MainPresenter: MainVCPresenterProtocol {
             }
         var resultValues: [Double] = currencyValues
 
-        guard index >= 0 && index < resultValues.count else {
+        guard index >= .zero && index < resultValues.count else {
                 return
             }
             for i in 0..<resultValues.count {
@@ -127,8 +164,34 @@ class MainPresenter: MainVCPresenterProtocol {
     
     func getCurrencyData() {
         let session = URLSession.shared
-        let url = URL(string: "https://v6.exchangerate-api.com/v6/82627c0b81b426a2b8186f4d/latest/USD")!
-        let task = session.dataTask(with: url) { (data, response, error) in
+        let allCurrenciesURL = URL(string: "https://v6.exchangerate-api.com/v6/82627c0b81b426a2b8186f4d/latest/USD")!
+        let defaultCurrenciesURL = URL(string: "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")!
+        
+        
+        let firstTask = session.dataTask(with: defaultCurrenciesURL) { (data, response, error) in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            do {
+                
+                let defaultCurrenciesData = try JSONDecoder().decode([DefaultCurrenciesData].self, from: data!)
+                
+                self.purchaseCurrencies = self.convertCurrenciesToUSD(defaultCurrenciesData, isBuyMode: true)
+                self.sellingCurrensies = self.convertCurrenciesToUSD(defaultCurrenciesData, isBuyMode: false)
+               
+    //choose here wich mode will u use, which coasts to use
+                self.defaultCurrenciesValues = self.sellingCurrensies
+                self.currencyValues = self.defaultCurrenciesValues
+                
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+            
+
+        let secondTask = session.dataTask(with: allCurrenciesURL) { (data, response, error) in
             guard error == nil else {
                 print(error!.localizedDescription)
                 return
@@ -138,13 +201,8 @@ class MainPresenter: MainVCPresenterProtocol {
                 self.currencyData = try JSONDecoder().decode(CurrencyData.self, from: data!)
                 
                 self.currenciesListData = Array(self.currencyData.conversion_rates.keys)
+                self.otherAllCurrensiesValues = Array(self.currencyData.conversion_rates.values)
                 
-                
-                for currency in self.currencies {
-                    if let exchangeRate = self.currencyData.conversion_rates[currency] {
-                        self.currencyValues.append(exchangeRate)
-                    }
-                }
                 
                 DispatchQueue.main.async {
                     self.view?.updateUI(with: self.currencyData)
@@ -154,8 +212,60 @@ class MainPresenter: MainVCPresenterProtocol {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
+        firstTask.resume()
+        secondTask.resume()
     }
+    
+    //MARK: - Private methods
+    
+    private func updateCurrencyValuesForNewCurrencies() {
+        var newCurrencyValues: [Double] = defaultCurrenciesValues
+
+        for currency in currencies {
+            if !defaultCurrenciesNames.contains(currency) {
+                if let index = currenciesListData.firstIndex(of: currency) {
+                    if index < otherAllCurrensiesValues.count {
+                        let currencyValue = otherAllCurrensiesValues[index]
+                        newCurrencyValues.append(currencyValue)
+                    }
+                }
+            }
+        }
+        currencyValues = newCurrencyValues
+    }
+
+    private func convertCurrenciesToUSD(_ data: [DefaultCurrenciesData], isBuyMode: Bool) -> [Double] {
+        var usdPrice = 0.0
+        var eurPrice = 0.0
+            
+            if let usdCurrencyData = data.first(where: { $0.ccy == "USD" }) {
+                if let price = isBuyMode ? Double(usdCurrencyData.buy) : Double(usdCurrencyData.sale) {
+                    usdPrice = price
+                }
+            }
+            
+            if let eurCurrencyData = data.first(where: { $0.ccy == "EUR" }) {
+                if let price = isBuyMode ? Double(eurCurrencyData.buy) : Double(eurCurrencyData.sale) {
+                    eurPrice = price
+                }
+            }
+            
+            var alignedCurrencies = [usdPrice]
+            
+            for currency in self.currencies {
+                if currency == "USD" {
+                    alignedCurrencies.append(1.0)
+                } else if currency == "EUR" {
+                    alignedCurrencies.append(usdPrice / eurPrice)
+                } else if let currencyData = data.first(where: { $0.ccy == currency }) {
+                    if let price = isBuyMode ? Double(currencyData.buy) : Double(currencyData.sale) {
+                        alignedCurrencies.append(price / usdPrice)
+                    }
+                }
+            }
+            return alignedCurrencies
+    }
+    
 }
 
 extension MainPresenter {

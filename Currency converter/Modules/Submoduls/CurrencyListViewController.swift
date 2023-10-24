@@ -15,14 +15,15 @@ class CurrencyListViewController: UIViewController {
     
     var presenter: MainVCPresenterProtocol?
     
-    private var defaultCurrencies = ["UAH", "USD", "EUR"]
+    
     private var currenciesList = [String]()
-    private var sections = ["Popular"]
+    private var sections = ["\(R.string.localizable.popular())"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+        view.backgroundColor = UIColor.hexF5F5F5
         
         setupUI()
     }
@@ -36,7 +37,7 @@ class CurrencyListViewController: UIViewController {
     }
     
     private func setupTitleLabel() {
-        titleLabel.text = "Currency"
+        titleLabel.text = R.string.localizable.currency()
         titleLabel.font = R.font.sfProTextSemibold(size: 17)
     }
     
@@ -47,23 +48,25 @@ class CurrencyListViewController: UIViewController {
             .foregroundColor: UIColor.systemBlue
         ]
         
-        backToMainVCButton.setAttributedTitle(NSAttributedString(string: "Converter", attributes: attributes), for: .normal)
+        backToMainVCButton.setAttributedTitle(NSAttributedString(string: R.string.localizable.converter(), attributes: attributes), for: .normal)
     }
     
     @IBAction func presentMainVC(_ sender: Any) {
         let mainVC = MainViewController()
+
         mainVC.modalPresentationStyle = .fullScreen
         present(mainVC, animated: false)
     }
     
+    //MARK: - Private Methods
+    
     private func setupCurrencyListTable() {
         currencyListTable.dataSource = self
         currencyListTable.delegate = self
-        currencyListTable.register(UITableViewCell.self, forCellReuseIdentifier: "CurrenciesListTableViewCell")
+        currencyListTable.register(UITableViewCell.self, forCellReuseIdentifier: Constants.currencyListTableCellIdentifier)
         
         currencyListTable.backgroundColor = .clear
         
-        currenciesList = defaultCurrencies
         currenciesList = presenter!.getCurrenciesListData()
         currenciesList.sort()
         configureSections()
@@ -72,45 +75,62 @@ class CurrencyListViewController: UIViewController {
     
     private func configureSections() {
         for currency in currenciesList {
-            let firstLetter = String(currency.prefix(1))
+            let firstLetter = String(currency.prefix(Constants.one))
             if !sections.contains(firstLetter) {
                 sections.append(firstLetter)
             }
         }
     }
     
+    private func configureCellsNames(for currencyCode: String) -> String {
+        if let currencyName = currencyDescriptions[currencyCode] {
+                return "\(currencyCode) - \(currencyName)"
+            } else {
+                return currencyCode
+            }
+    }
+
     
 }
 
 extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if section == 0 {
-            return defaultCurrencies.count
+        if section == .zero {
+            return presenter!.getDefaultCurrencies().count
         } else {
             let sectionLetter = sections[section]
-            return currenciesList.filter { String($0.prefix(1)) == sectionLetter }.count
+            return currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CurrenciesListTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyListTableCellIdentifier, for: indexPath)
         
-        if indexPath.section == 0 {
-            cell.textLabel?.text = defaultCurrencies[indexPath.row]
+        if indexPath.section == .zero {
+            let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
+            cell.textLabel?.text = configureCellsNames(for: currencyCode)
         } else {
             let sectionLetter = sections[indexPath.section]
-            let filteredCurrencies = currenciesList.filter { String($0.prefix(1)) == sectionLetter }
-            cell.textLabel?.text = filteredCurrencies[indexPath.row]
+            let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
+            let currencyCode = filteredCurrencies[indexPath.row]
+            cell.textLabel?.text = configureCellsNames(for: currencyCode)
         }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCurrency = currenciesList[indexPath.row]
-        
-        print("Choose currency is: \(selectedCurrency)")
+        let sectionLetter = sections[indexPath.section]
+        let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
+            
+        if indexPath.section == .zero {
+            let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
+            presenter?.addCurrency(currencyCode)
+        } else {
+            let currencyCode = filteredCurrencies[indexPath.row]
+            presenter?.addCurrency(currencyCode)
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -130,11 +150,20 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40.0
+        return Constants.sectionHeaderHeight
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 48.0
+        return Constants.tableRowHegiht
     }
    
+}
+
+extension CurrencyListViewController {
+    private enum Constants {
+        static let sectionHeaderHeight: CGFloat = 40.0
+        static let tableRowHegiht: CGFloat = 48.0
+        static let currencyListTableCellIdentifier: String = "CurrenciesListTableViewCell"
+        static let one: Int = 1
+    }
 }

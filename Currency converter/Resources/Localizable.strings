@@ -18,3 +18,8 @@
 
 //MARK: - MainVCPresenter
 "last_updated" = "Last Updated";
+
+//MARK: - CurrencyListViewController
+"popular" = "Popular";
+"currency" = "Currency";
+"converter" = "Converter";
