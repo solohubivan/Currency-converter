@@ -8,11 +8,18 @@
 import UIKit
 import Reachability
 
+
+fileprivate enum ConvertingMode {
+    case sell
+    case buy
+}
+
+
 protocol MainViewProtocol: AnyObject {
     func updateUI(with currencyData: CurrencyData)
     func updateTableInfo(with values: [Double])
-    
     func reloadDataCurrencyInfoTable()
+    func updateTableHeight()
 }
 
 
@@ -25,7 +32,11 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var addCurrencyButton: UIButton!
     @IBOutlet weak private var updatedInfoLabel: UILabel!
     
+    @IBOutlet weak var currencyInfoTableHeight: NSLayoutConstraint!
+    
     private var presenter: MainVCPresenterProtocol!
+
+    private var convertingMode = ConvertingMode.sell
     
     
     override func viewDidLoad() {
@@ -78,6 +89,14 @@ class MainViewController: UIViewController {
             .font: R.font.latoRegular(size: 18)!
         ]
         sellBuyModeSegmntContrl.setTitleTextAttributes(selectedTextAttributes, for: .selected)
+        
+        
+        sellBuyModeSegmntContrl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+    }
+    
+    @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        convertingMode = sender.selectedSegmentIndex == .zero ? .sell : .buy
+        updateDefaultCurrenciesPriceValues()
     }
     
     private func setupCurrencyInfoTableView() {
@@ -88,7 +107,9 @@ class MainViewController: UIViewController {
     }
     
     private func setupAddCurrencyButton() {
-        addCurrencyButton.setAttributedTitle(presenter.createTitleNameForButton(text: R.string.localizable.add_currency(), textSize: 13), for: .normal)
+        addCurrencyButton.setTitle("Add Currency", for: .normal)
+        addCurrencyButton.titleLabel?.font = R.font.latoRegular(size: 13)
+        addCurrencyButton.titleLabel?.textColor = UIColor.hex007AFF
     }
     
     @IBAction func presentCurrencyListVC(_ sender: Any) {
@@ -109,7 +130,7 @@ class MainViewController: UIViewController {
         let reachability = try! Reachability()
         if reachability.connection == .wifi || reachability.connection == .cellular {
             
-            presenter.getCurrencyData()
+            presenter.getCurrenciesDataValues()
         } else {
             showNoInternetAlert()
         }
@@ -134,7 +155,30 @@ class MainViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-
+    private func updateDefaultCurrenciesPriceValues() {
+        switch convertingMode {
+        case .sell:
+            presenter.updatePriceValues(isSellMode: true)
+            if let cell = currencyInfoTableView.visibleCells.first as? CurrencyValueTableViewCell {
+                presenter.updateCalculatedCurencyValue(with: cell.currencyValueTF.text, at: cell.cellIndex)
+            }
+        case .buy:
+            presenter.updatePriceValues(isSellMode: false)
+            if let cell = currencyInfoTableView.visibleCells.first as? CurrencyValueTableViewCell {
+                presenter.updateCalculatedCurencyValue(with: cell.currencyValueTF.text, at: cell.cellIndex)
+            }
+        }
+    }
+    
+    //MARK: - IBActions
+    
+    @IBAction func shareCurrencyInfo(_ sender: Any) {
+        let textToShare = presenter.createShareText(currencyNames: presenter.getActiveCurrenciesForTable(), currencyValues: presenter.getConvertedResults())
+        
+        let shareViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
+        
+        present(shareViewController, animated: true, completion: nil)
+    }
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
@@ -148,14 +192,14 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         let currencyName = presenter.getActiveCurrenciesForTable()[indexPath.row]
         cell.currencyNameLabel.attributedText = presenter.createTitleNameForCurrencyLabel(text: currencyName)
-
+        
+        cell.currencyValueTF.text = ""
         cell.cellIndex = indexPath.row
         
         cell.textFieldValueChanged = { [weak self] newValue in
             guard let self = self else { return }
             self.presenter.updateCalculatedCurencyValue(with: newValue, at: cell.cellIndex)
         }
-        
         return cell
     }
 }
@@ -177,6 +221,23 @@ extension MainViewController: MainViewProtocol {
     func reloadDataCurrencyInfoTable() {
         currencyInfoTableView.reloadData()
     }
+    
+    func updateTableHeight() {
+        let rowCount = presenter.getActiveCurrenciesForTable().count
+        
+        if rowCount <= Constants.threeRows {
+            currencyInfoTableHeight.constant = Constants.tableHeight3Rows
+        }
+        if rowCount == Constants.fourRows {
+            currencyInfoTableHeight.constant = Constants.tableHeight4Rows
+        }
+        if rowCount == Constants.fiveRows {
+            currencyInfoTableHeight.constant = Constants.tableHeight5Rows
+        }
+        if rowCount >= Constants.sixRows {
+            currencyInfoTableHeight.constant = Constants.tableHeight6Rows
+        }
+    }
 }
 
 extension MainViewController {
@@ -191,5 +252,14 @@ extension MainViewController {
         static let viewShadowOpacity: Float = 0.2
         static let viewShadowHeight: CGFloat = 5
         static let viewShadowRadius: CGFloat = 2
+        
+        static let threeRows: Int = 3
+        static let fourRows: Int = 4
+        static let fiveRows: Int = 5
+        static let sixRows: Int = 6
+        static let tableHeight3Rows: CGFloat = 180
+        static let tableHeight4Rows: CGFloat = 225
+        static let tableHeight5Rows: CGFloat = 285
+        static let tableHeight6Rows: CGFloat = 320
     }
 }

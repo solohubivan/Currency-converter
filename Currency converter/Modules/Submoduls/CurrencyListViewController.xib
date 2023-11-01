@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="backToMainVCButton" destination="LrX-Ge-mw1" id="yhN-5f-ajP"/>
                 <outlet property="currencyListTable" destination="3jp-u9-voC" id="PZM-JF-gbZ"/>
+                <outlet property="searchBar" destination="s43-2I-JYv" id="KPS-ni-8Mh"/>
                 <outlet property="titleLabel" destination="Mr9-08-KlH" id="eE4-cz-ejc"/>
                 <outlet property="view" destination="iN0-l3-epB" id="MpH-z2-PIY"/>
             </connections>
@@ -37,14 +38,14 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7y-KP-Lrp" userLabel="separateLine">
-                    <rect key="frame" x="0.0" y="58" width="393" height="0.0"/>
+                    <rect key="frame" x="0.0" y="58" width="393" height="1"/>
                     <color key="backgroundColor" systemColor="systemGray2Color"/>
                     <constraints>
-                        <constraint firstAttribute="height" id="ZlX-1t-pLb"/>
+                        <constraint firstAttribute="height" constant="1" id="ZlX-1t-pLb" userLabel="height = 0.5"/>
                     </constraints>
                 </view>
-                <searchBar contentMode="redraw" placeholder="Search Currency" translatesAutoresizingMaskIntoConstraints="NO" id="s43-2I-JYv">
-                    <rect key="frame" x="0.0" y="58" width="393" height="56"/>
+                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search Currency" translatesAutoresizingMaskIntoConstraints="NO" id="s43-2I-JYv">
+                    <rect key="frame" x="6" y="65" width="381" height="56"/>
                     <textInputTraits key="textInputTraits"/>
                     <scopeButtonTitles>
                         <string>Title</string>
@@ -54,8 +55,8 @@
                         <outlet property="delegate" destination="-1" id="Nct-3O-vBX"/>
                     </connections>
                 </searchBar>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3jp-u9-voC" userLabel="Currency List Table View">
-                    <rect key="frame" x="0.0" y="114" width="393" height="704"/>
+                <tableView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="3jp-u9-voC" userLabel="Currency List Table View">
+                    <rect key="frame" x="0.0" y="121" width="393" height="697"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                 </tableView>
             </subviews>
@@ -63,14 +64,14 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="T7y-KP-Lrp" firstAttribute="top" secondItem="Mr9-08-KlH" secondAttribute="bottom" constant="11" id="2sf-v8-lcI"/>
-                <constraint firstAttribute="trailing" secondItem="s43-2I-JYv" secondAttribute="trailing" id="4K8-2M-9oP"/>
-                <constraint firstItem="s43-2I-JYv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5Mw-9T-nyN"/>
+                <constraint firstAttribute="trailing" secondItem="s43-2I-JYv" secondAttribute="trailing" constant="6" id="4K8-2M-9oP"/>
+                <constraint firstItem="s43-2I-JYv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="6" id="5Mw-9T-nyN"/>
                 <constraint firstItem="Mr9-08-KlH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="26" id="GZK-BZ-jgB"/>
                 <constraint firstItem="Mr9-08-KlH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="JpL-6n-3RP"/>
                 <constraint firstAttribute="trailing" secondItem="T7y-KP-Lrp" secondAttribute="trailing" id="Qc6-zA-Gp3"/>
                 <constraint firstItem="3jp-u9-voC" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="S5R-U3-PHi"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Mr9-08-KlH" secondAttribute="trailing" constant="16" id="WOp-yb-sPq"/>
-                <constraint firstItem="s43-2I-JYv" firstAttribute="top" secondItem="T7y-KP-Lrp" secondAttribute="bottom" id="dUU-YI-mMX"/>
+                <constraint firstItem="s43-2I-JYv" firstAttribute="top" secondItem="T7y-KP-Lrp" secondAttribute="bottom" constant="6" id="dUU-YI-mMX"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="3jp-u9-voC" secondAttribute="trailing" id="guY-2c-11W"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="3jp-u9-voC" secondAttribute="bottom" id="hHQ-Zs-66f"/>
                 <constraint firstItem="Mr9-08-KlH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LrX-Ge-mw1" secondAttribute="trailing" constant="5" id="kOg-5R-3Og"/>

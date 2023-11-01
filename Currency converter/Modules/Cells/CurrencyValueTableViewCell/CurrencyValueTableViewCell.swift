@@ -19,7 +19,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
     
 
     var textFieldValueChanged: ((_ inputedValue: String?) -> Void)?
-    var cellIndex: Int = 0
+    var cellIndex: Int = .zero
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,7 +40,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
         let paddingView = UIView(frame: CGRect(x: .zero, y: .zero, width: 16, height: Int(currencyValueTF.frame.height)))
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
-        currencyValueTF.layer.cornerRadius = 6
+        currencyValueTF.layer.cornerRadius = Constants.cornerRadiusTF
         currencyValueTF.layer.backgroundColor = UIColor.hexFAF7FD.cgColor
         currencyValueTF.font = R.font.latoSemiBold(size: 14)
         currencyValueTF.textColor = UIColor.hex003166
@@ -63,8 +63,8 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
                 return false
             }
         
-        let pointCount = newText.components(separatedBy: ".").count - 1
-            if pointCount > 1 {
+        let pointCount = newText.components(separatedBy: ".").count - Constants.one
+            if pointCount > Constants.one {
                 return false
             }
 
@@ -72,7 +72,7 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.layer.borderWidth = 1
+        textField.layer.borderWidth = Constants.borderWidth
         textField.layer.borderColor = UIColor.hex007AFF.cgColor
         return true
     }
@@ -89,5 +89,14 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.currencyValueTF.endEditing(true)
+    }
+}
+
+extension CurrencyValueTableViewCell {
+    private enum Constants {
+        static let borderWidth: CGFloat = 1
+        static let cornerRadiusTF: CGFloat = 6
+        
+        static let one: Int = 1
     }
 }

@@ -12,13 +12,16 @@ class CurrencyListViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var backToMainVCButton: UIButton!
     @IBOutlet weak var currencyListTable: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+
     
     var presenter: MainVCPresenterProtocol?
     
-    
     private var currenciesList = [String]()
     private var sections = ["\(R.string.localizable.popular())"]
-    
+
+    private var searchingCurrencies = [String]()
+    private var searching = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,11 +37,20 @@ class CurrencyListViewController: UIViewController {
         setupTitleLabel()
         setupBackToMainVCButton()
         setupCurrencyListTable()
+        setupSearchBar()
     }
     
     private func setupTitleLabel() {
         titleLabel.text = R.string.localizable.currency()
         titleLabel.font = R.font.sfProTextSemibold(size: 17)
+    }
+    
+    private func setupSearchBar() {
+        searchBar.delegate = self
+        searchBar.barTintColor = UIColor.hexF5F5F5
+        
+        searchBar.showsBookmarkButton = true
+        searchBar.setImage(UIImage(systemName: "mic.fill"), for: .bookmark, state: .normal)
     }
     
     private func setupBackToMainVCButton() {
@@ -89,56 +101,68 @@ class CurrencyListViewController: UIViewController {
                 return currencyCode
             }
     }
-
-    
 }
 
 extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if section == .zero {
-            return presenter!.getDefaultCurrencies().count
+        if searching {
+            return searchingCurrencies.count
         } else {
-            let sectionLetter = sections[section]
-            return currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }.count
+            if section == .zero {
+                return presenter!.getDefaultCurrencies().count
+            } else {
+                let sectionLetter = sections[section]
+                return currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }.count
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyListTableCellIdentifier, for: indexPath)
         
-        if indexPath.section == .zero {
-            let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
-            cell.textLabel?.text = configureCellsNames(for: currencyCode)
+        if searching {
+            if indexPath.row < searchingCurrencies.count {
+                cell.textLabel?.text = configureCellsNames(for: searchingCurrencies[indexPath.row])
+            }
         } else {
-            let sectionLetter = sections[indexPath.section]
-            let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
-            let currencyCode = filteredCurrencies[indexPath.row]
-            cell.textLabel?.text = configureCellsNames(for: currencyCode)
+            if indexPath.section == .zero {
+                let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
+                cell.textLabel?.text = configureCellsNames(for: currencyCode)
+            } else {
+                let sectionLetter = sections[indexPath.section]
+                let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
+                let currencyCode = filteredCurrencies[indexPath.row]
+                cell.textLabel?.text = configureCellsNames(for: currencyCode)
+            }
         }
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let sectionLetter = sections[indexPath.section]
-        let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
-            
-        if indexPath.section == .zero {
-            let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
+        
+        if searching {
+            let currencyCode = searchingCurrencies[indexPath.row]
             presenter?.addCurrency(currencyCode)
         } else {
-            let currencyCode = filteredCurrencies[indexPath.row]
-            presenter?.addCurrency(currencyCode)
+            let sectionLetter = sections[indexPath.section]
+            let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
+                
+            if indexPath.section == .zero {
+                let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
+                presenter?.addCurrency(currencyCode)
+            } else {
+                let currencyCode = filteredCurrencies[indexPath.row]
+                presenter?.addCurrency(currencyCode)
+            }
         }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return searching ? 1 : sections.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+        return searching ? nil : sections[section]
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -156,7 +180,27 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.tableRowHegiht
     }
-   
+
+}
+
+extension CurrencyListViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.isEmpty {
+            searching = false
+        } else {
+            searchingCurrencies = currenciesList.filter { currency in
+                return currency.lowercased().contains(searchText.lowercased()) || currencyDescriptions[currency]?.lowercased().contains(searchText.lowercased()) ?? false
+            }
+            searching = true
+        }
+        currencyListTable.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.resignFirstResponder()
+        }
+
 }
 
 extension CurrencyListViewController {

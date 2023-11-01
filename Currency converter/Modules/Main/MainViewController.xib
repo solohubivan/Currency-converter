@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController" customModule="Currency_converter" customModuleProvider="target">
             <connections>
                 <outlet property="addCurrencyButton" destination="LXg-eT-cJR" id="LwP-Bj-LuW"/>
+                <outlet property="currencyInfoTableHeight" destination="OaZ-SL-McE" id="pts-H9-FRd"/>
                 <outlet property="currencyInfoTableView" destination="iGD-1U-xVh" id="B3O-o0-XcG"/>
                 <outlet property="currencyShowView" destination="Ba0-Oh-SZf" id="9N0-2a-Ufl"/>
                 <outlet property="mainTitleLabel" destination="OjH-lN-Pbl" id="5Hc-K4-X2O"/>
@@ -44,7 +46,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="393" height="653"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ba0-Oh-SZf" userLabel="currencyShowView">
-                                    <rect key="frame" x="16" y="0.0" width="361" height="386"/>
+                                    <rect key="frame" x="16" y="0.0" width="361" height="420.33333333333331"/>
                                     <subviews>
                                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lHc-n2-7O0" userLabel="sellBuyModeSegmntContrl">
                                             <rect key="frame" x="16" y="16" width="329" height="49"/>
@@ -57,32 +59,43 @@
                                             </segments>
                                         </segmentedControl>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LXg-eT-cJR" userLabel="addCurrencyButton">
-                                            <rect key="frame" x="16" y="289" width="329" height="35"/>
+                                            <rect key="frame" x="16" y="324" width="329" height="34.333333333333314"/>
                                             <state key="normal" title="Button"/>
-                                            <buttonConfiguration key="configuration" style="plain" title="Add Currency"/>
+                                            <buttonConfiguration key="configuration" style="plain" imagePadding="10">
+                                                <imageReference key="image" image="plus.circle.fill" catalog="system" variableValue="0.80000000000000004"/>
+                                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="medium"/>
+                                                <attributedString key="attributedTitle">
+                                                    <fragment content="Add Currency"/>
+                                                </attributedString>
+                                            </buttonConfiguration>
                                             <connections>
                                                 <action selector="presentCurrencyListVC:" destination="-1" eventType="touchUpInside" id="3AL-Sh-YWe"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wbq-PQ-dWP" userLabel="shareButton">
-                                            <rect key="frame" x="313" y="338" width="44" height="44"/>
+                                            <rect key="frame" x="313" y="372.33333333333337" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="7vK-Ud-ybx"/>
                                                 <constraint firstAttribute="height" constant="44" id="df5-wp-o2I"/>
                                             </constraints>
                                             <state key="normal" title="Button"/>
                                             <buttonConfiguration key="configuration" style="plain" image="shareButtonImmage" title=" "/>
+                                            <connections>
+                                                <action selector="shareCurrencyInfo:" destination="-1" eventType="touchUpInside" id="K2t-z0-wGq"/>
+                                            </connections>
                                         </button>
                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="iGD-1U-xVh" userLabel="currencyInfoTableView">
-                                            <rect key="frame" x="0.0" y="104" width="361" height="145"/>
+                                            <rect key="frame" x="0.0" y="104" width="361" height="180"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="180" id="OaZ-SL-McE"/>
+                                            </constraints>
                                         </tableView>
                                     </subviews>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstItem="iGD-1U-xVh" firstAttribute="top" secondItem="lHc-n2-7O0" secondAttribute="bottom" constant="40" id="4in-Mn-7dB"/>
                                         <constraint firstItem="lHc-n2-7O0" firstAttribute="top" secondItem="Ba0-Oh-SZf" secondAttribute="top" constant="16" id="93R-Fn-T4H"/>
-                                        <constraint firstAttribute="height" constant="386" id="Ecm-jw-ZAI"/>
                                         <constraint firstItem="LXg-eT-cJR" firstAttribute="centerX" secondItem="Ba0-Oh-SZf" secondAttribute="centerX" id="GHW-JU-3Mm"/>
                                         <constraint firstItem="Wbq-PQ-dWP" firstAttribute="top" secondItem="LXg-eT-cJR" secondAttribute="bottom" constant="14" id="H5N-kX-Q1g"/>
                                         <constraint firstItem="lHc-n2-7O0" firstAttribute="leading" secondItem="Ba0-Oh-SZf" secondAttribute="leading" constant="16" id="OpE-f3-ZZr"/>
@@ -96,7 +109,7 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last updated" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYG-8O-5gs">
-                                    <rect key="frame" x="16" y="402" width="100" height="20.333333333333314"/>
+                                    <rect key="frame" x="16" y="436.33333333333337" width="100" height="20.333333333333314"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -108,6 +121,7 @@
                                 <constraint firstAttribute="trailing" secondItem="Ba0-Oh-SZf" secondAttribute="trailing" constant="16" id="3fb-hd-T3b"/>
                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zYG-8O-5gs" secondAttribute="trailing" constant="16" id="GI2-h5-lUE"/>
                                 <constraint firstItem="Ba0-Oh-SZf" firstAttribute="leading" secondItem="G3a-cS-tfi" secondAttribute="leading" constant="16" id="Rrl-2B-yab"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zYG-8O-5gs" secondAttribute="bottom" constant="40" id="ZpT-aq-E6l"/>
                                 <constraint firstItem="Ba0-Oh-SZf" firstAttribute="top" secondItem="G3a-cS-tfi" secondAttribute="top" id="ajM-UX-ws3"/>
                                 <constraint firstItem="zYG-8O-5gs" firstAttribute="leading" secondItem="G3a-cS-tfi" secondAttribute="leading" constant="16" id="jjC-JV-A5m"/>
                                 <constraint firstItem="zYG-8O-5gs" firstAttribute="top" secondItem="Ba0-Oh-SZf" secondAttribute="bottom" constant="16" id="lfx-3m-ki8"/>
@@ -120,6 +134,7 @@
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="top" secondItem="gP3-Gk-5fV" secondAttribute="top" id="IHV-0G-3jD"/>
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="bottom" secondItem="gP3-Gk-5fV" secondAttribute="bottom" id="LXb-29-E1S"/>
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="leading" secondItem="gP3-Gk-5fV" secondAttribute="leading" id="Zjc-Bg-tds"/>
+                        <constraint firstItem="G3a-cS-tfi" firstAttribute="bottom" secondItem="gP3-Gk-5fV" secondAttribute="bottom" id="fTi-hg-TVr"/>
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="width" secondItem="QaE-l3-1fK" secondAttribute="width" id="vwt-6g-8QL"/>
                     </constraints>
                     <viewLayoutGuide key="contentLayoutGuide" id="gP3-Gk-5fV"/>
@@ -145,6 +160,7 @@
     </objects>
     <resources>
         <image name="headerBlue" width="375" height="274"/>
+        <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
         <image name="shareButtonImmage" width="44" height="44"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
