@@ -76,7 +76,7 @@ struct _R {
     }
 
 
-    /// This `_R.string.localizable` struct is generated, and contains static references to 12 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 13 localization keys.
     struct localizable {
       let source: RswiftResources.StringResource.Source
 
@@ -109,6 +109,11 @@ struct _R {
       ///
       /// Key: last_updated
       var last_updated: RswiftResources.StringResource { .init(key: "last_updated", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: National Bank Exchange Rate
+      ///
+      /// Key: national_bank_exchange_rate
+      var national_bank_exchange_rate: RswiftResources.StringResource { .init(key: "national_bank_exchange_rate", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: No internet connection
       ///
@@ -212,9 +217,12 @@ struct _R {
     }
   }
 
-  /// This `_R.font` struct is generated, and contains static references to 5 fonts.
+  /// This `_R.font` struct is generated, and contains static references to 6 fonts.
   struct font: Sequence {
     let bundle: Foundation.Bundle
+
+    /// Font `Lato-Bold`.
+    var latoBold: RswiftResources.FontResource { .init(name: "Lato-Bold", bundle: bundle, filename: "Lato-Bold.ttf") }
 
     /// Font `Lato-ExtraBold`.
     var latoExtraBold: RswiftResources.FontResource { .init(name: "Lato-ExtraBold", bundle: bundle, filename: "Lato-ExtraBold.ttf") }
@@ -232,7 +240,7 @@ struct _R {
     var sfProTextSemibold: RswiftResources.FontResource { .init(name: "SFProText-Semibold", bundle: bundle, filename: "SFProText-Semibold.ttf") }
 
     func makeIterator() -> IndexingIterator<[RswiftResources.FontResource]> {
-      [latoExtraBold, latoRegular, latoSemiBold, sfProTextRegular, sfProTextSemibold].makeIterator()
+      [latoBold, latoExtraBold, latoRegular, latoSemiBold, sfProTextRegular, sfProTextSemibold].makeIterator()
     }
     func validate() throws {
       for font in self {
@@ -241,9 +249,12 @@ struct _R {
     }
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 5 resource files.
+  /// This `_R.file` struct is generated, and contains static references to 6 resource files.
   struct file {
     let bundle: Foundation.Bundle
+
+    /// Resource file `Lato-Bold.ttf`.
+    var latoBoldTtf: RswiftResources.FileResource { .init(name: "Lato-Bold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `Lato-ExtraBold.ttf`.
     var latoExtraBoldTtf: RswiftResources.FileResource { .init(name: "Lato-ExtraBold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }

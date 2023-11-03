@@ -29,6 +29,7 @@
 		22D96E522AB40016003F17A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22D96E512AB40016003F17A1 /* Localizable.strings */; };
 		22DB6DF32ADC29AF000B8318 /* SFProText-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22DB6DF22ADC29AF000B8318 /* SFProText-Semibold.ttf */; };
 		22DB6DF52ADC29D7000B8318 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22DB6DF42ADC29D7000B8318 /* SFProText-Regular.ttf */; };
+		22F2C14E2AF4E661004AA702 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22F2C14D2AF4E661004AA702 /* Lato-Bold.ttf */; };
 		304909887B644CE757A78D11 /* Pods_Currency_converter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CBF47A3F71B56E6207391C1 /* Pods_Currency_converter.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		22D96E512AB40016003F17A1 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		22DB6DF22ADC29AF000B8318 /* SFProText-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.ttf"; sourceTree = "<group>"; };
 		22DB6DF42ADC29D7000B8318 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.ttf"; sourceTree = "<group>"; };
+		22F2C14D2AF4E661004AA702 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		A66695A721F266C634EE6AB0 /* Pods-Currency converter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Currency converter.debug.xcconfig"; path = "Target Support Files/Pods-Currency converter/Pods-Currency converter.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */,
+				22F2C14D2AF4E661004AA702 /* Lato-Bold.ttf */,
 				2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */,
 				22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */,
 				22DB6DF42ADC29D7000B8318 /* SFProText-Regular.ttf */,
@@ -279,6 +282,7 @@
 				22D96E522AB40016003F17A1 /* Localizable.strings in Resources */,
 				2276AA0B2AB9FF190003BECB /* Lato-ExtraBold.ttf in Resources */,
 				22DB6DF52ADC29D7000B8318 /* SFProText-Regular.ttf in Resources */,
+				22F2C14E2AF4E661004AA702 /* Lato-Bold.ttf in Resources */,
 				22D96E4B2AB3F900003F17A1 /* MainViewController.xib in Resources */,
 				22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */,
 				2242F9952AD980F100776D78 /* CurrencyListViewController.xib in Resources */,

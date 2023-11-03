@@ -16,6 +16,7 @@
                 <outlet property="currencyInfoTableHeight" destination="OaZ-SL-McE" id="pts-H9-FRd"/>
                 <outlet property="currencyInfoTableView" destination="iGD-1U-xVh" id="B3O-o0-XcG"/>
                 <outlet property="currencyShowView" destination="Ba0-Oh-SZf" id="9N0-2a-Ufl"/>
+                <outlet property="exchangeRateButton" destination="uzr-vT-C38" id="cDW-Vw-xwE"/>
                 <outlet property="mainTitleLabel" destination="OjH-lN-Pbl" id="5Hc-K4-X2O"/>
                 <outlet property="sellBuyModeSegmntContrl" destination="lHc-n2-7O0" id="cQW-Yr-YNr"/>
                 <outlet property="updatedInfoLabel" destination="zYG-8O-5gs" id="CwX-ns-DsY"/>
@@ -39,11 +40,11 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ID6-cp-xg7">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="ID6-cp-xg7">
                     <rect key="frame" x="0.0" y="170" width="393" height="648"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3a-cS-tfi" userLabel="ContentView">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="653"/>
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="598.33333333333337"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ba0-Oh-SZf" userLabel="currencyShowView">
                                     <rect key="frame" x="16" y="0.0" width="361" height="420.33333333333331"/>
@@ -108,20 +109,37 @@
                                         <constraint firstItem="LXg-eT-cJR" firstAttribute="top" secondItem="iGD-1U-xVh" secondAttribute="bottom" constant="40" id="yz7-ix-IE9"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last updated" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYG-8O-5gs">
-                                    <rect key="frame" x="16" y="436.33333333333337" width="100" height="20.333333333333314"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYG-8O-5gs">
+                                    <rect key="frame" x="16" y="436.33333333333337" width="82.333333333333329" height="18"/>
+                                    <attributedString key="attributedText">
+                                        <fragment content="Last updated">
+                                            <attributes>
+                                                <font key="NSFont" metaFont="system" size="16"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="9" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
                                     <nil key="highlightedColor"/>
+                                    <size key="shadowOffset" width="0.0" height="0.0"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uzr-vT-C38">
+                                    <rect key="frame" x="16" y="497.33333333333337" width="361" height="48"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain" title="Bank Exchange Rate">
+                                        <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                                        <directionalEdgeInsets key="contentInsets" top="17" leading="0.0" bottom="17" trailing="0.0"/>
+                                    </buttonConfiguration>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="653" id="1qh-xY-Krw"/>
                                 <constraint firstAttribute="trailing" secondItem="Ba0-Oh-SZf" secondAttribute="trailing" constant="16" id="3fb-hd-T3b"/>
+                                <constraint firstAttribute="trailing" secondItem="uzr-vT-C38" secondAttribute="trailing" constant="16" id="4pN-ff-5hp"/>
+                                <constraint firstItem="uzr-vT-C38" firstAttribute="leading" secondItem="G3a-cS-tfi" secondAttribute="leading" constant="16" id="B9j-IY-IeB"/>
                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zYG-8O-5gs" secondAttribute="trailing" constant="16" id="GI2-h5-lUE"/>
+                                <constraint firstAttribute="bottom" secondItem="uzr-vT-C38" secondAttribute="bottom" constant="53" id="HMT-Qg-Rs7"/>
+                                <constraint firstItem="uzr-vT-C38" firstAttribute="top" secondItem="zYG-8O-5gs" secondAttribute="bottom" constant="43" id="JDp-aR-lZT"/>
                                 <constraint firstItem="Ba0-Oh-SZf" firstAttribute="leading" secondItem="G3a-cS-tfi" secondAttribute="leading" constant="16" id="Rrl-2B-yab"/>
-                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zYG-8O-5gs" secondAttribute="bottom" constant="40" id="ZpT-aq-E6l"/>
                                 <constraint firstItem="Ba0-Oh-SZf" firstAttribute="top" secondItem="G3a-cS-tfi" secondAttribute="top" id="ajM-UX-ws3"/>
                                 <constraint firstItem="zYG-8O-5gs" firstAttribute="leading" secondItem="G3a-cS-tfi" secondAttribute="leading" constant="16" id="jjC-JV-A5m"/>
                                 <constraint firstItem="zYG-8O-5gs" firstAttribute="top" secondItem="Ba0-Oh-SZf" secondAttribute="bottom" constant="16" id="lfx-3m-ki8"/>
@@ -134,7 +152,6 @@
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="top" secondItem="gP3-Gk-5fV" secondAttribute="top" id="IHV-0G-3jD"/>
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="bottom" secondItem="gP3-Gk-5fV" secondAttribute="bottom" id="LXb-29-E1S"/>
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="leading" secondItem="gP3-Gk-5fV" secondAttribute="leading" id="Zjc-Bg-tds"/>
-                        <constraint firstItem="G3a-cS-tfi" firstAttribute="bottom" secondItem="gP3-Gk-5fV" secondAttribute="bottom" id="fTi-hg-TVr"/>
                         <constraint firstItem="G3a-cS-tfi" firstAttribute="width" secondItem="QaE-l3-1fK" secondAttribute="width" id="vwt-6g-8QL"/>
                     </constraints>
                     <viewLayoutGuide key="contentLayoutGuide" id="gP3-Gk-5fV"/>

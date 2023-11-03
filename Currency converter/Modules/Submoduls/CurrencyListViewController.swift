@@ -64,10 +64,7 @@ class CurrencyListViewController: UIViewController {
     }
     
     @IBAction func presentMainVC(_ sender: Any) {
-        let mainVC = MainViewController()
-
-        mainVC.modalPresentationStyle = .fullScreen
-        present(mainVC, animated: false)
+        self.dismiss(animated: true, completion: nil)
     }
     
     //MARK: - Private Methods

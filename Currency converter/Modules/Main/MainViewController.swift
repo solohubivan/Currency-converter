@@ -30,12 +30,19 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var currencyInfoTableView: UITableView!
     @IBOutlet weak private var addCurrencyButton: UIButton!
     @IBOutlet weak private var updatedInfoLabel: UILabel!
+    @IBOutlet weak var exchangeRateButton: UIButton!
     
     @IBOutlet weak var currencyInfoTableHeight: NSLayoutConstraint!
     
     private var presenter: MainVCPresenterProtocol!
 
     private var convertingMode = ConvertingMode.sell
+    
+    private let refreshControl: UIRefreshControl = {
+       let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshActivated), for: .valueChanged)
+        return refreshControl
+    }()
     
     
     override func viewDidLoad() {
@@ -57,6 +64,7 @@ class MainViewController: UIViewController {
         setupCurrencyInfoTableView()
         setupAddCurrencyButton()
         setupUpdateInfoLabel()
+        setupExchangeRateButton()
     }
     
     private func setupMainTitleLabel() {
@@ -103,6 +111,8 @@ class MainViewController: UIViewController {
         currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
         currencyInfoTableView.register(UINib(nibName: Constants.currencyInfoTableNibName, bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
+        
+        currencyInfoTableView.refreshControl = refreshControl
     }
     
     private func setupAddCurrencyButton() {
@@ -121,6 +131,19 @@ class MainViewController: UIViewController {
     private func setupUpdateInfoLabel() {
         updatedInfoLabel.font = R.font.latoRegular(size: 12)
         updatedInfoLabel.textColor = UIColor.hex575757
+    }
+    
+    private func setupExchangeRateButton() {
+        exchangeRateButton.setTitle(R.string.localizable.national_bank_exchange_rate(), for: .normal)
+        exchangeRateButton.layer.borderWidth = Constants.rateButtonBorderWidth
+        exchangeRateButton.layer.cornerRadius = Constants.rateButtonCornerRadius
+        exchangeRateButton.layer.borderColor = UIColor.hex007AFF.cgColor
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        exchangeRateButton.titleLabel?.font = R.font.latoBold(size: 18)
+        exchangeRateButton.titleLabel?.textColor = UIColor.hex007AFF
     }
     
     //MARK: - Private Methods
@@ -156,7 +179,7 @@ class MainViewController: UIViewController {
     
     private func updatePriceValuesWithMode() {
         
-        let rowCount = currencyInfoTableView.numberOfRows(inSection: 0)
+        let rowCount = currencyInfoTableView.numberOfRows(inSection: .zero)
         
         switch convertingMode {
         case .sell:
@@ -164,11 +187,18 @@ class MainViewController: UIViewController {
         case .buy:
             presenter.updatePriceValues(isSellMode: false)
         }
-        for row in 0..<rowCount {
-            if let currencyCell = currencyInfoTableView.cellForRow(at: IndexPath(row: row, section: 0)) as? CurrencyValueTableViewCell {
+        for row in .zero..<rowCount {
+            if let currencyCell = currencyInfoTableView.cellForRow(at: IndexPath(row: row, section: .zero)) as? CurrencyValueTableViewCell {
                 presenter.updateCalculatedCurencyValue(with: currencyCell.currencyValueTF.text, at: currencyCell.cellIndex)
             }
         }
+    }
+    
+    @objc private func refreshActivated() {
+        let mainVC = MainViewController()
+        mainVC.modalPresentationStyle = .fullScreen
+        present(mainVC, animated: false)
+        refreshControl.endRefreshing()
     }
      
     //MARK: - IBActions
@@ -245,6 +275,8 @@ extension MainViewController {
         static let currencyInfoTableNibName: String = "CurrencyValueTableViewCell"
         
         static let viewCornerRadius: CGFloat = 10
+        static let rateButtonCornerRadius: CGFloat = 14
+        static let rateButtonBorderWidth: CGFloat = 1
         
         static let firstSegment: Int = 1
         

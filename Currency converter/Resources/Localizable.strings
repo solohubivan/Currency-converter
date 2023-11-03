@@ -15,6 +15,7 @@
 "please_allow_this_app_to_internet_access" = "Please allow this app to internet access";
 "use_offline" = "Use Offline";
 "settings" = "Settings";
+"national_bank_exchange_rate" = "National Bank Exchange Rate";
 
 //MARK: - MainVCPresenter
 "last_updated" = "Last Updated";
