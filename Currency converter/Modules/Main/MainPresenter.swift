@@ -43,12 +43,37 @@ class MainPresenter: MainVCPresenterProtocol {
     private var currencyPriceValues: [Double] = []
     private var convertedResult: [Double] = []
     
+    private var inputedTFValue: Double?
+    
     
     init(view: MainViewProtocol) {
         self.view = view
     }
     
     //MARK: - Public methods
+    func getCurrenciesValues() -> [Double] {
+        return currencyPriceValues
+    }
+    
+    func getConvertedResults() -> [Double] {
+        return convertedResult
+    }
+    
+    func getDefaultCurrencies() -> [String] {
+        return defaultCurrenciesNames
+    }
+    
+    func getActiveCurrenciesForTable() -> [String] {
+        return currencies
+    }
+    
+    func getCurrenciesListData() -> [String] {
+        return currenciesListData
+    }
+    
+    func getCurrenciesDataValues() {
+        getCurrencyData()
+    }
     
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String {
         
@@ -66,10 +91,6 @@ class MainPresenter: MainVCPresenterProtocol {
             }
         }
         return textToShare
-    }
-    
-    func getConvertedResults() -> [Double] {
-        return convertedResult
     }
     
     func updatePriceValues(isSellMode: Bool) {
@@ -90,25 +111,8 @@ class MainPresenter: MainVCPresenterProtocol {
         }
         currencies.append(currency)
         updateCurrencyValuesForNewCurrencies()
-        view?.reloadDataCurrencyInfoTable()
         view?.updateTableHeight()
-        view?.updateTableInfo(with: convertedResult)
-    }
-    
-    func getDefaultCurrencies() -> [String] {
-        return defaultCurrenciesNames
-    }
-    
-    func getActiveCurrenciesForTable() -> [String] {
-        return currencies
-    }
-    
-    func getCurrenciesListData() -> [String] {
-        return currenciesListData
-    }
-    
-    func getCurrenciesDataValues() {
-        getCurrencyData()
+        view?.reloadDataCurrencyInfoTable()
     }
     
     func updateCalculatedCurencyValue(with newValue: String?, at index: Int) {
@@ -121,20 +125,22 @@ class MainPresenter: MainVCPresenterProtocol {
         guard index >= .zero && index < resultValues.count else {
                 return
             }
-        for i in .zero..<resultValues.count {
+            for i in .zero..<resultValues.count {
                 if i == index {
                     resultValues[i] = inputedValue
                 } else {
                     resultValues[i] = inputedValue / currencyPriceValues[index] * currencyPriceValues[i]
                 }
             }
-        
+        convertedResult = []
         convertedResult = resultValues
         convertedResult = convertedResult.map { value in
                 return Double(String(format: "%.2f", value)) ?? 0.0
             }
         print(currencyPriceValues)
-        view?.updateTableInfo(with: convertedResult)
+        inputedTFValue = inputedValue
+
+        view?.reloadDataCurrencyInfoTable()
     }
     
     func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
@@ -244,6 +250,17 @@ class MainPresenter: MainVCPresenterProtocol {
             }
         }
         currencyPriceValues = newCurrencyValues
+        
+        
+        var resultValues: [Double] = currencyPriceValues
+
+            for i in 0..<resultValues.count {
+                resultValues[i] = (inputedTFValue ?? 1.0) * currencyPriceValues[i]
+            }
+            convertedResult = resultValues
+            convertedResult = convertedResult.map { value in
+                return Double(String(format: "%.2f", value)) ?? 0.0
+            }
     }
 
     private func convertCurrenciesToUSD(_ data: [DefaultCurrenciesData], isBuyMode: Bool) -> [Double] {

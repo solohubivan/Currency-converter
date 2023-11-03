@@ -17,7 +17,6 @@ fileprivate enum ConvertingMode {
 
 protocol MainViewProtocol: AnyObject {
     func updateUI(with currencyData: CurrencyData)
-    func updateTableInfo(with values: [Double])
     func reloadDataCurrencyInfoTable()
     func updateTableHeight()
 }
@@ -96,7 +95,7 @@ class MainViewController: UIViewController {
     
     @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         convertingMode = sender.selectedSegmentIndex == .zero ? .sell : .buy
-        updateDefaultCurrenciesPriceValues()
+        updatePriceValuesWithMode()
     }
     
     private func setupCurrencyInfoTableView() {
@@ -107,7 +106,7 @@ class MainViewController: UIViewController {
     }
     
     private func setupAddCurrencyButton() {
-        addCurrencyButton.setTitle("Add Currency", for: .normal)
+        addCurrencyButton.setTitle(R.string.localizable.add_currency(), for: .normal)
         addCurrencyButton.titleLabel?.font = R.font.latoRegular(size: 13)
         addCurrencyButton.titleLabel?.textColor = UIColor.hex007AFF
     }
@@ -155,21 +154,23 @@ class MainViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    private func updateDefaultCurrenciesPriceValues() {
+    private func updatePriceValuesWithMode() {
+        
+        let rowCount = currencyInfoTableView.numberOfRows(inSection: 0)
+        
         switch convertingMode {
         case .sell:
             presenter.updatePriceValues(isSellMode: true)
-            if let cell = currencyInfoTableView.visibleCells.first as? CurrencyValueTableViewCell {
-                presenter.updateCalculatedCurencyValue(with: cell.currencyValueTF.text, at: cell.cellIndex)
-            }
         case .buy:
             presenter.updatePriceValues(isSellMode: false)
-            if let cell = currencyInfoTableView.visibleCells.first as? CurrencyValueTableViewCell {
-                presenter.updateCalculatedCurencyValue(with: cell.currencyValueTF.text, at: cell.cellIndex)
+        }
+        for row in 0..<rowCount {
+            if let currencyCell = currencyInfoTableView.cellForRow(at: IndexPath(row: row, section: 0)) as? CurrencyValueTableViewCell {
+                presenter.updateCalculatedCurencyValue(with: currencyCell.currencyValueTF.text, at: currencyCell.cellIndex)
             }
         }
     }
-    
+     
     //MARK: - IBActions
     
     @IBAction func shareCurrencyInfo(_ sender: Any) {
@@ -193,7 +194,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let currencyName = presenter.getActiveCurrenciesForTable()[indexPath.row]
         cell.currencyNameLabel.attributedText = presenter.createTitleNameForCurrencyLabel(text: currencyName)
         
-        cell.currencyValueTF.text = ""
+        if indexPath.row < presenter.getConvertedResults().count {
+            let convertedValue = presenter.getConvertedResults()[indexPath.row]
+                cell.currencyValueTF.text = String(convertedValue)
+            } else {
+                cell.currencyValueTF.text = ""
+            }
+        
         cell.cellIndex = indexPath.row
         
         cell.textFieldValueChanged = { [weak self] newValue in
@@ -205,17 +212,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension MainViewController: MainViewProtocol {
-    func updateUI(with currencyData: CurrencyData) {
-
-        updatedInfoLabel.text = presenter.configureLastUpdatedLabel()
-    }
     
-    func updateTableInfo(with values: [Double]) {
-        for (index, value) in values.enumerated() {
-            if let cell = currencyInfoTableView.cellForRow(at: IndexPath(row: index, section: .zero)) as? CurrencyValueTableViewCell {
-                cell.currencyValueTF.text = String(value)
-            }
-        }
+    func updateUI(with currencyData: CurrencyData) {
+        updatedInfoLabel.text = presenter.configureLastUpdatedLabel()
     }
     
     func reloadDataCurrencyInfoTable() {

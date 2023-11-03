@@ -101,6 +101,24 @@ class CurrencyListViewController: UIViewController {
                 return currencyCode
             }
     }
+    
+    private func showMessage(for indexPath: IndexPath, currencyCode: String) {
+        if let currencyName = currencyDescriptions[currencyCode] {
+            showMessage("Added: \(currencyName)")
+        } else {
+            showMessage("Added \(currencyCode)")
+        }
+        
+    }
+
+    private func showMessage(_ message: String) {
+        let alertController = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+        present(alertController, animated: true, completion: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            alertController.dismiss(animated: true, completion: nil)
+        }
+    }
 }
 
 extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -139,10 +157,12 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         if searching {
             let currencyCode = searchingCurrencies[indexPath.row]
             presenter?.addCurrency(currencyCode)
+            showMessage(for: indexPath, currencyCode: currencyCode)
         } else {
             let sectionLetter = sections[indexPath.section]
             let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
@@ -150,9 +170,11 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
             if indexPath.section == .zero {
                 let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
                 presenter?.addCurrency(currencyCode)
+                showMessage(for: indexPath, currencyCode: currencyCode)
             } else {
                 let currencyCode = filteredCurrencies[indexPath.row]
                 presenter?.addCurrency(currencyCode)
+                showMessage(for: indexPath, currencyCode: currencyCode)
             }
         }
     }
