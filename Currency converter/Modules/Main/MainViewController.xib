@@ -44,7 +44,7 @@
                     <rect key="frame" x="0.0" y="170" width="393" height="648"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3a-cS-tfi" userLabel="ContentView">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="598.33333333333337"/>
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="599.66666666666663"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ba0-Oh-SZf" userLabel="currencyShowView">
                                     <rect key="frame" x="16" y="0.0" width="361" height="420.33333333333331"/>
@@ -110,7 +110,7 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYG-8O-5gs">
-                                    <rect key="frame" x="16" y="436.33333333333337" width="82.333333333333329" height="18"/>
+                                    <rect key="frame" x="16" y="436.33333333333337" width="95.333333333333329" height="19.333333333333314"/>
                                     <attributedString key="attributedText">
                                         <fragment content="Last updated">
                                             <attributes>
@@ -123,12 +123,15 @@
                                     <size key="shadowOffset" width="0.0" height="0.0"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uzr-vT-C38">
-                                    <rect key="frame" x="16" y="497.33333333333337" width="361" height="48"/>
+                                    <rect key="frame" x="16" y="498.66666666666663" width="361" height="48"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain" title="Bank Exchange Rate">
                                         <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                                         <directionalEdgeInsets key="contentInsets" top="17" leading="0.0" bottom="17" trailing="0.0"/>
                                     </buttonConfiguration>
+                                    <connections>
+                                        <action selector="jumpToExchangeRateVC:" destination="-1" eventType="touchUpInside" id="ZQX-E0-bYX"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

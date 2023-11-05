@@ -9,10 +9,15 @@
 /* Begin PBXBuildFile section */
 		2242F9932AD9804C00776D78 /* CurrencyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */; };
 		2242F9952AD980F100776D78 /* CurrencyListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2242F9942AD980F100776D78 /* CurrencyListViewController.xib */; };
+		226E5AF82AF52173006D923D /* ExchangeRatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E5AF72AF52173006D923D /* ExchangeRatesViewController.swift */; };
+		226E5AFA2AF52197006D923D /* ExchangeRatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 226E5AF92AF52197006D923D /* ExchangeRatesViewController.xib */; };
+		22731D832AF556AB00CE0AEB /* ExchangeRatesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22731D822AF556AB00CE0AEB /* ExchangeRatesPresenter.swift */; };
+		22731D852AF560A000CE0AEB /* ExchangeRatesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22731D842AF560A000CE0AEB /* ExchangeRatesData.swift */; };
 		2276AA0B2AB9FF190003BECB /* Lato-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */; };
 		2276AA0D2ABA049F0003BECB /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */; };
 		2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */; };
 		228080342AC840530090CC2C /* CurrencyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228080332AC840530090CC2C /* CurrencyData.swift */; };
+		2286CFC92AF6FAC400B461B0 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2286CFC82AF6FAC400B461B0 /* String.swift */; };
 		228844BC2AE723DE004EA5B7 /* CurrencyDescribtions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */; };
 		22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */; };
 		22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */; };
@@ -38,10 +43,15 @@
 		1CBF47A3F71B56E6207391C1 /* Pods_Currency_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Currency_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListViewController.swift; sourceTree = "<group>"; };
 		2242F9942AD980F100776D78 /* CurrencyListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyListViewController.xib; sourceTree = "<group>"; };
+		226E5AF72AF52173006D923D /* ExchangeRatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesViewController.swift; sourceTree = "<group>"; };
+		226E5AF92AF52197006D923D /* ExchangeRatesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExchangeRatesViewController.xib; sourceTree = "<group>"; };
+		22731D822AF556AB00CE0AEB /* ExchangeRatesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesPresenter.swift; sourceTree = "<group>"; };
+		22731D842AF560A000CE0AEB /* ExchangeRatesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesData.swift; sourceTree = "<group>"; };
 		2276AA0A2AB9FF190003BECB /* Lato-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ExtraBold.ttf"; sourceTree = "<group>"; };
 		2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		228080332AC840530090CC2C /* CurrencyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyData.swift; sourceTree = "<group>"; };
+		2286CFC82AF6FAC400B461B0 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDescribtions.swift; sourceTree = "<group>"; };
 		22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyValueTableViewCell.swift; sourceTree = "<group>"; };
 		22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyValueTableViewCell.xib; sourceTree = "<group>"; };
@@ -90,11 +100,31 @@
 		2242F9912AD97E2800776D78 /* Submoduls */ = {
 			isa = PBXGroup;
 			children = (
-				2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */,
-				2242F9942AD980F100776D78 /* CurrencyListViewController.xib */,
 				228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */,
+				226E5AF52AF52060006D923D /* CurrencyListViewController */,
+				226E5AF62AF52098006D923D /* ExchangeRatesViewController */,
 			);
 			path = Submoduls;
+			sourceTree = "<group>";
+		};
+		226E5AF52AF52060006D923D /* CurrencyListViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */,
+				2242F9942AD980F100776D78 /* CurrencyListViewController.xib */,
+			);
+			path = CurrencyListViewController;
+			sourceTree = "<group>";
+		};
+		226E5AF62AF52098006D923D /* ExchangeRatesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				226E5AF72AF52173006D923D /* ExchangeRatesViewController.swift */,
+				226E5AF92AF52197006D923D /* ExchangeRatesViewController.xib */,
+				22731D822AF556AB00CE0AEB /* ExchangeRatesPresenter.swift */,
+				22731D842AF560A000CE0AEB /* ExchangeRatesData.swift */,
+			);
+			path = ExchangeRatesViewController;
 			sourceTree = "<group>";
 		};
 		22997FC42AC24C7300B7D200 /* Cells */ = {
@@ -160,6 +190,7 @@
 			children = (
 				2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */,
 				22D234182ABD696F009B2B8F /* UIColorExtensions.swift */,
+				2286CFC82AF6FAC400B461B0 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -276,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22D96E432AB3E70C003F17A1 /* LaunchScreen.storyboard in Resources */,
+				226E5AFA2AF52197006D923D /* ExchangeRatesViewController.xib in Resources */,
 				22C2F9F62AC400E4001EBF87 /* Lato-SemiBold.ttf in Resources */,
 				2276AA0D2ABA049F0003BECB /* Lato-Regular.ttf in Resources */,
 				22DB6DF32ADC29AF000B8318 /* SFProText-Semibold.ttf in Resources */,
@@ -362,11 +394,15 @@
 				2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */,
 				228080342AC840530090CC2C /* CurrencyData.swift in Sources */,
 				228844BC2AE723DE004EA5B7 /* CurrencyDescribtions.swift in Sources */,
+				22731D852AF560A000CE0AEB /* ExchangeRatesData.swift in Sources */,
 				22A022442AC969D700C53A2F /* MainPresenter.swift in Sources */,
 				22D96E372AB3E70B003F17A1 /* AppDelegate.swift in Sources */,
 				22D96E392AB3E70B003F17A1 /* SceneDelegate.swift in Sources */,
+				226E5AF82AF52173006D923D /* ExchangeRatesViewController.swift in Sources */,
 				22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */,
+				22731D832AF556AB00CE0AEB /* ExchangeRatesPresenter.swift in Sources */,
 				22D96E502AB3FF01003F17A1 /* R.generated.swift in Sources */,
+				2286CFC92AF6FAC400B461B0 /* String.swift in Sources */,
 				2242F9932AD9804C00776D78 /* CurrencyListViewController.swift in Sources */,
 				22D234192ABD696F009B2B8F /* UIColorExtensions.swift in Sources */,
 			);

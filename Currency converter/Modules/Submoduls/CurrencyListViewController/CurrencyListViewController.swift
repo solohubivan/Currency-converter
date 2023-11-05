@@ -67,7 +67,6 @@ class CurrencyListViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: - Private Methods
     
     private func setupCurrencyListTable() {
         currencyListTable.dataSource = self
@@ -101,14 +100,14 @@ class CurrencyListViewController: UIViewController {
     
     private func showMessage(for indexPath: IndexPath, currencyCode: String) {
         if let currencyName = currencyDescriptions[currencyCode] {
-            showMessage("Added: \(currencyName)")
+            showInformation("Added: \(currencyName)")
         } else {
-            showMessage("Added \(currencyCode)")
+            showInformation("Added \(currencyCode)")
         }
         
     }
 
-    private func showMessage(_ message: String) {
+    private func showInformation(_ message: String) {
         let alertController = UIAlertController(title: message, message: nil, preferredStyle: .alert)
         present(alertController, animated: true, completion: nil)
         
@@ -177,7 +176,7 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return searching ? 1 : sections.count
+        return searching ? Constants.one : sections.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -272,7 +272,7 @@ struct _R {
     var sfProTextSemiboldTtf: RswiftResources.FileResource { .init(name: "SFProText-Semibold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
   }
 
-  /// This `_R.nib` struct is generated, and contains static references to 3 nibs.
+  /// This `_R.nib` struct is generated, and contains static references to 4 nibs.
   struct nib {
     let bundle: Foundation.Bundle
 
@@ -282,11 +282,15 @@ struct _R {
     /// Nib `CurrencyValueTableViewCell`.
     var currencyValueTableViewCell: RswiftResources.NibReferenceReuseIdentifier<CurrencyValueTableViewCell, CurrencyValueTableViewCell> { .init(name: "CurrencyValueTableViewCell", bundle: bundle, identifier: "CurrencyValuesTableViewCell") }
 
+    /// Nib `ExchangeRatesViewController`.
+    var exchangeRatesViewController: RswiftResources.NibReference<UIKit.UIView> { .init(name: "ExchangeRatesViewController", bundle: bundle) }
+
     /// Nib `MainViewController`.
     var mainViewController: RswiftResources.NibReference<UIKit.UIView> { .init(name: "MainViewController", bundle: bundle) }
 
     func validate() throws {
       if #available(iOS 13.0, *) { if UIKit.UIImage(systemName: "chevron.backward") == nil { throw RswiftResources.ValidationError("[R.swift] System image named 'chevron.backward' is used in nib 'CurrencyListViewController', but couldn't be loaded.") } }
+      if #available(iOS 13.0, *) { if UIKit.UIImage(systemName: "chevron.backward") == nil { throw RswiftResources.ValidationError("[R.swift] System image named 'chevron.backward' is used in nib 'ExchangeRatesViewController', but couldn't be loaded.") } }
       if UIKit.UIImage(named: "headerBlue", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'headerBlue' is used in nib 'MainViewController', but couldn't be loaded.") }
       if #available(iOS 13.0, *) { if UIKit.UIImage(systemName: "plus.circle.fill") == nil { throw RswiftResources.ValidationError("[R.swift] System image named 'plus.circle.fill' is used in nib 'MainViewController', but couldn't be loaded.") } }
       if UIKit.UIImage(named: "shareButtonImmage", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'shareButtonImmage' is used in nib 'MainViewController', but couldn't be loaded.") }

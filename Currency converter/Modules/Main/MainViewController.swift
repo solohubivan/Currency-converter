@@ -121,13 +121,6 @@ class MainViewController: UIViewController {
         addCurrencyButton.titleLabel?.textColor = UIColor.hex007AFF
     }
     
-    @IBAction func presentCurrencyListVC(_ sender: Any) {
-        let currencyListVC = CurrencyListViewController()
-        currencyListVC.presenter = self.presenter
-        currencyListVC.modalPresentationStyle = .formSheet
-        present(currencyListVC, animated: true)
-    }
-    
     private func setupUpdateInfoLabel() {
         updatedInfoLabel.font = R.font.latoRegular(size: 12)
         updatedInfoLabel.textColor = UIColor.hex575757
@@ -202,6 +195,19 @@ class MainViewController: UIViewController {
     }
      
     //MARK: - IBActions
+    
+    @IBAction func jumpToExchangeRateVC(_ sender: Any) {
+        let exchangeRateVC = ExchangeRatesViewController()
+        exchangeRateVC.modalPresentationStyle = .formSheet
+        present(exchangeRateVC, animated: true)
+    }
+    
+    @IBAction func presentCurrencyListVC(_ sender: Any) {
+        let currencyListVC = CurrencyListViewController()
+        currencyListVC.presenter = self.presenter
+        currencyListVC.modalPresentationStyle = .formSheet
+        present(currencyListVC, animated: true)
+    }
     
     @IBAction func shareCurrencyInfo(_ sender: Any) {
         let textToShare = presenter.createShareText(currencyNames: presenter.getActiveCurrenciesForTable(), currencyValues: presenter.getConvertedResults())
