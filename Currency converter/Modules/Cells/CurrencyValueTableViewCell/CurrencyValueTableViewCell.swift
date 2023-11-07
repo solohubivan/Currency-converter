@@ -37,7 +37,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.borderStyle = .none
         currencyValueTF.clearButtonMode = .whileEditing
         currencyValueTF.keyboardType = .decimalPad
-        let paddingView = UIView(frame: CGRect(x: .zero, y: .zero, width: 16, height: Int(currencyValueTF.frame.height)))
+        let paddingView = UIView(frame: CGRect(x: .zero, y: .zero, width: Constants.textLeftPadding, height: Int(currencyValueTF.frame.height)))
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
         currencyValueTF.layer.cornerRadius = Constants.cornerRadiusTF
@@ -45,17 +45,24 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.font = R.font.latoSemiBold(size: 14)
         currencyValueTF.textColor = UIColor.hex003166
     }
+    
+    func formatNumberWithThousandsSeparator(_ number: Double) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.groupingSeparator = " "
+        return numberFormatter.string(from: NSNumber(value: number)) ?? ""
+    }
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText: NSString = textField.text! as NSString
+        let currentText: NSString = (textField.text ?? "") as NSString
         let newText = currentText.replacingCharacters(in: range, with: string)
-
-        if newText == "." {
-            textField.text = "0."
-            return false
+        
+        let pointCount = newText.components(separatedBy: ".").count - Constants.one
+            if pointCount > Constants.one {
+                return false
         }
         
         let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.")
@@ -63,12 +70,12 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
                 return false
             }
         
-        let pointCount = newText.components(separatedBy: ".").count - Constants.one
-            if pointCount > Constants.one {
-                return false
-            }
+        if newText == "." {
+            textField.text = "0."
+            return false
+        }
 
-        return true
+        return newText.count <= 12
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -98,5 +105,7 @@ extension CurrencyValueTableViewCell {
         static let cornerRadiusTF: CGFloat = 6
         
         static let one: Int = 1
+        
+        static let textLeftPadding: Int = 16
     }
 }

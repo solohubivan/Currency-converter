@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExchangeRatesViewController" customModule="Currency_converter" customModuleProvider="target">
             <connections>
+                <outlet property="describeTimeInterval" destination="XdC-m8-Jok" id="QKm-Ds-F5Q"/>
                 <outlet property="descriptionLabel" destination="VJA-WN-6FP" id="TK8-O6-9Eb"/>
                 <outlet property="exchangeRateInfoTable" destination="dQt-hg-E7A" id="iv3-hT-os9"/>
                 <outlet property="searchingDateTF" destination="79Z-Fb-0F6" id="abb-UH-9CU"/>
@@ -66,6 +67,12 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="describeTimeInterval" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XdC-m8-Jok">
+                    <rect key="frame" x="16" y="416" width="361" height="20.333333333333314"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-hg-E7A">
                     <rect key="frame" x="0.0" y="161.33333333333331" width="393" height="656.66666666666674"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -74,10 +81,12 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="XdC-m8-Jok" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="21z-0j-UoB"/>
                 <constraint firstItem="2jO-5s-d3S" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2uP-6Z-udV"/>
                 <constraint firstItem="lya-2O-bSf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="6oj-Ns-HLJ"/>
                 <constraint firstItem="dQt-hg-E7A" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Bwm-ht-LJ1"/>
                 <constraint firstItem="dQt-hg-E7A" firstAttribute="top" secondItem="79Z-Fb-0F6" secondAttribute="bottom" constant="6" id="CaK-ao-dm5"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="XdC-m8-Jok" secondAttribute="trailing" constant="16" id="HSs-87-TT5"/>
                 <constraint firstItem="VJA-WN-6FP" firstAttribute="top" secondItem="2jO-5s-d3S" secondAttribute="bottom" constant="30" id="MoZ-G8-J6H"/>
                 <constraint firstItem="alK-Ml-mHM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="9" id="NOf-Bj-UZZ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dQt-hg-E7A" secondAttribute="trailing" id="Oau-Pe-wZk"/>
@@ -92,6 +101,7 @@
                 <constraint firstItem="alK-Ml-mHM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="q1x-Sa-lWI"/>
                 <constraint firstItem="lya-2O-bSf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="alK-Ml-mHM" secondAttribute="trailing" constant="4" id="qH6-wV-mvT"/>
                 <constraint firstItem="79Z-Fb-0F6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="uK0-Wy-56q"/>
+                <constraint firstItem="XdC-m8-Jok" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="uet-Ei-nOp"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="VJA-WN-6FP" secondAttribute="trailing" constant="16" id="veo-FY-kr7"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

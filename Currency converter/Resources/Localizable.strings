@@ -24,3 +24,14 @@
 "popular" = "Popular";
 "currency" = "Currency";
 "converter" = "Converter";
+"added" = "Added";
+
+//MARK: - ExchangeRatesViewController
+"exchange_rate" = "Exchange Rate";
+"entere_the_date_to_view_currency_exchange_rates" = "Enter the date to view currency exchange rates";
+"dd_mm_yyyy" = "dd.mm.yyyy";
+"currency_exchange_rates_are_available_from_december_1_2014" = "Currency exchange rates are available from December 1, 2014";
+"national_bank" = "National Bank";
+"salling_rate_is" = "Salling Rate is";
+"buying_rate_is" = "Buying Rate is";
+"ok" = "OK";

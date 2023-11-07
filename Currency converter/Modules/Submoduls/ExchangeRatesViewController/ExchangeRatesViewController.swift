@@ -18,7 +18,9 @@ class ExchangeRatesViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var searchingDateTF: UITextField!
     @IBOutlet weak var exchangeRateInfoTable: UITableView!
-
+    @IBOutlet weak var describeTimeInterval: UILabel!
+    
+    private let datePicker = UIDatePicker()
     
     private var presenter: ExchangeRatesPresenterProtocol!
     
@@ -30,8 +32,6 @@ class ExchangeRatesViewController: UIViewController {
         presenter = ExchangeRatesPresenter(view: self)
         
         setupUI()
-        
-   //     presenter.getData(date: "27.06.2020")
     }
     
     //MARK: - SetupUI
@@ -41,11 +41,14 @@ class ExchangeRatesViewController: UIViewController {
         setupDismissButton()
         setupDescriptionLabel()
         setupSearchingDateTF()
+        setupDescribeTimeIntervalLabel()
         setupExchangeRateTable()
+        
+        createDatepicker()
     }
     
     private func setupTitleLabel() {
-        titleLabel.text = "Exchange Rate"
+        titleLabel.text = R.string.localizable.exchange_rate()
         titleLabel.font = R.font.sfProTextSemibold(size: 17)
         titleLabel.textColor = UIColor.black
     }
@@ -60,67 +63,109 @@ class ExchangeRatesViewController: UIViewController {
     }
     
     private func setupDescriptionLabel() {
-        descriptionLabel.text = "Enter the date to view currency exchange rates"
+        descriptionLabel.text = R.string.localizable.entere_the_date_to_view_currency_exchange_rates()
         descriptionLabel.font = R.font.latoSemiBold(size: 17)
         descriptionLabel.textColor = UIColor.hex575757
     }
     
     private func setupSearchingDateTF() {
         searchingDateTF.delegate = self
-        searchingDateTF.placeholder = "dd.mm.yyyy"
+        searchingDateTF.placeholder = R.string.localizable.dd_mm_yyyy()
         searchingDateTF.textColor = UIColor.systemBlue
         searchingDateTF.font = R.font.latoRegular(size: 18)
+    }
+    
+    private func setupDescribeTimeIntervalLabel() {
+        describeTimeInterval.text = R.string.localizable.currency_exchange_rates_are_available_from_december_1_2014()
+        describeTimeInterval.font = R.font.latoBold(size: 20)
+        describeTimeInterval.textColor = UIColor.lightGray
+        describeTimeInterval.textAlignment = .center
     }
     
     private func setupExchangeRateTable() {
         exchangeRateInfoTable.dataSource = self
         exchangeRateInfoTable.delegate = self
-        exchangeRateInfoTable.register(UITableViewCell.self, forCellReuseIdentifier: "ExchangeRateCellIdentifier")
+        exchangeRateInfoTable.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
+        exchangeRateInfoTable.isHidden = true
     }
     
     @IBAction func dismissSelf(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: - Private Methods
+    
     private func showCurrencyInfoAlert(currencyCode: String, saleRateNB: Double, purchaseRateNB: Double) {
         
-        let alertController = UIAlertController(title: currencyCode, message: "National Bank\nSalling Rate is \(saleRateNB) UAH\nBuying Rate is \(purchaseRateNB) UAH", preferredStyle: .alert)
+        let alertController = UIAlertController(title: currencyCode, message: "\(R.string.localizable.national_bank())\n\(R.string.localizable.salling_rate_is()) \(saleRateNB) \(Constants.ukrainianCurrency)\n\(R.string.localizable.buying_rate_is()) \(purchaseRateNB) \(Constants.ukrainianCurrency)", preferredStyle: .alert)
         
         let messageFont = [NSAttributedString.Key.font:
                             R.font.latoSemiBold(size: 15)]
         let messageAttrString = NSMutableAttributedString(string:
         alertController.message ?? "")
-        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key : Any], range: NSRange(location: 0,
+        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key : Any], range: NSRange(location: .zero,
         length: messageAttrString.length))
-        alertController.setValue(messageAttrString, forKey: "attributedMessage")
+        alertController.setValue(messageAttrString, forKey: Constants.keyAttributedMessage)
 
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: R.string.localizable.ok(), style: .default, handler: nil)
         alertController.addAction(okAction)
         
         present(alertController, animated: true, completion: nil)
     }
     
+    private func createToolBar() -> UIToolbar {
+        
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        toolbar.setItems([doneButton], animated: true)
+        
+        return toolbar
+    }
+    
+    private func createDatepicker() {
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.datePickerMode = .date
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Constants.dateFormat
+        if let minDate = dateFormatter.date(from: Constants.minDateToSearch) {
+            datePicker.minimumDate = minDate
+        }
+        if let maxDate = Calendar.current.date(byAdding: .day, value: -1, to: Date()) {
+            datePicker.maximumDate = maxDate
+        }
+        
+        searchingDateTF.inputView = datePicker
+        searchingDateTF.inputAccessoryView = createToolBar()
+    }
+    
+    @objc func donePressed() {
+        describeTimeInterval.isHidden = true
+        exchangeRateInfoTable.isHidden = false
+        
+        let dateFormTF = DateFormatter()
+        dateFormTF.dateStyle = .medium
+        dateFormTF.timeStyle = .none
+        self.searchingDateTF.text = dateFormTF.string(from: datePicker.date)
+        
+        let dateFormForLink = DateFormatter()
+        dateFormForLink.dateFormat = Constants.dateFormat
+        presenter.getData(date: dateFormForLink.string(from: datePicker.date))
+            
+        self.view.endEditing(true)
+    }
 }
 
 //MARK: - Extensions
 
 extension ExchangeRatesViewController: UITextFieldDelegate {
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentText: NSString = textField.text! as NSString
-        let newText = currentText.replacingCharacters(in: range, with: string)
-        
-        if textField == searchingDateTF {
-            textField.text = newText.formattedText(mask: searchingDateTF.placeholder ?? "")
-            return false
-        }
-        return true
-    }
-    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.layer.borderWidth = 1
+        textField.layer.borderWidth = Constants.borderWidthTF
         textField.layer.borderColor = UIColor.systemBlue.cgColor
-        textField.layer.cornerRadius = 5
+        textField.layer.cornerRadius = Constants.cornerRadiusTF
         return true
     }
     
@@ -139,7 +184,7 @@ extension ExchangeRatesViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeRateCellIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
         let disclosureIndicator = UITableViewCell.AccessoryType.disclosureIndicator
         
         guard presenter.getCurrencies().indices.contains(indexPath.row) else { return UITableViewCell() }
@@ -173,5 +218,19 @@ extension ExchangeRatesViewController: ExchangeRatesVCProtocol {
     
     func reloadTable() {
         exchangeRateInfoTable.reloadData()
+    }
+}
+
+extension ExchangeRatesViewController {
+    private enum Constants {
+        static let cellIdentifier: String = "ExchangeRateCellIdentifier"
+        static let ukrainianCurrency: String = "UAH"
+        static let keyAttributedMessage: String = "attributedMessage"
+        
+        static let minDateToSearch: String = "01.12.2014"
+        static let dateFormat: String = "dd.MM.yyyy"
+        
+        static let borderWidthTF: CGFloat = 1
+        static let cornerRadiusTF: CGFloat = 5
     }
 }

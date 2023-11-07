@@ -76,7 +76,7 @@ struct _R {
     }
 
 
-    /// This `_R.string.localizable` struct is generated, and contains static references to 13 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 22 localization keys.
     struct localizable {
       let source: RswiftResources.StringResource.Source
 
@@ -85,10 +85,20 @@ struct _R {
       /// Key: add_currency
       var add_currency: RswiftResources.StringResource { .init(key: "add_currency", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
+      /// Value: Added
+      ///
+      /// Key: added
+      var added: RswiftResources.StringResource { .init(key: "added", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
       /// Value: Buy
       ///
       /// Key: buy
       var buy: RswiftResources.StringResource { .init(key: "buy", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Buying Rate is
+      ///
+      /// Key: buying_rate_is
+      var buying_rate_is: RswiftResources.StringResource { .init(key: "buying_rate_is", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Converter
       ///
@@ -105,10 +115,35 @@ struct _R {
       /// Key: currency_converter
       var currency_converter: RswiftResources.StringResource { .init(key: "currency_converter", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
+      /// Value: Currency exchange rates are available from December 1, 2014
+      ///
+      /// Key: currency_exchange_rates_are_available_from_december_1_2014
+      var currency_exchange_rates_are_available_from_december_1_2014: RswiftResources.StringResource { .init(key: "currency_exchange_rates_are_available_from_december_1_2014", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: dd.mm.yyyy
+      ///
+      /// Key: dd_mm_yyyy
+      var dd_mm_yyyy: RswiftResources.StringResource { .init(key: "dd_mm_yyyy", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Enter the date to view currency exchange rates
+      ///
+      /// Key: entere_the_date_to_view_currency_exchange_rates
+      var entere_the_date_to_view_currency_exchange_rates: RswiftResources.StringResource { .init(key: "entere_the_date_to_view_currency_exchange_rates", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Exchange Rate
+      ///
+      /// Key: exchange_rate
+      var exchange_rate: RswiftResources.StringResource { .init(key: "exchange_rate", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
       /// Value: Last Updated
       ///
       /// Key: last_updated
       var last_updated: RswiftResources.StringResource { .init(key: "last_updated", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: National Bank
+      ///
+      /// Key: national_bank
+      var national_bank: RswiftResources.StringResource { .init(key: "national_bank", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: National Bank Exchange Rate
       ///
@@ -120,6 +155,11 @@ struct _R {
       /// Key: no_internet_connection
       var no_internet_connection: RswiftResources.StringResource { .init(key: "no_internet_connection", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
+      /// Value: OK
+      ///
+      /// Key: ok
+      var ok: RswiftResources.StringResource { .init(key: "ok", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
       /// Value: Please allow this app to internet access
       ///
       /// Key: please_allow_this_app_to_internet_access
@@ -129,6 +169,11 @@ struct _R {
       ///
       /// Key: popular
       var popular: RswiftResources.StringResource { .init(key: "popular", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: Salling Rate is
+      ///
+      /// Key: salling_rate_is
+      var salling_rate_is: RswiftResources.StringResource { .init(key: "salling_rate_is", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Sell
       ///

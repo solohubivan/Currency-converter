@@ -100,9 +100,9 @@ class CurrencyListViewController: UIViewController {
     
     private func showMessage(for indexPath: IndexPath, currencyCode: String) {
         if let currencyName = currencyDescriptions[currencyCode] {
-            showInformation("Added: \(currencyName)")
+            showInformation("\(R.string.localizable.added()): \(currencyName)")
         } else {
-            showInformation("Added \(currencyCode)")
+            showInformation("\(R.string.localizable.added()): \(currencyCode)")
         }
         
     }

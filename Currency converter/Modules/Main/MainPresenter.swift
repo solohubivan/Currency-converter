@@ -31,8 +31,8 @@ class MainPresenter: MainVCPresenterProtocol {
     
     private weak var view: MainViewProtocol?
 
-    private var defaultCurrenciesNames = ["UAH", "USD", "EUR"]
-    private var currencies = ["UAH", "USD", "EUR"]
+    private var defaultCurrenciesNames = [Constants.currencyNameUAH, Constants.currencyNameUSD, Constants.currencyNameEUR]
+    private var currencies = [Constants.currencyNameUAH, Constants.currencyNameUSD, Constants.currencyNameEUR]
     private var currenciesListData: [String] = []
     
     private var purchasePriceDefaultCurrencies: [Double] = []
@@ -135,7 +135,7 @@ class MainPresenter: MainVCPresenterProtocol {
         convertedResult = []
         convertedResult = resultValues
         convertedResult = convertedResult.map { value in
-                return Double(String(format: "%.2f", value)) ?? 0.0
+            return Double(String(format: "%.2f", value)) ?? Constants.defaultCurrencyPriceValue
             }
         print(currencyPriceValues)
         inputedTFValue = inputedValue
@@ -254,26 +254,26 @@ class MainPresenter: MainVCPresenterProtocol {
         
         var resultValues: [Double] = currencyPriceValues
 
-            for i in 0..<resultValues.count {
-                resultValues[i] = (inputedTFValue ?? 1.0) * currencyPriceValues[i]
+        for i in .zero..<resultValues.count {
+                resultValues[i] = (inputedTFValue ?? Constants.defaultInputedValue) * currencyPriceValues[i]
             }
             convertedResult = resultValues
             convertedResult = convertedResult.map { value in
-                return Double(String(format: "%.2f", value)) ?? 0.0
+                return Double(String(format: "%.2f", value)) ?? Constants.defaultCurrencyPriceValue
             }
     }
 
     private func convertCurrenciesToUSD(_ data: [DefaultCurrenciesData], isBuyMode: Bool) -> [Double] {
-        var usdPrice = 0.0
-        var eurPrice = 0.0
+        var usdPrice = Constants.defaultCurrencyPriceValue
+        var eurPrice = Constants.defaultCurrencyPriceValue
             
-            if let usdCurrencyData = data.first(where: { $0.ccy == "USD" }) {
+        if let usdCurrencyData = data.first(where: { $0.ccy == Constants.currencyNameUSD }) {
                 if let price = isBuyMode ? Double(usdCurrencyData.buy) : Double(usdCurrencyData.sale) {
                     usdPrice = price
                 }
             }
             
-            if let eurCurrencyData = data.first(where: { $0.ccy == "EUR" }) {
+        if let eurCurrencyData = data.first(where: { $0.ccy == Constants.currencyNameEUR }) {
                 if let price = isBuyMode ? Double(eurCurrencyData.buy) : Double(eurCurrencyData.sale) {
                     eurPrice = price
                 }
@@ -282,9 +282,9 @@ class MainPresenter: MainVCPresenterProtocol {
             var alignedCurrencies = [usdPrice]
             
             for currency in self.currencies {
-                if currency == "USD" {
-                    alignedCurrencies.append(1.0)
-                } else if currency == "EUR" {
+                if currency == Constants.currencyNameUSD {
+                    alignedCurrencies.append(Constants.defaultInputedValue)
+                } else if currency == Constants.currencyNameEUR {
                     alignedCurrencies.append(usdPrice / eurPrice)
                 } else if let currencyData = data.first(where: { $0.ccy == currency }) {
                     if let price = isBuyMode ? Double(currencyData.buy) : Double(currencyData.sale) {
@@ -299,6 +299,11 @@ class MainPresenter: MainVCPresenterProtocol {
 
 extension MainPresenter {
     private enum Constants {
+        static let defaultCurrencyPriceValue: Double = 0.0
+        static let defaultInputedValue: Double = 1.0
         
+        static let currencyNameUSD: String = "USD"
+        static let currencyNameEUR: String = "EUR"
+        static let currencyNameUAH: String = "UAH"
     }
 }

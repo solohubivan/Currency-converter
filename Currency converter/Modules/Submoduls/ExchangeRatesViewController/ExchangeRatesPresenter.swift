@@ -66,10 +66,10 @@ class ExchangeRatesPresenter: ExchangeRatesPresenterProtocol {
                     $0.currency }
                 self.saleRateNB = self.exchangeRatesData.exchangeRate.map { rate in
                     let formattedRate = String(format: "%.2f", rate.saleRateNB)
-                    return Double(formattedRate) ?? 0.0 }
+                    return Double(formattedRate) ?? Constants.defaulValue }
                 self.purchaseRateNB = self.exchangeRatesData.exchangeRate.map { rate in
                     let formattedRate = String(format: "%.2f", rate.purchaseRateNB)
-                    return Double(formattedRate) ?? 0.0 }
+                    return Double(formattedRate) ?? Constants.defaulValue }
                 
                 DispatchQueue.main.async {
                     self.view?.reloadTable()
@@ -80,5 +80,11 @@ class ExchangeRatesPresenter: ExchangeRatesPresenterProtocol {
             }
         }
         task.resume()
+    }
+}
+
+extension ExchangeRatesPresenter {
+    private enum Constants {
+        static let defaulValue: Double = 0.0
     }
 }
