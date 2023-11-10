@@ -44,6 +44,8 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.layer.backgroundColor = UIColor.hexFAF7FD.cgColor
         currencyValueTF.font = R.font.latoSemiBold(size: 14)
         currencyValueTF.textColor = UIColor.hex003166
+        
+        currencyValueTF.overrideUserInterfaceStyle = .light
     }
     
     func formatNumberWithThousandsSeparator(_ number: Double) -> String {
@@ -92,10 +94,6 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.endEditing(true)
         return true
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.currencyValueTF.endEditing(true)
     }
 }
 

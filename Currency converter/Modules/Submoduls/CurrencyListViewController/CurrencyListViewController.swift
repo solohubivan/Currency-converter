@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import InstantSearchVoiceOverlay
+import Speech
 
-class CurrencyListViewController: UIViewController {
+class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var backToMainVCButton: UIButton!
     @IBOutlet weak var currencyListTable: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-
     
     var presenter: MainVCPresenterProtocol?
     
@@ -22,6 +23,8 @@ class CurrencyListViewController: UIViewController {
 
     private var searchingCurrencies = [String]()
     private var searching = false
+    
+    private let voiceOverlay = VoiceOverlayController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +51,10 @@ class CurrencyListViewController: UIViewController {
     private func setupSearchBar() {
         searchBar.delegate = self
         searchBar.barTintColor = UIColor.hexF5F5F5
+
+        if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+            textField.overrideUserInterfaceStyle = .light
+        }
         
         searchBar.showsBookmarkButton = true
         searchBar.setImage(UIImage(systemName: "mic.fill"), for: .bookmark, state: .normal)
@@ -74,6 +81,7 @@ class CurrencyListViewController: UIViewController {
         currencyListTable.register(UITableViewCell.self, forCellReuseIdentifier: Constants.currencyListTableCellIdentifier)
         
         currencyListTable.backgroundColor = .clear
+        currencyListTable.overrideUserInterfaceStyle = .light
         
         currenciesList = presenter!.getCurrenciesListData()
         currenciesList.sort()
@@ -111,7 +119,7 @@ class CurrencyListViewController: UIViewController {
         let alertController = UIAlertController(title: message, message: nil, preferredStyle: .alert)
         present(alertController, animated: true, completion: nil)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             alertController.dismiss(animated: true, completion: nil)
         }
     }
@@ -137,6 +145,7 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
         if searching {
             if indexPath.row < searchingCurrencies.count {
                 cell.textLabel?.text = configureCellsNames(for: searchingCurrencies[indexPath.row])
+                
             }
         } else {
             if indexPath.section == .zero {
@@ -217,8 +226,32 @@ extension CurrencyListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
             searchBar.resignFirstResponder()
-        }
-
+    }
+    
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        voiceOverlay.delegate = self
+        voiceOverlay.settings.autoStop = true
+        voiceOverlay.settings.autoStopTimeout = 1
+        
+        voiceOverlay.start(on: self, textHandler: { text, final, _ in
+            
+            if final {
+                print("FinalText: \(text)")
+                DispatchQueue.main.async {
+                    self.searchBar.text = text
+                    self.searchBar(searchBar, textDidChange: text)
+                }
+            }
+            
+        }, errorHandler: { error in
+        //    print("Error occurred: \(error!.localizedDescription)")
+        })
+    }
+    
+    func recording(text: String?, final: Bool?, error: Error?) {
+        
+    }
+     
 }
 
 extension CurrencyListViewController {

@@ -6,8 +6,7 @@
 //
 
 import UIKit
-import Reachability
-
+import Network
 
 fileprivate enum ConvertingMode {
     case sell
@@ -19,6 +18,7 @@ protocol MainViewProtocol: AnyObject {
     func updateUI(with currencyData: CurrencyData)
     func reloadDataCurrencyInfoTable()
     func updateTableHeight()
+    func showNoDataAlert()
 }
 
 
@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var currencyInfoTableView: UITableView!
     @IBOutlet weak private var addCurrencyButton: UIButton!
     @IBOutlet weak private var updatedInfoLabel: UILabel!
-    @IBOutlet weak var exchangeRateButton: UIButton!
+    @IBOutlet weak private var exchangeRateButton: UIButton!
     
     @IBOutlet weak var currencyInfoTableHeight: NSLayoutConstraint!
     
@@ -65,6 +65,8 @@ class MainViewController: UIViewController {
         setupAddCurrencyButton()
         setupUpdateInfoLabel()
         setupExchangeRateButton()
+        
+        setupViewDismissKeyboardGesture()
     }
     
     private func setupMainTitleLabel() {
@@ -110,6 +112,7 @@ class MainViewController: UIViewController {
         currencyInfoTableView.dataSource = self
         currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
+        currencyInfoTableView.backgroundColor = .clear
         currencyInfoTableView.register(UINib(nibName: Constants.currencyInfoTableNibName, bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
         
         currencyInfoTableView.refreshControl = refreshControl
@@ -139,16 +142,70 @@ class MainViewController: UIViewController {
         exchangeRateButton.titleLabel?.textColor = UIColor.hex007AFF
     }
     
-    //MARK: - Private Methods
+    // MARK: Methods which prevents objects from being overlaid by the keyboard
     
-    private func checkInternetConnectionAndGetData() {
-        let reachability = try! Reachability()
-        if reachability.connection == .wifi || reachability.connection == .cellular {
-            
-            presenter.getCurrenciesDataValues()
-        } else {
-            showNoInternetAlert()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
         }
+        
+        var shouldMoveViewUp = false
+        let paddingForKeyboard: CGFloat = 230
+
+        if let activeTextField = self.view.findActiveTextField() {
+            let bottomOfTextField = activeTextField.convert(activeTextField.bounds, to: self.view).maxY;
+            let topOfKeyboard = self.view.frame.height - keyboardSize.height
+
+
+            if bottomOfTextField > topOfKeyboard {
+                shouldMoveViewUp = true
+            }
+        }
+
+        if(shouldMoveViewUp) {
+            self.view.frame.origin.y = paddingForKeyboard - keyboardSize.height
+        }
+    }
+    
+    // MARK: For allow dismiss keyboard by the tap on any free screen place
+    
+    private func setupViewDismissKeyboardGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y = .zero
+    }
+    
+    //MARK: - Private Methods
+
+    private func checkInternetConnectionAndGetData() {
+        let monitor = NWPathMonitor()
+            monitor.pathUpdateHandler = { [weak self] path in
+                
+                DispatchQueue.main.async {
+                    if path.status == .satisfied {
+                        self?.presenter.getCurrenciesDataValues()
+                    } else {
+                        self?.showNoInternetAlert()
+                    }
+                }
+                
+            }
+            let queue = DispatchQueue(label: "Monitor")
+            monitor.start(queue: queue)
     }
     
     private func showNoInternetAlert() {
@@ -156,8 +213,13 @@ class MainViewController: UIViewController {
             title: R.string.localizable.no_internet_connection(),
             message: R.string.localizable.please_allow_this_app_to_internet_access(),
             preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel, handler: nil)
+        
+        let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel) { [weak self]  _ in
+            
+            self?.presenter.getCurrenciesDataValues(offlineMode: true)
+            self?.exchangeRateButton.isHidden = true
+        }
+        
         let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(settingsURL)
@@ -218,6 +280,8 @@ class MainViewController: UIViewController {
     }
 }
 
+//MARK: - Extentions
+
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -255,6 +319,21 @@ extension MainViewController: MainViewProtocol {
     
     func reloadDataCurrencyInfoTable() {
         currencyInfoTableView.reloadData()
+    }
+    
+    func showNoDataAlert() {
+        let alertController = UIAlertController(
+            title: "No data",
+            message: R.string.localizable.please_allow_this_app_to_internet_access(),
+            preferredStyle: .alert)
+        let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(settingsURL)
+                }
+            }
+        alertController.addAction(settingsAction)
+
+        present(alertController, animated: true, completion: nil)
     }
     
     func updateTableHeight() {

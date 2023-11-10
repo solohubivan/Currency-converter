@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -51,6 +50,7 @@
                                     <subviews>
                                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lHc-n2-7O0" userLabel="sellBuyModeSegmntContrl">
                                             <rect key="frame" x="16" y="16" width="329" height="49"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="48" id="c3g-Q2-PMW"/>
                                             </constraints>
@@ -60,7 +60,7 @@
                                             </segments>
                                         </segmentedControl>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LXg-eT-cJR" userLabel="addCurrencyButton">
-                                            <rect key="frame" x="16" y="324" width="329" height="34.333333333333314"/>
+                                            <rect key="frame" x="101.33333333333333" y="324" width="158.66666666666669" height="34.333333333333314"/>
                                             <state key="normal" title="Button"/>
                                             <buttonConfiguration key="configuration" style="plain" imagePadding="10">
                                                 <imageReference key="image" image="plus.circle.fill" catalog="system" variableValue="0.80000000000000004"/>
@@ -87,20 +87,20 @@
                                         </button>
                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="iGD-1U-xVh" userLabel="currencyInfoTableView">
                                             <rect key="frame" x="0.0" y="104" width="361" height="180"/>
-                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="180" id="OaZ-SL-McE"/>
                                             </constraints>
                                         </tableView>
                                     </subviews>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="iGD-1U-xVh" firstAttribute="top" secondItem="lHc-n2-7O0" secondAttribute="bottom" constant="40" id="4in-Mn-7dB"/>
                                         <constraint firstItem="lHc-n2-7O0" firstAttribute="top" secondItem="Ba0-Oh-SZf" secondAttribute="top" constant="16" id="93R-Fn-T4H"/>
                                         <constraint firstItem="LXg-eT-cJR" firstAttribute="centerX" secondItem="Ba0-Oh-SZf" secondAttribute="centerX" id="GHW-JU-3Mm"/>
                                         <constraint firstItem="Wbq-PQ-dWP" firstAttribute="top" secondItem="LXg-eT-cJR" secondAttribute="bottom" constant="14" id="H5N-kX-Q1g"/>
                                         <constraint firstItem="lHc-n2-7O0" firstAttribute="leading" secondItem="Ba0-Oh-SZf" secondAttribute="leading" constant="16" id="OpE-f3-ZZr"/>
-                                        <constraint firstItem="LXg-eT-cJR" firstAttribute="leading" secondItem="Ba0-Oh-SZf" secondAttribute="leading" constant="16" id="QOy-YI-s59"/>
+                                        <constraint firstItem="LXg-eT-cJR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ba0-Oh-SZf" secondAttribute="leading" constant="16" id="QOy-YI-s59"/>
                                         <constraint firstAttribute="trailing" secondItem="lHc-n2-7O0" secondAttribute="trailing" constant="16" id="TAc-ou-MQ8"/>
                                         <constraint firstAttribute="trailing" secondItem="Wbq-PQ-dWP" secondAttribute="trailing" constant="4" id="We4-90-JBh"/>
                                         <constraint firstAttribute="bottom" secondItem="Wbq-PQ-dWP" secondAttribute="bottom" constant="4" id="cOu-fs-RXv"/>
@@ -182,8 +182,5 @@
         <image name="headerBlue" width="375" height="274"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
         <image name="shareButtonImmage" width="44" height="44"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

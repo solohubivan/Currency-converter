@@ -17,4 +17,15 @@ extension UIView {
         self.layer.shadowOffset = offset
         self.layer.shadowRadius = radius
     }
+    
+    func findActiveTextField() -> UITextField? {
+        for subview in self.subviews {
+            if let textField = subview as? UITextField, textField.isFirstResponder {
+                return textField
+            } else if let subTextField = subview.findActiveTextField() {
+                return subTextField
+            }
+        }
+        return nil
+    }
 }

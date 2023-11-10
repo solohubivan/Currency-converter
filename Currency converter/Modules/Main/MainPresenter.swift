@@ -21,6 +21,7 @@ protocol MainVCPresenterProtocol: AnyObject {
     func updatePriceValues(isSellMode: Bool)
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String
     func getConvertedResults() -> [Double]
+    func getCurrenciesDataValues(offlineMode: Bool)
 }
 
 
@@ -179,6 +180,16 @@ class MainPresenter: MainVCPresenterProtocol {
         }
         return result
     }
+    
+    func getCurrenciesDataValues(offlineMode: Bool = false) {
+        if offlineMode {
+            loadCurrenciesDataFromUserDefaults()
+        } else {
+            getCurrencyData()
+        }
+    }
+    
+    
 
     //MARK: - Private methods
     
@@ -227,12 +238,54 @@ class MainPresenter: MainVCPresenterProtocol {
                     self.view?.updateUI(with: self.currencyData)
                 }
                 
+                self.saveCurrenciesDataToUserDefalts()
+                
             } catch {
                 print(error.localizedDescription)
             }
         }
         firstTask.resume()
         secondTask.resume()
+    }
+    
+    private func saveCurrenciesDataToUserDefalts() {
+        UserDefaults.standard.set(currencies, forKey: "currencies")
+        UserDefaults.standard.set(currencyPriceValues, forKey: "currencyPriceValues")
+        UserDefaults.standard.set(purchasePriceDefaultCurrencies, forKey: "purchasePriceDefaultCurrencies")
+        UserDefaults.standard.set(salePriceDefaultCurrensies, forKey: "salePriceDefaultCurrensies")
+        UserDefaults.standard.set(currenciesListData, forKey: "currenciesListData")
+        UserDefaults.standard.set(otherAllCurrensiesPriceValues, forKey: "otherAllCurrensiesPriceValues")
+
+        UserDefaults.standard.set(currencyData.time_last_update_utc, forKey: "lastUpdateDate")
+    }
+    
+    private func loadCurrenciesDataFromUserDefaults() {
+        if let savedCurrencies = UserDefaults.standard.array(forKey: "currencies") as? [String],
+           let savedCurrenciesListData = UserDefaults.standard.array(forKey: "currenciesListData") as? [String],
+           let savedCurrencyPriceValues = UserDefaults.standard.array(forKey: "currencyPriceValues") as? [Double],
+           let savedPurchasePriceDefaultCurrencies = UserDefaults.standard.array(forKey: "purchasePriceDefaultCurrencies") as? [Double],
+           let savedSalePriceDefaultCurrensies = UserDefaults.standard.array(forKey: "salePriceDefaultCurrensies") as? [Double],
+           let savedOtherAllCurrensiesPriceValues = UserDefaults.standard.array(forKey: "otherAllCurrensiesPriceValues") as? [Double],
+           !savedCurrencies.isEmpty,
+           !savedCurrencyPriceValues.isEmpty {
+            currencies = savedCurrencies
+            currencyPriceValues = savedCurrencyPriceValues
+            purchasePriceDefaultCurrencies = savedPurchasePriceDefaultCurrencies
+            salePriceDefaultCurrensies = savedSalePriceDefaultCurrensies
+            currenciesListData = savedCurrenciesListData
+            otherAllCurrensiesPriceValues = savedOtherAllCurrensiesPriceValues
+
+            view?.reloadDataCurrencyInfoTable()
+        } else {
+            view?.showNoDataAlert()
+        }
+        
+        if let lastUpdateDate = UserDefaults.standard.string(forKey: "lastUpdateDate") {
+                currencyData.time_last_update_utc = lastUpdateDate
+                DispatchQueue.main.async {
+                    self.view?.updateUI(with: self.currencyData)
+                }
+            }
     }
     
     private func updateCurrencyValuesForNewCurrencies() {

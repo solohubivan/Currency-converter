@@ -6,6 +6,6 @@ target 'Currency converter' do
   use_frameworks!
   
   pod 'R.swift'
-  pod 'ReachabilitySwift'
+  pod 'InstantSearchVoiceOverlay'
 
 end

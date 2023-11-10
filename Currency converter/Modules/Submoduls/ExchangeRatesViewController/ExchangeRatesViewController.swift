@@ -73,6 +73,11 @@ class ExchangeRatesViewController: UIViewController {
         searchingDateTF.placeholder = R.string.localizable.dd_mm_yyyy()
         searchingDateTF.textColor = UIColor.systemBlue
         searchingDateTF.font = R.font.latoRegular(size: 18)
+        
+        searchingDateTF.overrideUserInterfaceStyle = .light
+ //       if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+ //           textField.overrideUserInterfaceStyle = .light
+ //       }
     }
     
     private func setupDescribeTimeIntervalLabel() {
@@ -87,6 +92,9 @@ class ExchangeRatesViewController: UIViewController {
         exchangeRateInfoTable.delegate = self
         exchangeRateInfoTable.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
         exchangeRateInfoTable.isHidden = true
+        
+        exchangeRateInfoTable.overrideUserInterfaceStyle = .light
+        
     }
     
     @IBAction func dismissSelf(_ sender: Any) {

@@ -28,5 +28,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Please allow access to microphone for searching</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Please allow access to microphone for searching</string>
 </dict>
 </plist>
