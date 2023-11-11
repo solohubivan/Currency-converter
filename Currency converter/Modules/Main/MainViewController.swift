@@ -32,7 +32,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var updatedInfoLabel: UILabel!
     @IBOutlet weak private var exchangeRateButton: UIButton!
     
-    @IBOutlet weak var currencyInfoTableHeight: NSLayoutConstraint!
+    @IBOutlet weak private var currencyInfoTableHeight: NSLayoutConstraint!
+    @IBOutlet weak private var currencyInfoTableWidth: NSLayoutConstraint!
+    @IBOutlet weak private var indentUnderTitleLabel: NSLayoutConstraint!
+    private var initialTableViewWidth: CGFloat?
     
     private var presenter: MainVCPresenterProtocol!
 
@@ -44,6 +47,10 @@ class MainViewController: UIViewController {
         return refreshControl
     }()
     
+    private var isIpad: Bool {
+        return UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +60,39 @@ class MainViewController: UIViewController {
         checkInternetConnectionAndGetData()
         
         setupUI()
+    }
+   
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if initialTableViewWidth == nil {
+            initialTableViewWidth = currencyShowView.frame.width
+        }
+    }
+    
+    override func viewWillLayoutSubviews() {
+            super.viewWillLayoutSubviews()
+        
+        if UIDevice.current.orientation.isLandscape {
+            if isIpad {
+                currencyInfoTableWidth.constant = Constants.tableSizeForIpad
+                indentUnderTitleLabel.constant = Constants.shortIndent
+            } else {
+                currencyInfoTableWidth.constant = initialTableViewWidth!
+                indentUnderTitleLabel.constant = Constants.shortIndent
+            }
+            
+        } else {
+            if isIpad {
+                currencyInfoTableWidth.constant = Constants.tableSizeForIpad
+                indentUnderTitleLabel.constant = Constants.standartIndent
+            } else {
+                if initialTableViewWidth == nil {
+                    currencyInfoTableWidth.constant = currencyShowView.frame.width
+                }
+                indentUnderTitleLabel.constant = Constants.standartIndent
+            }
+        }
     }
     
     //MARK: - Setup UI
@@ -198,13 +238,15 @@ class MainViewController: UIViewController {
                 DispatchQueue.main.async {
                     if path.status == .satisfied {
                         self?.presenter.getCurrenciesDataValues()
+                        
                     } else {
                         self?.showNoInternetAlert()
                     }
                 }
                 
             }
-            let queue = DispatchQueue(label: "Monitor")
+        
+        let queue = DispatchQueue(label: Constants.queueLabel)
             monitor.start(queue: queue)
     }
     
@@ -323,7 +365,7 @@ extension MainViewController: MainViewProtocol {
     
     func showNoDataAlert() {
         let alertController = UIAlertController(
-            title: "No data",
+            title: R.string.localizable.no_data(),
             message: R.string.localizable.please_allow_this_app_to_internet_access(),
             preferredStyle: .alert)
         let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
@@ -358,6 +400,7 @@ extension MainViewController {
     private enum Constants {
         static let currencyValuesCellIdentifier: String = "CurrencyValuesTableViewCell"
         static let currencyInfoTableNibName: String = "CurrencyValueTableViewCell"
+        static let queueLabel: String = "Monitor"
         
         static let viewCornerRadius: CGFloat = 10
         static let rateButtonCornerRadius: CGFloat = 14
@@ -377,5 +420,9 @@ extension MainViewController {
         static let tableHeight4Rows: CGFloat = 225
         static let tableHeight5Rows: CGFloat = 285
         static let tableHeight6Rows: CGFloat = 320
+        
+        static let tableSizeForIpad: CGFloat = 400
+        static let shortIndent: CGFloat = 10
+        static let standartIndent: CGFloat = 38
     }
 }

@@ -75,9 +75,6 @@ class ExchangeRatesViewController: UIViewController {
         searchingDateTF.font = R.font.latoRegular(size: 18)
         
         searchingDateTF.overrideUserInterfaceStyle = .light
- //       if let textField = searchBar.value(forKey: "searchField") as? UITextField {
- //           textField.overrideUserInterfaceStyle = .light
- //       }
     }
     
     private func setupDescribeTimeIntervalLabel() {

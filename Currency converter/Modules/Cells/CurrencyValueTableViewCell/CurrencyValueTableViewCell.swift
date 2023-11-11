@@ -77,7 +77,7 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
             return false
         }
 
-        return newText.count <= 12
+        return newText.count <= Constants.maxCount
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -103,7 +103,8 @@ extension CurrencyValueTableViewCell {
         static let cornerRadiusTF: CGFloat = 6
         
         static let one: Int = 1
-        
+        static let maxCount: Int = 12
         static let textLeftPadding: Int = 16
+        
     }
 }

@@ -16,6 +16,7 @@
 "use_offline" = "Use Offline";
 "settings" = "Settings";
 "national_bank_exchange_rate" = "National Bank Exchange Rate";
+"no_data" = "No data";
 
 //MARK: - MainVCPresenter
 "last_updated" = "Last Updated";

@@ -14,8 +14,10 @@
                 <outlet property="addCurrencyButton" destination="LXg-eT-cJR" id="LwP-Bj-LuW"/>
                 <outlet property="currencyInfoTableHeight" destination="OaZ-SL-McE" id="pts-H9-FRd"/>
                 <outlet property="currencyInfoTableView" destination="iGD-1U-xVh" id="B3O-o0-XcG"/>
+                <outlet property="currencyInfoTableWidth" destination="IFE-yo-k74" id="x5A-d3-8gC"/>
                 <outlet property="currencyShowView" destination="Ba0-Oh-SZf" id="9N0-2a-Ufl"/>
                 <outlet property="exchangeRateButton" destination="uzr-vT-C38" id="cDW-Vw-xwE"/>
+                <outlet property="indentUnderTitleLabel" destination="WYl-t2-z3w" id="IOD-fz-god"/>
                 <outlet property="mainTitleLabel" destination="OjH-lN-Pbl" id="5Hc-K4-X2O"/>
                 <outlet property="sellBuyModeSegmntContrl" destination="lHc-n2-7O0" id="cQW-Yr-YNr"/>
                 <outlet property="updatedInfoLabel" destination="zYG-8O-5gs" id="CwX-ns-DsY"/>
@@ -86,9 +88,10 @@
                                             </connections>
                                         </button>
                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="iGD-1U-xVh" userLabel="currencyInfoTableView">
-                                            <rect key="frame" x="0.0" y="104" width="361" height="180"/>
+                                            <rect key="frame" x="15.666666666666657" y="104" width="330" height="180"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="330" id="IFE-yo-k74"/>
                                                 <constraint firstAttribute="height" constant="180" id="OaZ-SL-McE"/>
                                             </constraints>
                                         </tableView>
@@ -104,8 +107,7 @@
                                         <constraint firstAttribute="trailing" secondItem="lHc-n2-7O0" secondAttribute="trailing" constant="16" id="TAc-ou-MQ8"/>
                                         <constraint firstAttribute="trailing" secondItem="Wbq-PQ-dWP" secondAttribute="trailing" constant="4" id="We4-90-JBh"/>
                                         <constraint firstAttribute="bottom" secondItem="Wbq-PQ-dWP" secondAttribute="bottom" constant="4" id="cOu-fs-RXv"/>
-                                        <constraint firstAttribute="trailing" secondItem="iGD-1U-xVh" secondAttribute="trailing" id="hvj-Nw-2xJ"/>
-                                        <constraint firstItem="iGD-1U-xVh" firstAttribute="leading" secondItem="Ba0-Oh-SZf" secondAttribute="leading" id="i7Q-l2-fRF"/>
+                                        <constraint firstItem="iGD-1U-xVh" firstAttribute="centerX" secondItem="Ba0-Oh-SZf" secondAttribute="centerX" id="sx0-Nx-h4t"/>
                                         <constraint firstItem="LXg-eT-cJR" firstAttribute="top" secondItem="iGD-1U-xVh" secondAttribute="bottom" constant="40" id="yz7-ix-IE9"/>
                                     </constraints>
                                 </view>
