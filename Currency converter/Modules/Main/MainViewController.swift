@@ -41,12 +41,6 @@ class MainViewController: UIViewController {
 
     private var convertingMode = ConvertingMode.sell
     
-    private let refreshControl: UIRefreshControl = {
-       let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshActivated), for: .valueChanged)
-        return refreshControl
-    }()
-    
     private var isIpad: Bool {
         return UIDevice.current.userInterfaceIdiom == .pad
     }
@@ -154,8 +148,6 @@ class MainViewController: UIViewController {
         currencyInfoTableView.separatorColor = .clear
         currencyInfoTableView.backgroundColor = .clear
         currencyInfoTableView.register(UINib(nibName: Constants.currencyInfoTableNibName, bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
-        
-        currencyInfoTableView.refreshControl = refreshControl
     }
     
     private func setupAddCurrencyButton() {
@@ -192,9 +184,7 @@ class MainViewController: UIViewController {
     }
     
     @objc private func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
         var shouldMoveViewUp = false
         let paddingForKeyboard: CGFloat = 230
@@ -243,7 +233,6 @@ class MainViewController: UIViewController {
                         self?.showNoInternetAlert()
                     }
                 }
-                
             }
         
         let queue = DispatchQueue(label: Constants.queueLabel)
@@ -274,6 +263,29 @@ class MainViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    private func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
+        let chevronImage = R.image.chevronRight()
+        
+        let attributedString = NSMutableAttributedString()
+        
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: R.font.latoRegular(size: 14)!,
+            .foregroundColor: UIColor.hex003166
+        ]
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = chevronImage
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        let textString = NSAttributedString(string: text, attributes: textAttributes)
+        
+        attributedString.append(textString)
+        attributedString.append(NSAttributedString(string: String("   ")))
+        attributedString.append(imageString)
+        
+        return attributedString
+    }
+    
     private func updatePriceValuesWithMode() {
         
         let rowCount = currencyInfoTableView.numberOfRows(inSection: .zero)
@@ -289,13 +301,6 @@ class MainViewController: UIViewController {
                 presenter.updateCalculatedCurencyValue(with: currencyCell.currencyValueTF.text, at: currencyCell.cellIndex)
             }
         }
-    }
-    
-    @objc private func refreshActivated() {
-        let mainVC = MainViewController()
-        mainVC.modalPresentationStyle = .fullScreen
-        present(mainVC, animated: false)
-        refreshControl.endRefreshing()
     }
      
     //MARK: - IBActions
@@ -334,7 +339,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
         
         let currencyName = presenter.getActiveCurrenciesForTable()[indexPath.row]
-        cell.currencyNameLabel.attributedText = presenter.createTitleNameForCurrencyLabel(text: currencyName)
+        cell.currencyNameLabel.attributedText = createTitleNameForCurrencyLabel(text: currencyName)
         
         if indexPath.row < presenter.getConvertedResults().count {
             let convertedValue = presenter.getConvertedResults()[indexPath.row]

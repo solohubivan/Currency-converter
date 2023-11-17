@@ -12,7 +12,6 @@ import UIKit
 protocol MainVCPresenterProtocol: AnyObject {
     func getCurrenciesDataValues()
     func configureLastUpdatedLabel() -> String
-    func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString
     func updateCalculatedCurencyValue(with newValue: String?, at index: Int)
     func getActiveCurrenciesForTable() -> [String]
     func getDefaultCurrencies() -> [String]
@@ -77,39 +76,19 @@ class MainPresenter: MainVCPresenterProtocol {
     }
     
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String {
-        
-        var textToShare = ""
-        
-        for (index, currencyName) in currencyNames.enumerated() {
-            if index < currencyValues.count {
-                let currencyValue = currencyValues[index]
-                let currencyInfo = "\(currencyName): \(currencyValue)"
-                
-                if !textToShare.isEmpty {
-                    textToShare += "\n"
-                }
-                textToShare += currencyInfo
-            }
-        }
-        return textToShare
+        let combinedData = zip(currencyNames, currencyValues)
+        let formattedStrings = combinedData.map { (name, value) in "\(name): \(value)\n" }
+        return formattedStrings.joined()
     }
     
     func updatePriceValues(isSellMode: Bool) {
-        if isSellMode {
-            currencyPriceValues = salePriceDefaultCurrensies
-            defaultCurrenciesPriceValues = salePriceDefaultCurrensies
-            updateCurrencyValuesForNewCurrencies()
-        } else {
-            currencyPriceValues = purchasePriceDefaultCurrencies
-            defaultCurrenciesPriceValues = purchasePriceDefaultCurrencies
-            updateCurrencyValuesForNewCurrencies()
-        }
+        currencyPriceValues = isSellMode ? salePriceDefaultCurrensies : purchasePriceDefaultCurrencies
+        defaultCurrenciesPriceValues = isSellMode ? salePriceDefaultCurrensies : purchasePriceDefaultCurrencies
+        updateCurrencyValuesForNewCurrencies()
     }
 
     func addCurrency(_ currency: String) {
-        guard !currencies.contains(currency) else {
-            return
-        }
+        guard !currencies.contains(currency) else { return }
         currencies.append(currency)
         updateCurrencyValuesForNewCurrencies()
         view?.updateTableHeight()
@@ -117,15 +96,11 @@ class MainPresenter: MainVCPresenterProtocol {
     }
     
     func updateCalculatedCurencyValue(with newValue: String?, at index: Int) {
-        guard let newValue = newValue, let inputedValue = Double(newValue) else {
-                return
-            }
+        guard let newValue = newValue, let inputedValue = Double(newValue) else { return }
         
         var resultValues: [Double] = currencyPriceValues
 
-        guard index >= .zero && index < resultValues.count else {
-                return
-            }
+        guard index >= .zero && index < resultValues.count else { return }
             for i in .zero..<resultValues.count {
                 if i == index {
                     resultValues[i] = inputedValue
@@ -138,35 +113,12 @@ class MainPresenter: MainVCPresenterProtocol {
         convertedResult = convertedResult.map { value in
             return Double(String(format: "%.2f", value)) ?? Constants.defaultCurrencyPriceValue
             }
-        print(currencyPriceValues)
+  //      print(currencyPriceValues)
         inputedTFValue = inputedValue
 
         view?.reloadDataCurrencyInfoTable()
     }
-    
-    func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
-        let chevronImage = R.image.chevronRight()
-        
-        let attributedString = NSMutableAttributedString()
-        
-        let textAttributes: [NSAttributedString.Key: Any] = [
-            .font: R.font.latoRegular(size: 14)!,
-            .foregroundColor: UIColor.hex003166
-        ]
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = chevronImage
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        let textString = NSAttributedString(string: text, attributes: textAttributes)
-        
-        attributedString.append(textString)
-        attributedString.append(NSAttributedString(string: String("   ")))
-        attributedString.append(imageString)
-        
-        return attributedString
-    }
-    
+
     func configureLastUpdatedLabel() -> String {
         let dateInfo = (currencyData.time_last_update_utc)
         var result = ""
@@ -200,10 +152,7 @@ class MainPresenter: MainVCPresenterProtocol {
         
         
         let firstTask = session.dataTask(with: defaultCurrenciesURL) { (data, response, error) in
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return
-            }
+            guard error == nil else { return }
             
             do {
                 
@@ -217,15 +166,12 @@ class MainPresenter: MainVCPresenterProtocol {
                 self.currencyPriceValues = self.defaultCurrenciesPriceValues
                 
             } catch {
-                print(error.localizedDescription)
+
             }
         }
             
         let secondTask = session.dataTask(with: allCurrenciesURL) { (data, response, error) in
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return
-            }
+            guard error == nil else { return }
             
             do {
                 self.currencyData = try JSONDecoder().decode(CurrencyData.self, from: data!)
@@ -241,7 +187,7 @@ class MainPresenter: MainVCPresenterProtocol {
                 self.saveCurrenciesDataToUserDefalts()
                 
             } catch {
-                print(error.localizedDescription)
+
             }
         }
         firstTask.resume()

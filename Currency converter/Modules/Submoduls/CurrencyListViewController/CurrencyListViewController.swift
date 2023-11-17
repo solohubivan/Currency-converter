@@ -89,6 +89,8 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
         currencyListTable.reloadData()
     }
     
+    //MARK: - Private Methods
+    
     private func configureSections() {
         for currency in currenciesList {
             let firstLetter = String(currency.prefix(Constants.one))
@@ -124,6 +126,8 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
         }
     }
 }
+
+//MARK: - Extensions
 
 extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

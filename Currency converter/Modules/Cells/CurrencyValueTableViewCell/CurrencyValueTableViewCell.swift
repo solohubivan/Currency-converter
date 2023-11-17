@@ -59,24 +59,21 @@ class CurrencyValueTableViewCell: UITableViewCell {
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
         let currentText: NSString = (textField.text ?? "") as NSString
         let newText = currentText.replacingCharacters(in: range, with: string)
-        
+
         let pointCount = newText.components(separatedBy: ".").count - Constants.one
-            if pointCount > Constants.one {
-                return false
-        }
-        
-        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.")
-            if newText.rangeOfCharacter(from: allowedCharacterSet.inverted) != nil {
-                return false
+        let allowedCharacterSet = CharacterSet(charactersIn: Constants.allowedCharacters)
+
+        guard pointCount <= Constants.one,
+              newText.rangeOfCharacter(from: allowedCharacterSet.inverted) == nil,
+              newText != "." else {
+            if newText == "." {
+                textField.text = "0."
             }
-        
-        if newText == "." {
-            textField.text = "0."
             return false
         }
-
         return newText.count <= Constants.maxCount
     }
     
@@ -99,6 +96,8 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
 
 extension CurrencyValueTableViewCell {
     private enum Constants {
+        static let allowedCharacters: String = "0123456789."
+        
         static let borderWidth: CGFloat = 1
         static let cornerRadiusTF: CGFloat = 6
         
