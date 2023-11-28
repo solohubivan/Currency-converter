@@ -48,32 +48,13 @@ class MainPresenter: MainVCPresenterProtocol {
     }
     
     //MARK: - Public methods
-/*
-    func updateValueForNewCurrency() {
-        guard let baseCurrency = activeCurrencies.first(where: { $0.calculatedResult != nil }) else { return }
-
-        let baseValue = baseCurrency.calculatedResult!
-        let baseRate = convertingMode == .sell ? baseCurrency.sellRate : baseCurrency.buyRate
-
-        for index in 0..<activeCurrencies.count {
-            let rate = convertingMode == .sell ? activeCurrencies[index].sellRate : activeCurrencies[index].buyRate
-            activeCurrencies[index].calculatedResult = (baseValue * baseRate) / rate
-        }
-    }
-  */
     
     func addCurrency(_ currencyCode: String) {
         guard !activeCurrencies.contains(where: { $0.name == currencyCode }) else { return }
         activeCurrencies.append(allCurrenciesData.first(where: { $0.name == currencyCode })!)
-
-        //method to create value for new currencies
-//        updateValueForNewCurrency()
         recalculateValuesForAllCurrencies()
-        
         view?.updateTableHeight()
         view?.reloadDataCurrencyInfoTable()
-        
-        print(activeCurrencies)
     }
     
     func getAllCurrenciesData() -> [CurrencyDataModel] {
@@ -85,7 +66,7 @@ class MainPresenter: MainVCPresenterProtocol {
         let formattedStrings = combinedData.map { (name, value) in "\(name): \(String(format: "%.2f", value))\n"}
         return formattedStrings.joined()
     }
-    
+
     func recalculateValuesForAllCurrencies() {
         for (index, currency) in activeCurrencies.enumerated() {
             if let currentValue = currency.calculatedResult {
@@ -93,7 +74,7 @@ class MainPresenter: MainVCPresenterProtocol {
             }
         }
     }
-    
+
     func setConvertingMode(_ mode: ConvertingMode) {
         convertingMode = mode
         recalculateValuesForAllCurrencies()
@@ -106,25 +87,21 @@ class MainPresenter: MainVCPresenterProtocol {
     func updateCurrencyValues(inputValue: Double, atIndex inputIndex: Int) {
         guard inputIndex >= 0 && inputIndex < activeCurrencies.count else { return }
         
-        let rates = convertingMode == .sell ? activeCurrencies.map { $0.sellRate } : activeCurrencies.map { $0.buyRate }
-        var resultValues: [Double] = []
-        
-        for i in 0..<rates.count {
-            if i == inputIndex {
-                resultValues.append(inputValue)
-            } else {
-                let valueInUSD = inputValue * rates[inputIndex]
-                let convertedValue = valueInUSD / rates[i]
-                resultValues.append(convertedValue)
-            }
-        }
- //       print(resultValues)
-        for (index, value) in resultValues.enumerated() {
-            activeCurrencies[index].calculatedResult = value
+        let inputCurrency = activeCurrencies[inputIndex]
+        let baseRate = convertingMode == .sell ? inputCurrency.sellRate : inputCurrency.buyRate
+
+        let valueInBaseCurrency = inputValue / baseRate
+
+        for i in 0..<activeCurrencies.count {
+            let targetCurrency = activeCurrencies[i]
+            let targetRate = convertingMode == .sell ? targetCurrency.sellRate : targetCurrency.buyRate
+
+            let convertedValue = valueInBaseCurrency * targetRate
+            activeCurrencies[i].calculatedResult = convertedValue
         }
         view?.reloadDataCurrencyInfoTable()
     }
-
+    
     func getCurrencyData() {
         let session = URLSession.shared
         let allCurrenciesURL = URL(string: "https://v6.exchangerate-api.com/v6/82627c0b81b426a2b8186f4d/latest/USD")!
@@ -138,9 +115,8 @@ class MainPresenter: MainVCPresenterProtocol {
                     
                 self.activeCurrencies = self.convertCurrenciesToUSD(currencies: defaultCurrencies)
 
- //               print(self.activeCurrencies)
             } catch {
- //               print("Error with getting data: \(error)")
+
             }
         }
         
@@ -158,9 +134,9 @@ class MainPresenter: MainVCPresenterProtocol {
                         self.view?.updateUI(with: self.currencyData)
                         self.view?.reloadDataCurrencyInfoTable()
                     }
- //               print(self.allCurrenciesData)
+
             } catch {
- //               print("Error with getting data: \(error)")
+
             }
         }
         firstTask.resume()
@@ -184,21 +160,24 @@ class MainPresenter: MainVCPresenterProtocol {
     //MARK: - Private Methods
     
     private func convertCurrenciesToUSD(currencies: [DefaultCurrenciesData]) -> [CurrencyDataModel] {
-        guard let usdData = currencies.first(where: { $0.ccy == "USD" }),
-              let usdSellRate = Double(usdData.sale),
-              let usdBuyRate = Double(usdData.buy) else { return [] }
-        
+        guard let usdCurrency = currencies.first(where: { $0.ccy == "USD" }),
+              let usdBuyRate = Double(usdCurrency.buy),
+              let usdSellRate = Double(usdCurrency.sale) else {
+            return []
+        }
+
         var convertedCurrencies: [CurrencyDataModel] = []
-        convertedCurrencies.append(CurrencyDataModel(name: "UAH", sellRate: 1 / usdSellRate, buyRate: 1 / usdBuyRate))
-        
-        for currency in currencies {
-            if currency.ccy == "USD" {
-                convertedCurrencies.append(CurrencyDataModel(name: "USD", sellRate: 1.0, buyRate: 1.0))
-            } else {
-                let sellRate = (Double(currency.sale) ?? 0.0) / usdSellRate
-                let buyRate = (Double(currency.buy) ?? 0.0) / usdBuyRate
-                convertedCurrencies.append(CurrencyDataModel(name: currency.ccy, sellRate: sellRate, buyRate: buyRate))
-            }
+
+        convertedCurrencies.append(CurrencyDataModel(name: "UAH", sellRate: usdSellRate, buyRate: usdBuyRate))
+
+        convertedCurrencies.append(CurrencyDataModel(name: "USD", sellRate: 1.0, buyRate: 1.0))
+
+        if let eurCurrency = currencies.first(where: { $0.ccy == "EUR" }),
+           let eurBuyRate = Double(eurCurrency.buy),
+           let eurSellRate = Double(eurCurrency.sale) {
+            let eurToUsdBuyRate = usdBuyRate / eurBuyRate
+            let eurToUsdSellRate = usdSellRate / eurSellRate
+            convertedCurrencies.append(CurrencyDataModel(name: "EUR", sellRate: eurToUsdSellRate, buyRate: eurToUsdBuyRate))
         }
         return convertedCurrencies
     }

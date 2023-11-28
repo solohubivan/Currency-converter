@@ -249,7 +249,7 @@ extension CurrencyListViewController: UISearchBarDelegate {
                 }
             }
         }, errorHandler: { error in
-//    print("Error occurred: \(error!.localizedDescription)")
+
         })
     }
     
