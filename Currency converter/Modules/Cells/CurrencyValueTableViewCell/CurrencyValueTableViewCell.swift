@@ -7,19 +7,14 @@
 
 import UIKit
 
-struct CurrencyCellViewModel {
-    let currencyName: NSAttributedString
-    let currencyValue: Double
-}
 
 class CurrencyValueTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var currencyNameLabel: UILabel!
-    @IBOutlet weak var currencyValueTF: UITextField!
+    @IBOutlet weak private var currencyNameLabel: UILabel!
+    @IBOutlet weak private var currencyValueTF: UITextField!
     
+    private var textFieldValueChanged: ((String?) -> Void)?
 
-    var textFieldValueChanged: ((_ inputedValue: String?) -> Void)?
-    var cellIndex: Int = .zero
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,9 +22,43 @@ class CurrencyValueTableViewCell: UITableViewCell {
         setupCurrencyTextField()
     }
     
-    func configureCell(with viewModel: CurrencyCellViewModel) {
-        currencyNameLabel.attributedText = viewModel.currencyName
-        currencyValueTF.text = "\(viewModel.currencyValue)"
+    func configureCell(with dataModel: CurrencyDataModel) {
+        currencyNameLabel.attributedText = createTitleNameForCurrencyLabel(text: dataModel.name)
+        if let calculatedResult = dataModel.calculatedResult {
+                currencyValueTF.text = String(format: "%.2f", calculatedResult)
+            } else {
+                currencyValueTF.text = ""
+            }
+    }
+  
+    func updateCurrencyValue(with dataModel: CurrencyDataModel, textFieldValueChange: @escaping (String?) -> Void) {
+
+            self.textFieldValueChanged = textFieldValueChange
+        }
+    
+    //MARK: - Private Methods
+    
+    private func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
+        let chevronImage = R.image.chevronRight()
+        
+        let attributedString = NSMutableAttributedString()
+        
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: R.font.latoRegular(size: 14)!,
+            .foregroundColor: UIColor.hex003166
+        ]
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = chevronImage
+        
+        let imageString = NSAttributedString(attachment: imageAttachment)
+        let textString = NSAttributedString(string: text, attributes: textAttributes)
+        
+        attributedString.append(textString)
+        attributedString.append(NSAttributedString(string: String("   ")))
+        attributedString.append(imageString)
+        
+        return attributedString
     }
     
     private func setupCurrencyTextField() {
@@ -48,12 +77,6 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.overrideUserInterfaceStyle = .light
     }
     
-    func formatNumberWithThousandsSeparator(_ number: Double) -> String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.groupingSeparator = " "
-        return numberFormatter.string(from: NSNumber(value: number)) ?? ""
-    }
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {

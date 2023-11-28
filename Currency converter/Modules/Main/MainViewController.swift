@@ -8,7 +8,7 @@
 import UIKit
 import Network
 
-fileprivate enum ConvertingMode {
+enum ConvertingMode {
     case sell
     case buy
 }
@@ -51,7 +51,8 @@ class MainViewController: UIViewController {
         
         presenter = MainPresenter(view: self)
         
-        checkInternetConnectionAndGetData()
+//        checkInternetConnectionAndGetData()
+        presenter.getCurrencyData()
         
         setupUI()
     }
@@ -138,8 +139,10 @@ class MainViewController: UIViewController {
     }
     
     @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        convertingMode = sender.selectedSegmentIndex == .zero ? .sell : .buy
-        updatePriceValuesWithMode()
+        let newMode = sender.selectedSegmentIndex == .zero ? ConvertingMode.sell : ConvertingMode.buy
+            
+        presenter.setConvertingMode(newMode)
+        presenter.recalculateValuesForAllCurrencies()
     }
     
     private func setupCurrencyInfoTableView() {
@@ -227,8 +230,7 @@ class MainViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     if path.status == .satisfied {
-                        self?.presenter.getCurrenciesDataValues()
-                        
+                        self?.presenter.getCurrencyData()
                     } else {
                         self?.showNoInternetAlert()
                     }
@@ -247,7 +249,7 @@ class MainViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel) { [weak self]  _ in
             
-            self?.presenter.getCurrenciesDataValues(offlineMode: true)
+  //          self?.presenter.getCurrenciesDataValues(offlineMode: true)
             self?.exchangeRateButton.isHidden = true
         }
         
@@ -263,46 +265,6 @@ class MainViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    private func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
-        let chevronImage = R.image.chevronRight()
-        
-        let attributedString = NSMutableAttributedString()
-        
-        let textAttributes: [NSAttributedString.Key: Any] = [
-            .font: R.font.latoRegular(size: 14)!,
-            .foregroundColor: UIColor.hex003166
-        ]
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = chevronImage
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        let textString = NSAttributedString(string: text, attributes: textAttributes)
-        
-        attributedString.append(textString)
-        attributedString.append(NSAttributedString(string: String("   ")))
-        attributedString.append(imageString)
-        
-        return attributedString
-    }
-    
-    private func updatePriceValuesWithMode() {
-        
-        let rowCount = currencyInfoTableView.numberOfRows(inSection: .zero)
-        
-        switch convertingMode {
-        case .sell:
-            presenter.updatePriceValues(isSellMode: true)
-        case .buy:
-            presenter.updatePriceValues(isSellMode: false)
-        }
-        for row in .zero..<rowCount {
-            if let currencyCell = currencyInfoTableView.cellForRow(at: IndexPath(row: row, section: .zero)) as? CurrencyValueTableViewCell {
-                presenter.updateCalculatedCurencyValue(with: currencyCell.currencyValueTF.text, at: currencyCell.cellIndex)
-            }
-        }
-    }
-     
     //MARK: - IBActions
     
     @IBAction func jumpToExchangeRateVC(_ sender: Any) {
@@ -319,10 +281,12 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func shareCurrencyInfo(_ sender: Any) {
-        let textToShare = presenter.createShareText(currencyNames: presenter.getActiveCurrenciesForTable(), currencyValues: presenter.getConvertedResults())
+        let currencyNames = presenter.getActiveCurrencies().map { $0.name }
+        let currencyValues = presenter.getActiveCurrencies().compactMap { $0.calculatedResult }
+        
+        let textToShare = presenter.createShareText(currencyNames: currencyNames, currencyValues: currencyValues)
         
         let shareViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
-        
         present(shareViewController, animated: true, completion: nil)
     }
 }
@@ -332,27 +296,18 @@ class MainViewController: UIViewController {
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return presenter.getActiveCurrenciesForTable().count
+        return presenter.getActiveCurrencies().count
     }
  
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
         
-        let currencyName = presenter.getActiveCurrenciesForTable()[indexPath.row]
-        cell.currencyNameLabel.attributedText = createTitleNameForCurrencyLabel(text: currencyName)
+        let currencyModel = presenter.getActiveCurrencies()[indexPath.row]
+        cell.configureCell(with: currencyModel)
         
-        if indexPath.row < presenter.getConvertedResults().count {
-            let convertedValue = presenter.getConvertedResults()[indexPath.row]
-                cell.currencyValueTF.text = String(convertedValue)
-            } else {
-                cell.currencyValueTF.text = ""
-            }
-        
-        cell.cellIndex = indexPath.row
-        
-        cell.textFieldValueChanged = { [weak self] newValue in
-            guard let self = self else { return }
-            self.presenter.updateCalculatedCurencyValue(with: newValue, at: cell.cellIndex)
+        cell.updateCurrencyValue(with: currencyModel) { [weak self] newValue in
+            guard let self = self, let newValue = newValue, let newDoubleValue = Double(newValue) else { return }
+            self.presenter.updateCurrencyValues(inputValue: newDoubleValue, atIndex: indexPath.row)
         }
         return cell
     }
@@ -382,9 +337,9 @@ extension MainViewController: MainViewProtocol {
 
         present(alertController, animated: true, completion: nil)
     }
-    
+   
     func updateTableHeight() {
-        let rowCount = presenter.getActiveCurrenciesForTable().count
+        let rowCount = presenter.getActiveCurrencies().count
         
         if rowCount <= Constants.threeRows {
             currencyInfoTableHeight.constant = Constants.tableHeight3Rows

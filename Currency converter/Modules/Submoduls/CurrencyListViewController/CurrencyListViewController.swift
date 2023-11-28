@@ -19,6 +19,7 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
     var presenter: MainVCPresenterProtocol?
     
     private var currenciesList = [String]()
+    private let popularCurrencies = ["UAH", "USD", "EUR"]
     private var sections = ["\(R.string.localizable.popular())"]
 
     private var searchingCurrencies = [String]()
@@ -83,7 +84,7 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
         currencyListTable.backgroundColor = .clear
         currencyListTable.overrideUserInterfaceStyle = .light
         
-        currenciesList = presenter!.getCurrenciesListData()
+        currenciesList = presenter!.getAllCurrenciesData().map { $0.name }
         currenciesList.sort()
         configureSections()
         currencyListTable.reloadData()
@@ -92,12 +93,13 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
     //MARK: - Private Methods
     
     private func configureSections() {
-        for currency in currenciesList {
-            let firstLetter = String(currency.prefix(Constants.one))
-            if !sections.contains(firstLetter) {
-                sections.append(firstLetter)
+        sections = ["\(R.string.localizable.popular())"]
+            for currency in currenciesList where !popularCurrencies.contains(currency) {
+                let firstLetter = String(currency.prefix(1))
+                if !sections.contains(firstLetter) {
+                    sections.append(firstLetter)
+                }
             }
-        }
     }
     
     private func configureCellsNames(for currencyCode: String) -> String {
@@ -135,7 +137,7 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
             return searchingCurrencies.count
         } else {
             if section == .zero {
-                return presenter!.getDefaultCurrencies().count
+                return popularCurrencies.count
             } else {
                 let sectionLetter = sections[section]
                 return currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }.count
@@ -149,11 +151,10 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
         if searching {
             if indexPath.row < searchingCurrencies.count {
                 cell.textLabel?.text = configureCellsNames(for: searchingCurrencies[indexPath.row])
-                
             }
         } else {
             if indexPath.section == .zero {
-                let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
+                let currencyCode = popularCurrencies[indexPath.row]
                 cell.textLabel?.text = configureCellsNames(for: currencyCode)
             } else {
                 let sectionLetter = sections[indexPath.section]
@@ -168,20 +169,21 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        let currencyCode: String
+        let sectionLetter = sections[indexPath.section]
+        let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
+        
         if searching {
-            let currencyCode = searchingCurrencies[indexPath.row]
+            currencyCode = searchingCurrencies[indexPath.row]
             presenter?.addCurrency(currencyCode)
             showMessage(for: indexPath, currencyCode: currencyCode)
         } else {
-            let sectionLetter = sections[indexPath.section]
-            let filteredCurrencies = currenciesList.filter { String($0.prefix(Constants.one)) == sectionLetter }
-                
             if indexPath.section == .zero {
-                let currencyCode = presenter!.getDefaultCurrencies()[indexPath.row]
+                currencyCode = popularCurrencies[indexPath.row]
                 presenter?.addCurrency(currencyCode)
                 showMessage(for: indexPath, currencyCode: currencyCode)
             } else {
-                let currencyCode = filteredCurrencies[indexPath.row]
+                currencyCode = filteredCurrencies[indexPath.row]
                 presenter?.addCurrency(currencyCode)
                 showMessage(for: indexPath, currencyCode: currencyCode)
             }
@@ -246,9 +248,8 @@ extension CurrencyListViewController: UISearchBarDelegate {
                     self.searchBar(searchBar, textDidChange: text)
                 }
             }
-            
         }, errorHandler: { error in
-        //    print("Error occurred: \(error!.localizedDescription)")
+//    print("Error occurred: \(error!.localizedDescription)")
         })
     }
     
