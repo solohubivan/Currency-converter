@@ -103,44 +103,24 @@ class MainPresenter: MainVCPresenterProtocol {
     }
     
     func getCurrencyData() {
-        let session = URLSession.shared
-        let allCurrenciesURL = URL(string: "https://v6.exchangerate-api.com/v6/82627c0b81b426a2b8186f4d/latest/USD")!
-        let defaultCurrenciesURL = URL(string: "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")!
-        
-        let firstTask = session.dataTask(with: defaultCurrenciesURL) { (data, response, error) in
-            guard error == nil else { return }
-            
-            do {
-                let defaultCurrencies = try JSONDecoder().decode([DefaultCurrenciesData].self, from: data!)
+        NetworkService.shared.getCurrencyData { [weak self] defaultCurrencies, currencyData, allCurrenciesData in
+            DispatchQueue.main.async {
+                if let defaultCurrencies = defaultCurrencies {
+                    self?.activeCurrencies = self?.convertCurrenciesToUSD(currencies: defaultCurrencies) ?? []
+                }
+
+                if let allCurrenciesData = allCurrenciesData {
+                    self?.allCurrenciesData = allCurrenciesData
+                }
                     
-                self.activeCurrencies = self.convertCurrenciesToUSD(currencies: defaultCurrencies)
+                if let currencyData = currencyData {
+                    self?.currencyData = currencyData
+                    self?.view?.updateUI(with: currencyData)
+                }
 
-            } catch {
-
+                self?.view?.reloadDataCurrencyInfoTable()
             }
         }
-        
-        let secondTask = session.dataTask(with: allCurrenciesURL) { (data, response, error) in
-            guard error == nil else { return }
-            
-            do {
-                self.currencyData = try JSONDecoder().decode(CurrencyData.self, from: data!)
-                let currencyRates = self.currencyData.toCurrencyRateArray()
-                
-                
-                self.allCurrenciesData = currencyRates.map { CurrencyDataModel(name: $0.currencyCode, sellRate: $0.value, buyRate: $0.value) }
-
-                    DispatchQueue.main.async {
-                        self.view?.updateUI(with: self.currencyData)
-                        self.view?.reloadDataCurrencyInfoTable()
-                    }
-
-            } catch {
-
-            }
-        }
-        firstTask.resume()
-        secondTask.resume()
     }
 
     func configureLastUpdatedLabel() -> String {
