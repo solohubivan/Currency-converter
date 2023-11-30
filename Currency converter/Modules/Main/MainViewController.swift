@@ -51,8 +51,8 @@ class MainViewController: UIViewController {
         
         presenter = MainPresenter(view: self)
         
-//        checkInternetConnectionAndGetData()
-        presenter.getCurrencyData()
+        checkInternetConnectionAndGetData()
+//        presenter.getCurrencyData()
         
         setupUI()
     }
@@ -230,7 +230,7 @@ class MainViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     if path.status == .satisfied {
-                        self?.presenter.getCurrencyData()
+                        self?.presenter.getCurrencyData(offlineMode: false)
                     } else {
                         self?.showNoInternetAlert()
                     }
@@ -249,7 +249,7 @@ class MainViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel) { [weak self]  _ in
             
-  //          self?.presenter.getCurrenciesDataValues(offlineMode: true)
+            self?.presenter.getCurrencyData(offlineMode: true)
             self?.exchangeRateButton.isHidden = true
         }
         

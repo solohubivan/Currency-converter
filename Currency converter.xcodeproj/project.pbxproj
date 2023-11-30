@@ -21,6 +21,7 @@
 		22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */; };
 		22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */; };
 		22A022442AC969D700C53A2F /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A022432AC969D700C53A2F /* MainPresenter.swift */; };
+		22A115A12B190FBB00586F88 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A115A02B190FBB00586F88 /* UserDefaultsManager.swift */; };
 		22C2F9F62AC400E4001EBF87 /* Lato-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */; };
 		22D234192ABD696F009B2B8F /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D234182ABD696F009B2B8F /* UIColorExtensions.swift */; };
 		22D96D512B16BA76007C1592 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D96D502B16BA76007C1592 /* NetworkService.swift */; };
@@ -55,6 +56,7 @@
 		22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyValueTableViewCell.swift; sourceTree = "<group>"; };
 		22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyValueTableViewCell.xib; sourceTree = "<group>"; };
 		22A022432AC969D700C53A2F /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
+		22A115A02B190FBB00586F88 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-SemiBold.ttf"; sourceTree = "<group>"; };
 		22D234182ABD696F009B2B8F /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		22D96D502B16BA76007C1592 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -99,7 +101,6 @@
 		2242F9912AD97E2800776D78 /* Submoduls */ = {
 			isa = PBXGroup;
 			children = (
-				228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */,
 				226E5AF52AF52060006D923D /* CurrencyListViewController */,
 				226E5AF62AF52098006D923D /* ExchangeRatesViewController */,
 			);
@@ -142,14 +143,15 @@
 			path = CurrencyValueTableViewCell;
 			sourceTree = "<group>";
 		};
-		22D96D4F2B16B9D6007C1592 /* Network */ = {
+		22D96D4F2B16B9D6007C1592 /* Network&Data */ = {
 			isa = PBXGroup;
 			children = (
 				22D96D502B16BA76007C1592 /* NetworkService.swift */,
 				228080332AC840530090CC2C /* CurrencyData.swift */,
 				22731D842AF560A000CE0AEB /* ExchangeRatesData.swift */,
+				22A115A02B190FBB00586F88 /* UserDefaultsManager.swift */,
 			);
-			path = Network;
+			path = "Network&Data";
 			sourceTree = "<group>";
 		};
 		22D96E2A2AB3E70B003F17A1 = {
@@ -178,7 +180,7 @@
 				22D96E532AB408CF003F17A1 /* Supporting Files */,
 				22D96E542AB40922003F17A1 /* Extensions */,
 				22D96E552AB40942003F17A1 /* Resources */,
-				22D96D4F2B16B9D6007C1592 /* Network */,
+				22D96D4F2B16B9D6007C1592 /* Network&Data */,
 				22D96E572AB40996003F17A1 /* Modules */,
 			);
 			path = "Currency converter";
@@ -208,6 +210,7 @@
 			children = (
 				22D96E562AB40963003F17A1 /* Fonts */,
 				22D96E3F2AB3E70C003F17A1 /* Assets.xcassets */,
+				228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */,
 				22D96E512AB40016003F17A1 /* Localizable.strings */,
 			);
 			path = Resources;
@@ -404,6 +407,7 @@
 				228844BC2AE723DE004EA5B7 /* CurrencyDescribtions.swift in Sources */,
 				22731D852AF560A000CE0AEB /* ExchangeRatesData.swift in Sources */,
 				22A022442AC969D700C53A2F /* MainPresenter.swift in Sources */,
+				22A115A12B190FBB00586F88 /* UserDefaultsManager.swift in Sources */,
 				22D96E372AB3E70B003F17A1 /* AppDelegate.swift in Sources */,
 				22D96E392AB3E70B003F17A1 /* SceneDelegate.swift in Sources */,
 				226E5AF82AF52173006D923D /* ExchangeRatesViewController.swift in Sources */,

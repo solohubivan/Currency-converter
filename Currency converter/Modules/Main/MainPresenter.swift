@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-struct CurrencyDataModel {
+struct CurrencyDataModel: Codable {
     var name: String
     var sellRate: Double
     var buyRate: Double
@@ -18,7 +18,7 @@ struct CurrencyDataModel {
 
 
 protocol MainVCPresenterProtocol: AnyObject {
-    func getCurrencyData()
+    func getCurrencyData(offlineMode: Bool)
     func configureLastUpdatedLabel() -> String
     func getActiveCurrencies() -> [CurrencyDataModel]
     func getAllCurrenciesData() -> [CurrencyDataModel]
@@ -85,14 +85,14 @@ class MainPresenter: MainVCPresenterProtocol {
     }
     
     func updateCurrencyValues(inputValue: Double, atIndex inputIndex: Int) {
-        guard inputIndex >= 0 && inputIndex < activeCurrencies.count else { return }
+        guard inputIndex >= .zero && inputIndex < activeCurrencies.count else { return }
         
         let inputCurrency = activeCurrencies[inputIndex]
         let baseRate = convertingMode == .sell ? inputCurrency.sellRate : inputCurrency.buyRate
 
         let valueInBaseCurrency = inputValue / baseRate
 
-        for i in 0..<activeCurrencies.count {
+        for i in .zero..<activeCurrencies.count {
             let targetCurrency = activeCurrencies[i]
             let targetRate = convertingMode == .sell ? targetCurrency.sellRate : targetCurrency.buyRate
 
@@ -102,23 +102,32 @@ class MainPresenter: MainVCPresenterProtocol {
         view?.reloadDataCurrencyInfoTable()
     }
     
-    func getCurrencyData() {
-        NetworkService.shared.getCurrencyData { [weak self] defaultCurrencies, currencyData, allCurrenciesData in
-            DispatchQueue.main.async {
-                if let defaultCurrencies = defaultCurrencies {
-                    self?.activeCurrencies = self?.convertCurrenciesToUSD(currencies: defaultCurrencies) ?? []
-                }
-
-                if let allCurrenciesData = allCurrenciesData {
-                    self?.allCurrenciesData = allCurrenciesData
-                }
+    func getCurrencyData(offlineMode: Bool = false) {
+        if offlineMode {
+            self.activeCurrencies = UserDefaultsManager.shared.loadBaseCurrencies() ?? []
+            self.allCurrenciesData = UserDefaultsManager.shared.loadAllCurrenciesData() ?? []
+            self.view?.reloadDataCurrencyInfoTable()
+            self.view?.updateUI(with: self.currencyData)
+        } else {
+            NetworkService.shared.getCurrencyData { [weak self] defaultCurrencies, currencyData, allCurrenciesData in
+                DispatchQueue.main.async {
+                    if let defaultCurrencies = defaultCurrencies {
+                        self?.activeCurrencies = self?.convertCurrenciesToUSD(currencies: defaultCurrencies) ?? []
+                        UserDefaultsManager.shared.saveBaseCurrencies(self!.activeCurrencies)
+                    }
                     
-                if let currencyData = currencyData {
-                    self?.currencyData = currencyData
-                    self?.view?.updateUI(with: currencyData)
-                }
+                    if let allCurrenciesData = allCurrenciesData {
+                        self?.allCurrenciesData = allCurrenciesData
+                        UserDefaultsManager.shared.saveAllCurrenciesData(allCurrenciesData)
+                    }
+                        
+                    if let currencyData = currencyData {
+                        self?.currencyData = currencyData
+                        self?.view?.updateUI(with: currencyData)
+                    }
 
-                self?.view?.reloadDataCurrencyInfoTable()
+                    self?.view?.reloadDataCurrencyInfoTable()
+                }
             }
         }
     }
@@ -140,7 +149,7 @@ class MainPresenter: MainVCPresenterProtocol {
     //MARK: - Private Methods
     
     private func convertCurrenciesToUSD(currencies: [DefaultCurrenciesData]) -> [CurrencyDataModel] {
-        guard let usdCurrency = currencies.first(where: { $0.ccy == "USD" }),
+        guard let usdCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyUSD }),
               let usdBuyRate = Double(usdCurrency.buy),
               let usdSellRate = Double(usdCurrency.sale) else {
             return []
@@ -148,16 +157,16 @@ class MainPresenter: MainVCPresenterProtocol {
 
         var convertedCurrencies: [CurrencyDataModel] = []
 
-        convertedCurrencies.append(CurrencyDataModel(name: "UAH", sellRate: usdSellRate, buyRate: usdBuyRate))
+        convertedCurrencies.append(CurrencyDataModel(name: Constants.baseCurrencyUAH, sellRate: usdSellRate, buyRate: usdBuyRate))
 
-        convertedCurrencies.append(CurrencyDataModel(name: "USD", sellRate: 1.0, buyRate: 1.0))
+        convertedCurrencies.append(CurrencyDataModel(name: Constants.baseCurrencyUSD, sellRate: Constants.baseCurrencyValue, buyRate: Constants.baseCurrencyValue))
 
-        if let eurCurrency = currencies.first(where: { $0.ccy == "EUR" }),
+        if let eurCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyEUR }),
            let eurBuyRate = Double(eurCurrency.buy),
            let eurSellRate = Double(eurCurrency.sale) {
             let eurToUsdBuyRate = usdBuyRate / eurBuyRate
             let eurToUsdSellRate = usdSellRate / eurSellRate
-            convertedCurrencies.append(CurrencyDataModel(name: "EUR", sellRate: eurToUsdSellRate, buyRate: eurToUsdBuyRate))
+            convertedCurrencies.append(CurrencyDataModel(name: Constants.baseCurrencyEUR, sellRate: eurToUsdSellRate, buyRate: eurToUsdBuyRate))
         }
         return convertedCurrencies
     }
@@ -165,6 +174,9 @@ class MainPresenter: MainVCPresenterProtocol {
 
 extension MainPresenter {
     private enum Constants {
-        
+        static let baseCurrencyValue: Double = 1.0
+        static let baseCurrencyUAH: String = "UAH"
+        static let baseCurrencyUSD: String = "USD"
+        static let baseCurrencyEUR: String = "EUR"
     }
 }
