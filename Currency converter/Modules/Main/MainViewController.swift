@@ -52,7 +52,6 @@ class MainViewController: UIViewController {
         presenter = MainPresenter(view: self)
         
         checkInternetConnectionAndGetData()
-//        presenter.getCurrencyData()
         
         setupUI()
     }
@@ -223,22 +222,23 @@ class MainViewController: UIViewController {
     }
     
     //MARK: - Private Methods
-
     private func checkInternetConnectionAndGetData() {
         let monitor = NWPathMonitor()
-            monitor.pathUpdateHandler = { [weak self] path in
-                
-                DispatchQueue.main.async {
-                    if path.status == .satisfied {
-                        self?.presenter.getCurrencyData(offlineMode: false)
-                    } else {
+        var isNetworkAvailable: Bool = false
+        monitor.pathUpdateHandler = { [weak self] path in
+            DispatchQueue.main.async {
+                let networkCurrentlyAvailable = path.status == .satisfied
+                if networkCurrentlyAvailable != isNetworkAvailable {
+                    isNetworkAvailable = networkCurrentlyAvailable
+                    self?.presenter.getCurrencyData(offlineMode: !networkCurrentlyAvailable)
+                    if !networkCurrentlyAvailable {
                         self?.showNoInternetAlert()
                     }
                 }
             }
-        
+        }
         let queue = DispatchQueue(label: Constants.queueLabel)
-            monitor.start(queue: queue)
+        monitor.start(queue: queue)
     }
     
     private func showNoInternetAlert() {
@@ -249,7 +249,7 @@ class MainViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel) { [weak self]  _ in
             
-            self?.presenter.getCurrencyData(offlineMode: true)
+     //       self?.presenter.getCurrencyData(offlineMode: true)
             self?.exchangeRateButton.isHidden = true
         }
         
