@@ -45,7 +45,6 @@ class MainViewController: UIViewController {
         return UIDevice.current.userInterfaceIdiom == .pad
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -150,6 +149,20 @@ class MainViewController: UIViewController {
         currencyInfoTableView.separatorColor = .clear
         currencyInfoTableView.backgroundColor = .clear
         currencyInfoTableView.register(UINib(nibName: Constants.currencyInfoTableNibName, bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
+        
+        setupRefreshControl()
+    }
+    
+    private func setupRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshActivated), for: .valueChanged)
+        currencyInfoTableView.refreshControl = refreshControl
+    }
+    
+    @objc private func refreshActivated() {
+        let mainVC = MainViewController()
+        mainVC.modalPresentationStyle = .fullScreen
+        present(mainVC, animated: false)
     }
     
     private func setupAddCurrencyButton() {
@@ -222,36 +235,27 @@ class MainViewController: UIViewController {
     }
     
     //MARK: - Private Methods
+    
     private func checkInternetConnectionAndGetData() {
-        let monitor = NWPathMonitor()
-        var isNetworkAvailable: Bool = false
-        monitor.pathUpdateHandler = { [weak self] path in
+
+        if NetworkMonitor.shared.isConnected {
+            self.presenter.getCurrencyData(offlineMode: false)
+        } else {
+            self.presenter.getCurrencyData(offlineMode: true)
             DispatchQueue.main.async {
-                let networkCurrentlyAvailable = path.status == .satisfied
-                if networkCurrentlyAvailable != isNetworkAvailable {
-                    isNetworkAvailable = networkCurrentlyAvailable
-                    self?.presenter.getCurrencyData(offlineMode: !networkCurrentlyAvailable)
-                    if !networkCurrentlyAvailable {
-                        self?.showNoInternetAlert()
-                    }
-                }
+                self.showNoInternetAlert()
+                self.exchangeRateButton.isHidden = true
             }
         }
-        let queue = DispatchQueue(label: Constants.queueLabel)
-        monitor.start(queue: queue)
     }
-    
+
     private func showNoInternetAlert() {
         let alertController = UIAlertController(
             title: R.string.localizable.no_internet_connection(),
             message: R.string.localizable.please_allow_this_app_to_internet_access(),
             preferredStyle: .alert)
         
-        let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel) { [weak self]  _ in
-            
-     //       self?.presenter.getCurrencyData(offlineMode: true)
-            self?.exchangeRateButton.isHidden = true
-        }
+        let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel)
         
         let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
@@ -303,7 +307,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
         
         let currencyModel = presenter.getActiveCurrencies()[indexPath.row]
-        cell.configureCell(with: currencyModel)
+        cell.configure(with: currencyModel)
         
         cell.updateCurrencyValue(with: currencyModel) { [weak self] newValue in
             guard let self = self, let newValue = newValue, let newDoubleValue = Double(newValue) else { return }
@@ -360,7 +364,6 @@ extension MainViewController {
     private enum Constants {
         static let currencyValuesCellIdentifier: String = "CurrencyValuesTableViewCell"
         static let currencyInfoTableNibName: String = "CurrencyValueTableViewCell"
-        static let queueLabel: String = "Monitor"
         
         static let viewCornerRadius: CGFloat = 10
         static let rateButtonCornerRadius: CGFloat = 14

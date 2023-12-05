@@ -15,14 +15,13 @@ class CurrencyValueTableViewCell: UITableViewCell {
     
     private var textFieldValueChanged: ((String?) -> Void)?
 
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         setupCurrencyTextField()
     }
     
-    func configureCell(with dataModel: CurrencyDataModel) {
+    func configure(with dataModel: CurrencyDataModel) {
         currencyNameLabel.attributedText = createTitleNameForCurrencyLabel(text: dataModel.name)
         if let calculatedResult = dataModel.calculatedResult {
                 currencyValueTF.text = String(format: "%.2f", calculatedResult)
@@ -110,11 +109,12 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
         textField.layer.borderWidth = .zero
         textFieldValueChanged?(textField.text)
     }
-    
+/*
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.endEditing(true)
         return true
     }
+ */
 }
 
 extension CurrencyValueTableViewCell {
