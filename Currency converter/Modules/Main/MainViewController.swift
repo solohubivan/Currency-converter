@@ -69,21 +69,21 @@ class MainViewController: UIViewController {
         if UIDevice.current.orientation.isLandscape {
             if isIpad {
                 currencyInfoTableWidth.constant = Constants.tableSizeForIpad
-                indentUnderTitleLabel.constant = Constants.shortIndent
+                indentUnderTitleLabel.constant = Constants.landscapeTopIndent
             } else {
                 currencyInfoTableWidth.constant = initialTableViewWidth!
-                indentUnderTitleLabel.constant = Constants.shortIndent
+                indentUnderTitleLabel.constant = Constants.landscapeTopIndent
             }
             
         } else {
             if isIpad {
                 currencyInfoTableWidth.constant = Constants.tableSizeForIpad
-                indentUnderTitleLabel.constant = Constants.standartIndent
+                indentUnderTitleLabel.constant = Constants.standartTopIndent
             } else {
                 if initialTableViewWidth == nil {
                     currencyInfoTableWidth.constant = currencyShowView.frame.width
                 }
-                indentUnderTitleLabel.constant = Constants.standartIndent
+                indentUnderTitleLabel.constant = Constants.standartTopIndent
             }
         }
     }
@@ -307,9 +307,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
         
         let currencyModel = presenter.getActiveCurrencies()[indexPath.row]
-        cell.configure(with: currencyModel)
-        
-        cell.updateCurrencyValue(with: currencyModel) { [weak self] newValue in
+        cell.configure(with: currencyModel) { [weak self] newValue in
             guard let self = self, let newValue = newValue, let newDoubleValue = Double(newValue) else { return }
             self.presenter.updateCurrencyValues(inputValue: newDoubleValue, atIndex: indexPath.row)
         }
@@ -385,7 +383,7 @@ extension MainViewController {
         static let tableHeight6Rows: CGFloat = 320
         
         static let tableSizeForIpad: CGFloat = 400
-        static let shortIndent: CGFloat = 10
-        static let standartIndent: CGFloat = 38
+        static let landscapeTopIndent: CGFloat = 10
+        static let standartTopIndent: CGFloat = 38
     }
 }

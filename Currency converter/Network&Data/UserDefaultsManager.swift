@@ -13,32 +13,32 @@ class UserDefaultsManager {
 
     private init() {}
 
-    func saveBaseCurrencies(_ currencies: [CurrencyDataModel]) {
+    func saveBaseCurrencies(_ currencies: [CurrencyViewModel]) {
         saveCurrencies(currencies, forKey: "baseCurrencies")
     }
     
-    func saveAllCurrenciesData(_ currencies: [CurrencyDataModel]) {
+    func saveAllCurrenciesData(_ currencies: [CurrencyViewModel]) {
         saveCurrencies(currencies, forKey: "allCurrenciesData")
     }
 
-    func loadAllCurrenciesData() -> [CurrencyDataModel]? {
+    func loadAllCurrenciesData() -> [CurrencyViewModel]? {
         return loadCurrencies(forKey: "allCurrenciesData")
     }
     
-    func loadBaseCurrencies() -> [CurrencyDataModel]? {
+    func loadBaseCurrencies() -> [CurrencyViewModel]? {
         return loadCurrencies(forKey: "baseCurrencies")
     }
 
-    private func saveCurrencies(_ currencies: [CurrencyDataModel], forKey key: String) {
+    private func saveCurrencies(_ currencies: [CurrencyViewModel], forKey key: String) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(currencies) {
             defaults.set(encoded, forKey: key)
         }
     }
 
-    private func loadCurrencies(forKey key: String) -> [CurrencyDataModel]? {
+    private func loadCurrencies(forKey key: String) -> [CurrencyViewModel]? {
         if let savedData = defaults.data(forKey: key) {
-            if let loadedCurrencies = try? JSONDecoder().decode([CurrencyDataModel].self, from: savedData) {
+            if let loadedCurrencies = try? JSONDecoder().decode([CurrencyViewModel].self, from: savedData) {
                 return loadedCurrencies
             }
         }

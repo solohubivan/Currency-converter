@@ -12,7 +12,7 @@ class NetworkService {
 
     private init() {}
 
-    func getCurrencyData(completion: @escaping ([DefaultCurrenciesData]?, CurrencyData?, [CurrencyDataModel]?) -> Void) {
+    func getCurrencyData(completion: @escaping ([DefaultCurrenciesData]?, CurrencyData?, [CurrencyViewModel]?) -> Void) {
         let session = URLSession.shared
         let allCurrenciesURL = URL(string: "https://v6.exchangerate-api.com/v6/82627c0b81b426a2b8186f4d/latest/USD")!
         let defaultCurrenciesURL = URL(string: "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")!
@@ -34,7 +34,7 @@ class NetworkService {
             do {
                 let currencyData = try JSONDecoder().decode(CurrencyData.self, from: data)
                 let currencyRates = currencyData.toCurrencyRateArray()
-                let allCurrenciesData = currencyRates.map { CurrencyDataModel(name: $0.currencyCode, sellRate: $0.value, buyRate: $0.value) }
+                let allCurrenciesData = currencyRates.map { CurrencyViewModel(name: $0.currencyCode, sellRate: $0.value, buyRate: $0.value) }
                 completion(nil,currencyData , allCurrenciesData)
             } catch {
                 completion(nil, nil, nil)

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-struct CurrencyDataModel: Codable {
+struct CurrencyViewModel: Codable {
     var name: String
     var sellRate: Double
     var buyRate: Double
@@ -20,8 +20,8 @@ struct CurrencyDataModel: Codable {
 protocol MainVCPresenterProtocol: AnyObject {
     func getCurrencyData(offlineMode: Bool)
     func configureLastUpdatedLabel() -> String
-    func getActiveCurrencies() -> [CurrencyDataModel]
-    func getAllCurrenciesData() -> [CurrencyDataModel]
+    func getActiveCurrencies() -> [CurrencyViewModel]
+    func getAllCurrenciesData() -> [CurrencyViewModel]
     func updateCurrencyValues(inputValue: Double, atIndex inputIndex: Int)
     func setConvertingMode(_ mode: ConvertingMode)
     func recalculateValuesForAllCurrencies()
@@ -37,8 +37,8 @@ class MainPresenter: MainVCPresenterProtocol {
     
     private weak var view: MainViewProtocol?
     
-    private var allCurrenciesData: [CurrencyDataModel] = []
-    private var activeCurrencies: [CurrencyDataModel] = []
+    private var allCurrenciesData: [CurrencyViewModel] = []
+    private var activeCurrencies: [CurrencyViewModel] = []
 
     private var convertingMode: ConvertingMode = .sell
     
@@ -57,7 +57,7 @@ class MainPresenter: MainVCPresenterProtocol {
         view?.reloadDataCurrencyInfoTable()
     }
     
-    func getAllCurrenciesData() -> [CurrencyDataModel] {
+    func getAllCurrenciesData() -> [CurrencyViewModel] {
         return allCurrenciesData
     }
     
@@ -80,7 +80,7 @@ class MainPresenter: MainVCPresenterProtocol {
         recalculateValuesForAllCurrencies()
     }
     
-    func getActiveCurrencies() -> [CurrencyDataModel] {
+    func getActiveCurrencies() -> [CurrencyViewModel] {
         return activeCurrencies
     }
     
@@ -148,25 +148,25 @@ class MainPresenter: MainVCPresenterProtocol {
 
     //MARK: - Private Methods
     
-    private func convertCurrenciesToUSD(currencies: [DefaultCurrenciesData]) -> [CurrencyDataModel] {
+    private func convertCurrenciesToUSD(currencies: [DefaultCurrenciesData]) -> [CurrencyViewModel] {
         guard let usdCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyUSD }),
               let usdBuyRate = Double(usdCurrency.buy),
               let usdSellRate = Double(usdCurrency.sale) else {
             return []
         }
 
-        var convertedCurrencies: [CurrencyDataModel] = []
+        var convertedCurrencies: [CurrencyViewModel] = []
 
-        convertedCurrencies.append(CurrencyDataModel(name: Constants.baseCurrencyUAH, sellRate: usdSellRate, buyRate: usdBuyRate))
+        convertedCurrencies.append(CurrencyViewModel(name: Constants.baseCurrencyUAH, sellRate: usdSellRate, buyRate: usdBuyRate))
 
-        convertedCurrencies.append(CurrencyDataModel(name: Constants.baseCurrencyUSD, sellRate: Constants.baseCurrencyValue, buyRate: Constants.baseCurrencyValue))
+        convertedCurrencies.append(CurrencyViewModel(name: Constants.baseCurrencyUSD, sellRate: Constants.baseCurrencyValue, buyRate: Constants.baseCurrencyValue))
 
         if let eurCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyEUR }),
            let eurBuyRate = Double(eurCurrency.buy),
            let eurSellRate = Double(eurCurrency.sale) {
             let eurToUsdBuyRate = usdBuyRate / eurBuyRate
             let eurToUsdSellRate = usdSellRate / eurSellRate
-            convertedCurrencies.append(CurrencyDataModel(name: Constants.baseCurrencyEUR, sellRate: eurToUsdSellRate, buyRate: eurToUsdBuyRate))
+            convertedCurrencies.append(CurrencyViewModel(name: Constants.baseCurrencyEUR, sellRate: eurToUsdSellRate, buyRate: eurToUsdBuyRate))
         }
         return convertedCurrencies
     }

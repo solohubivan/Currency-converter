@@ -340,6 +340,7 @@ struct _R {
 
     func validate() throws {
       if #available(iOS 13.0, *) { if UIKit.UIImage(systemName: "chevron.backward") == nil { throw RswiftResources.ValidationError("[R.swift] System image named 'chevron.backward' is used in nib 'CurrencyListViewController', but couldn't be loaded.") } }
+      if UIKit.UIImage(named: "chevronRight", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'chevronRight' is used in nib 'CurrencyValueTableViewCell', but couldn't be loaded.") }
       if #available(iOS 13.0, *) { if UIKit.UIImage(systemName: "chevron.backward") == nil { throw RswiftResources.ValidationError("[R.swift] System image named 'chevron.backward' is used in nib 'ExchangeRatesViewController', but couldn't be loaded.") } }
       if UIKit.UIImage(named: "headerBlue", in: bundle, compatibleWith: nil) == nil { throw RswiftResources.ValidationError("[R.swift] Image named 'headerBlue' is used in nib 'MainViewController', but couldn't be loaded.") }
       if #available(iOS 13.0, *) { if UIKit.UIImage(systemName: "plus.circle.fill") == nil { throw RswiftResources.ValidationError("[R.swift] System image named 'plus.circle.fill' is used in nib 'MainViewController', but couldn't be loaded.") } }

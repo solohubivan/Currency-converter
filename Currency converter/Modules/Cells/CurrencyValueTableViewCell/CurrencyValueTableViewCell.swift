@@ -13,58 +13,40 @@ class CurrencyValueTableViewCell: UITableViewCell {
     @IBOutlet weak private var currencyNameLabel: UILabel!
     @IBOutlet weak private var currencyValueTF: UITextField!
     
-    private var textFieldValueChanged: ((String?) -> Void)?
+    private var textFieldValueChanged: CallbackString?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        setupCurrencyTextField()
+        setupUI()
     }
     
-    func configure(with dataModel: CurrencyDataModel) {
-        currencyNameLabel.attributedText = createTitleNameForCurrencyLabel(text: dataModel.name)
-        if let calculatedResult = dataModel.calculatedResult {
-                currencyValueTF.text = String(format: "%.2f", calculatedResult)
-            } else {
-                currencyValueTF.text = ""
-            }
-    }
-  
-    func updateCurrencyValue(with dataModel: CurrencyDataModel, textFieldValueChange: @escaping (String?) -> Void) {
-
-            self.textFieldValueChanged = textFieldValueChange
+    func configure(with viewModel: CurrencyViewModel, textFieldValueChange: @escaping CallbackString) {
+        
+        currencyNameLabel.text = "\(viewModel.name)"
+        if let calculatedResult = viewModel.calculatedResult {
+            currencyValueTF.text = String(format: "%.2f", calculatedResult)
+        } else {
+            currencyValueTF.text = ""
         }
+        
+        self.textFieldValueChanged = textFieldValueChange
+    }
     
     //MARK: - Private Methods
     
-    private func createTitleNameForCurrencyLabel(text: String) -> NSAttributedString {
-        let chevronImage = R.image.chevronRight()
-        
-        let attributedString = NSMutableAttributedString()
-        
-        let textAttributes: [NSAttributedString.Key: Any] = [
-            .font: R.font.latoRegular(size: 14)!,
-            .foregroundColor: UIColor.hex003166
-        ]
-        
-        let imageAttachment = NSTextAttachment()
-        imageAttachment.image = chevronImage
-        
-        let imageString = NSAttributedString(attachment: imageAttachment)
-        let textString = NSAttributedString(string: text, attributes: textAttributes)
-        
-        attributedString.append(textString)
-        attributedString.append(NSAttributedString(string: String("   ")))
-        attributedString.append(imageString)
-        
-        return attributedString
+    private func setupUI() {
+        setupCurrencyNameLabel()
+        setupCurrencyTextField()
     }
-    
+
+    private func setupCurrencyNameLabel() {
+        currencyNameLabel.font = R.font.latoRegular(size: 14)
+        currencyNameLabel.textColor = UIColor.hex003166
+    }
+
     private func setupCurrencyTextField() {
         currencyValueTF.delegate = self
-        currencyValueTF.borderStyle = .none
-        currencyValueTF.clearButtonMode = .whileEditing
-        currencyValueTF.keyboardType = .decimalPad
         let paddingView = UIView(frame: CGRect(x: .zero, y: .zero, width: Constants.textLeftPadding, height: Int(currencyValueTF.frame.height)))
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
@@ -72,10 +54,13 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.layer.backgroundColor = UIColor.hexFAF7FD.cgColor
         currencyValueTF.font = R.font.latoSemiBold(size: 14)
         currencyValueTF.textColor = UIColor.hex003166
-        
-        currencyValueTF.overrideUserInterfaceStyle = .light
     }
     
+    private func activateTextField(_ isActive: Bool) {
+        currencyValueTF.layer.borderWidth = isActive ? Constants.borderWidth : .zero
+        currencyValueTF.layer.borderColor = isActive ? UIColor.hex007AFF.cgColor : nil
+    }
+
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
@@ -100,21 +85,14 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.layer.borderWidth = Constants.borderWidth
-        textField.layer.borderColor = UIColor.hex007AFF.cgColor
+        activateTextField(true)
         return true
     }
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        textField.layer.borderWidth = .zero
+        activateTextField(false)
         textFieldValueChanged?(textField.text)
     }
-/*
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.endEditing(true)
-        return true
-    }
- */
 }
 
 extension CurrencyValueTableViewCell {
@@ -127,6 +105,5 @@ extension CurrencyValueTableViewCell {
         static let one: Int = 1
         static let maxCount: Int = 12
         static let textLeftPadding: Int = 16
-        
     }
 }
