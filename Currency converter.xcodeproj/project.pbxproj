@@ -23,7 +23,7 @@
 		22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */; };
 		22A022442AC969D700C53A2F /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A022432AC969D700C53A2F /* MainPresenter.swift */; };
 		22A115A12B190FBB00586F88 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A115A02B190FBB00586F88 /* UserDefaultsManager.swift */; };
-		22B56DF82B21472D005858E3 /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B56DF72B21472D005858E3 /* TypeAliases.swift */; };
+		22B56DF82B21472D005858E3 /* CallbackAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B56DF72B21472D005858E3 /* CallbackAliases.swift */; };
 		22C2F9F62AC400E4001EBF87 /* Lato-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */; };
 		22D234192ABD696F009B2B8F /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D234182ABD696F009B2B8F /* UIColorExtensions.swift */; };
 		22D96D512B16BA76007C1592 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D96D502B16BA76007C1592 /* NetworkService.swift */; };
@@ -60,7 +60,7 @@
 		22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyValueTableViewCell.xib; sourceTree = "<group>"; };
 		22A022432AC969D700C53A2F /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
 		22A115A02B190FBB00586F88 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
-		22B56DF72B21472D005858E3 /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		22B56DF72B21472D005858E3 /* CallbackAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallbackAliases.swift; sourceTree = "<group>"; };
 		22C2F9F52AC400E4001EBF87 /* Lato-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-SemiBold.ttf"; sourceTree = "<group>"; };
 		22D234182ABD696F009B2B8F /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		22D96D502B16BA76007C1592 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -217,7 +217,7 @@
 				22D96E3F2AB3E70C003F17A1 /* Assets.xcassets */,
 				228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */,
 				22D96E512AB40016003F17A1 /* Localizable.strings */,
-				22B56DF72B21472D005858E3 /* TypeAliases.swift */,
+				22B56DF72B21472D005858E3 /* CallbackAliases.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -419,7 +419,7 @@
 				22D96E392AB3E70B003F17A1 /* SceneDelegate.swift in Sources */,
 				226E5AF82AF52173006D923D /* ExchangeRatesViewController.swift in Sources */,
 				22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */,
-				22B56DF82B21472D005858E3 /* TypeAliases.swift in Sources */,
+				22B56DF82B21472D005858E3 /* CallbackAliases.swift in Sources */,
 				22D96D512B16BA76007C1592 /* NetworkService.swift in Sources */,
 				22731D832AF556AB00CE0AEB /* ExchangeRatesPresenter.swift in Sources */,
 				22D96E502AB3FF01003F17A1 /* R.generated.swift in Sources */,

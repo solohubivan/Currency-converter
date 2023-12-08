@@ -307,10 +307,14 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
         
         let currencyModel = presenter.getActiveCurrencies()[indexPath.row]
-        cell.configure(with: currencyModel) { [weak self] newValue in
+        
+        cell.configure(with: currencyModel, textFieldChange: { [weak self] text, range, replacementString in
+            return self?.presenter.isInputValid(input: text) ?? true
+        }, textFieldValueChange: { [weak self] newValue in
             guard let self = self, let newValue = newValue, let newDoubleValue = Double(newValue) else { return }
             self.presenter.updateCurrencyValues(inputValue: newDoubleValue, atIndex: indexPath.row)
-        }
+        })
+        
         return cell
     }
 }

@@ -27,6 +27,8 @@ protocol MainVCPresenterProtocol: AnyObject {
     func recalculateValuesForAllCurrencies()
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String
     func addCurrency(_ currencyCode: String)
+    func isInputValid(input: String) -> Bool
+
 }
 
 
@@ -49,6 +51,14 @@ class MainPresenter: MainVCPresenterProtocol {
     
     //MARK: - Public methods
     
+    func isInputValid(input: String) -> Bool {
+        let allowedCharacters = CharacterSet(charactersIn: "0123456789.")
+        let isCharactersValid = input.rangeOfCharacter(from: allowedCharacters.inverted) == nil
+        let isLengthValid = input.count <= Constants.inputMaxCount
+        let dotCount = input.filter { $0 == "." }.count
+        return isCharactersValid && isLengthValid && dotCount <= Constants.oneDot
+    }
+
     func addCurrency(_ currencyCode: String) {
         guard !activeCurrencies.contains(where: { $0.name == currencyCode }) else { return }
         activeCurrencies.append(allCurrenciesData.first(where: { $0.name == currencyCode })!)
@@ -70,7 +80,7 @@ class MainPresenter: MainVCPresenterProtocol {
     func recalculateValuesForAllCurrencies() {
         for (index, currency) in activeCurrencies.enumerated() {
             if let currentValue = currency.calculatedResult {
-                   updateCurrencyValues(inputValue: currentValue, atIndex: index)
+                updateCurrencyValues(inputValue: currentValue, atIndex: index)
             }
         }
     }
@@ -178,5 +188,8 @@ extension MainPresenter {
         static let baseCurrencyUAH: String = "UAH"
         static let baseCurrencyUSD: String = "USD"
         static let baseCurrencyEUR: String = "EUR"
+        
+        static let inputMaxCount: Int = 12
+        static let oneDot: Int = 1
     }
 }
