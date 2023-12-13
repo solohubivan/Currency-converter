@@ -93,4 +93,7 @@ fastlane/test_output
 
 iOSInjectionProject/
 
+# Ignore Config.plist
+Config.plist
+
 # End of https://www.toptal.com/developers/gitignore/api/swift,cocoapods

@@ -155,7 +155,7 @@ struct _R {
       /// Key: no_data
       var no_data: RswiftResources.StringResource { .init(key: "no_data", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
-      /// Value: No internet connection
+        /// Value: No internet connection
       ///
       /// Key: no_internet_connection
       var no_internet_connection: RswiftResources.StringResource { .init(key: "no_internet_connection", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
@@ -299,9 +299,12 @@ struct _R {
     }
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 6 resource files.
+  /// This `_R.file` struct is generated, and contains static references to 7 resource files.
   struct file {
     let bundle: Foundation.Bundle
+
+    /// Resource file `Config.plist`.
+    var configPlist: RswiftResources.FileResource { .init(name: "Config", pathExtension: "plist", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `Lato-Bold.ttf`.
     var latoBoldTtf: RswiftResources.FileResource { .init(name: "Lato-Bold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }

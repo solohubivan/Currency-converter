@@ -20,12 +20,11 @@ struct CurrencyData: Codable {
         case conversionRates = "conversion_rates"
         case timeLastUpdateUtc = "time_last_update_utc"
     }
-    
+
     func toCurrencyRateArray() -> [CurrencyRate] {
         return conversionRates.map { CurrencyRate(currencyCode: $0.key, value: $0.value) }
     }
 }
-
 
 struct DefaultCurrenciesData: Codable {
     var ccy: String = ""
@@ -40,4 +39,3 @@ struct DefaultCurrenciesData: Codable {
         case sale
     }
 }
-

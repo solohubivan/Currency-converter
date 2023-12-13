@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 let currencyDescriptions: [String: String] = [
     "USD": "US Dollar",
     "EUR": "EURO",

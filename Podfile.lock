@@ -1,20 +1,24 @@
 PODS:
   - InstantSearchVoiceOverlay (1.2.0)
   - R.swift (7.3.2)
+  - SwiftLint (0.54.0)
 
 DEPENDENCIES:
   - InstantSearchVoiceOverlay
   - R.swift
+  - SwiftLint
 
 SPEC REPOS:
   trunk:
     - InstantSearchVoiceOverlay
     - R.swift
+    - SwiftLint
 
 SPEC CHECKSUMS:
   InstantSearchVoiceOverlay: d9d5db7314ec8416dcf4ed49df2000e8ee0abe2b
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
+  SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
 
-PODFILE CHECKSUM: cba8f6309ba919f481798c7da6b55c57478fd261
+PODFILE CHECKSUM: f7179e09331618c08630c83671ff1f1171b55bfd
 
 COCOAPODS: 1.12.1
