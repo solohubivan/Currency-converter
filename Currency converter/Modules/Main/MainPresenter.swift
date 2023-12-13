@@ -28,7 +28,7 @@ protocol MainVCPresenterProtocol: AnyObject {
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String
     func addCurrency(_ currencyCode: String)
     func isInputValid(input: String) -> Bool
-
+    func getActiveCurrenciesCount() -> Int
 }
 
 
@@ -50,6 +50,10 @@ class MainPresenter: MainVCPresenterProtocol {
     }
     
     //MARK: - Public methods
+    
+    func getActiveCurrenciesCount() -> Int {
+        return activeCurrencies.count
+    }
     
     func isInputValid(input: String) -> Bool {
         let allowedCharacters = CharacterSet(charactersIn: "0123456789.")

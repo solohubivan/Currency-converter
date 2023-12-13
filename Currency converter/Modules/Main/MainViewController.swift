@@ -110,7 +110,7 @@ class MainViewController: UIViewController {
         currencyShowView.layer.cornerRadius = Constants.viewCornerRadius
         currencyShowView.backgroundColor = .white
 
-        currencyShowView.applyShadow(opacity: Constants.viewShadowOpacity, offset: CGSize(width: .zero, height: Constants.viewShadowHeight), radius: Constants.viewShadowRadius, cornerRadius: Constants.viewCornerRadius)
+        currencyShowView.applyShadow(opacity: Constants.viewShadowOpacity, offset: Constants.shadowOffset, radius: Constants.viewShadowRadius, cornerRadius: Constants.viewCornerRadius)
     }
 
     private func setupSwitchModeSegmentedControl() {
@@ -296,8 +296,7 @@ class MainViewController: UIViewController {
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return presenter.getActiveCurrencies().count
-    }
+        return presenter.getActiveCurrenciesCount()    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
@@ -372,6 +371,7 @@ extension MainViewController {
         static let viewShadowOpacity: Float = 0.2
         static let viewShadowHeight: CGFloat = 5
         static let viewShadowRadius: CGFloat = 2
+        static let shadowOffset = CGSize(width: .zero, height: viewShadowHeight)
 
         static let threeRows: Int = 3
         static let fourRows: Int = 4

@@ -101,8 +101,14 @@ class ExchangeRatesViewController: UIViewController {
     // MARK: - Private Methods
 
     private func showCurrencyInfoAlert(currencyCode: String, saleRateNB: Double, purchaseRateNB: Double) {
+        
+        let message = String(format: R.string.localizable.info_alert_message(saleRateNB, purchaseRateNB), saleRateNB, purchaseRateNB)
 
-        let alertController = UIAlertController(title: currencyCode, message: "\(R.string.localizable.national_bank())\n\(R.string.localizable.salling_rate_is()) \(saleRateNB) \(Constants.ukrainianCurrency)\n\(R.string.localizable.buying_rate_is()) \(purchaseRateNB) \(Constants.ukrainianCurrency)", preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: R.string.localizable.exchange_rate(),
+            message: message,
+            preferredStyle: .alert
+        )
 
         let messageFont = [NSAttributedString.Key.font:
                             R.font.latoSemiBold(size: 15)]

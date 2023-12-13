@@ -76,7 +76,7 @@ struct _R {
     }
 
 
-    /// This `_R.string.localizable` struct is generated, and contains static references to 23 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 21 localization keys.
     struct localizable {
       let source: RswiftResources.StringResource.Source
 
@@ -94,11 +94,6 @@ struct _R {
       ///
       /// Key: buy
       var buy: RswiftResources.StringResource { .init(key: "buy", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
-
-      /// Value: Buying Rate is
-      ///
-      /// Key: buying_rate_is
-      var buying_rate_is: RswiftResources.StringResource { .init(key: "buying_rate_is", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Converter
       ///
@@ -135,15 +130,15 @@ struct _R {
       /// Key: exchange_rate
       var exchange_rate: RswiftResources.StringResource { .init(key: "exchange_rate", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
+      /// Value: National Bank Salling Rate is %f Buying Rate is %f
+      ///
+      /// Key: info_alert_message
+      var info_alert_message: RswiftResources.StringResource2<Double, Double> { .init(key: "info_alert_message", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
       /// Value: Last Updated
       ///
       /// Key: last_updated
       var last_updated: RswiftResources.StringResource { .init(key: "last_updated", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
-
-      /// Value: National Bank
-      ///
-      /// Key: national_bank
-      var national_bank: RswiftResources.StringResource { .init(key: "national_bank", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: National Bank Exchange Rate
       ///
@@ -155,7 +150,7 @@ struct _R {
       /// Key: no_data
       var no_data: RswiftResources.StringResource { .init(key: "no_data", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
-        /// Value: No internet connection
+      /// Value: No internet connection
       ///
       /// Key: no_internet_connection
       var no_internet_connection: RswiftResources.StringResource { .init(key: "no_internet_connection", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
@@ -174,11 +169,6 @@ struct _R {
       ///
       /// Key: popular
       var popular: RswiftResources.StringResource { .init(key: "popular", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
-
-      /// Value: Salling Rate is
-      ///
-      /// Key: salling_rate_is
-      var salling_rate_is: RswiftResources.StringResource { .init(key: "salling_rate_is", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Sell
       ///
