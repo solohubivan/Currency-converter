@@ -243,7 +243,6 @@ extension ExchangeRatesViewController: ExchangeRatesVCProtocol {
 extension ExchangeRatesViewController {
     private enum Constants {
         static let cellIdentifier: String = "ExchangeRateCellIdentifier"
- //       static let ukrainianCurrency: String = "UAH"
         static let keyAttributedMessage: String = "attributedMessage"
 
         static let minDateToSearch: String = "01.12.2014"

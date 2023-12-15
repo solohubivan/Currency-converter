@@ -13,7 +13,6 @@ class CurrencyValueTableViewCell: UITableViewCell {
     @IBOutlet weak private var currencyValueTF: UITextField!
 
     private var textFieldValueChanged: CallbackString?
-    private var onTextFieldChange: CallbackTFChange?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,7 +20,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
         setupUI()
     }
 
-    func configure(with viewModel: CurrencyViewModel, textFieldChange: @escaping CallbackTFChange, textFieldValueChange: @escaping CallbackString) {
+    func configure(with viewModel: CurrencyViewModel, textFieldValueChange: @escaping CallbackString) {
 
         currencyNameLabel.text = "\(viewModel.name)"
         if let calculatedResult = viewModel.calculatedResult {
@@ -30,7 +29,6 @@ class CurrencyValueTableViewCell: UITableViewCell {
             currencyValueTF.text = ""
         }
 
-        self.onTextFieldChange = textFieldChange
         self.textFieldValueChanged = textFieldValueChange
     }
 
@@ -62,21 +60,30 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.layer.borderWidth = isActive ? Constants.borderWidth : .zero
         currencyValueTF.layer.borderColor = isActive ? UIColor.hex007AFF.cgColor : nil
     }
+
+    private func isInputValid(input: String) -> Bool {
+        let allowedCharacters = CharacterSet(charactersIn: "0123456789.")
+        let isCharactersValid = input.rangeOfCharacter(from: allowedCharacters.inverted) == nil
+        let isLengthValid = input.count <= Constants.inputMaxCount
+        let dotCount = input.filter { $0 == "." }.count
+
+        return isCharactersValid && isLengthValid && dotCount <= Constants.oneDot
+    }
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
-        guard let onTextFieldChange = onTextFieldChange else { return true }
         let currentText = textField.text ?? ""
         let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
 
         if newText == "." {
             textField.text = "0"
+            return false
         }
 
-        return onTextFieldChange(newText, range, string)
+        return isInputValid(input: newText)
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -91,11 +98,12 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
 
 extension CurrencyValueTableViewCell {
     private enum Constants {
-        static let allowedCharacters: String = "0123456789."
-
         static let borderWidth: CGFloat = 1
         static let cornerRadiusTF: CGFloat = 6
 
         static let textLeftPadding: Int = 16
+
+        static let inputMaxCount: Int = 12
+        static let oneDot: Int = 1
     }
 }

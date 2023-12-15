@@ -8,4 +8,3 @@
 import Foundation
 
 typealias CallbackString = (String?) -> Void
-typealias CallbackTFChange = (String, NSRange, String) -> Bool

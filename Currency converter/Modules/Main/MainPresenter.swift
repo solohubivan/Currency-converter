@@ -20,12 +20,11 @@ protocol MainVCPresenterProtocol: AnyObject {
     func configureLastUpdatedLabel() -> String
     func getActiveCurrencies() -> [CurrencyViewModel]
     func getAllCurrenciesData() -> [CurrencyViewModel]
-    func updateCurrencyValues(inputValue: Double, atIndex inputIndex: Int)
+    func updateCurrencyValues(inputValue: String, atIndex inputIndex: Int)
     func setConvertingMode(_ mode: ConvertingMode)
     func recalculateValuesForAllCurrencies()
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String
     func addCurrency(_ currencyCode: String)
-    func isInputValid(input: String) -> Bool
     func getActiveCurrenciesCount() -> Int
 }
 
@@ -51,14 +50,6 @@ class MainPresenter: MainVCPresenterProtocol {
         return activeCurrencies.count
     }
 
-    func isInputValid(input: String) -> Bool {
-        let allowedCharacters = CharacterSet(charactersIn: "0123456789.")
-        let isCharactersValid = input.rangeOfCharacter(from: allowedCharacters.inverted) == nil
-        let isLengthValid = input.count <= Constants.inputMaxCount
-        let dotCount = input.filter { $0 == "." }.count
-        return isCharactersValid && isLengthValid && dotCount <= Constants.oneDot
-    }
-
     func addCurrency(_ currencyCode: String) {
         guard !activeCurrencies.contains(where: { $0.name == currencyCode }) else { return }
         activeCurrencies.append(allCurrenciesData.first(where: { $0.name == currencyCode })!)
@@ -80,7 +71,8 @@ class MainPresenter: MainVCPresenterProtocol {
     func recalculateValuesForAllCurrencies() {
         for (index, currency) in activeCurrencies.enumerated() {
             if let currentValue = currency.calculatedResult {
-                updateCurrencyValues(inputValue: currentValue, atIndex: index)
+                let currentValueString = String(currentValue)
+                updateCurrencyValues(inputValue: currentValueString, atIndex: index)
             }
         }
     }
@@ -94,13 +86,14 @@ class MainPresenter: MainVCPresenterProtocol {
         return activeCurrencies
     }
 
-    func updateCurrencyValues(inputValue: Double, atIndex inputIndex: Int) {
-        guard inputIndex >= .zero && inputIndex < activeCurrencies.count else { return }
+    func updateCurrencyValues(inputValue: String, atIndex inputIndex: Int) {
+        guard inputIndex >= .zero && inputIndex < activeCurrencies.count,
+            let newDoubleValue = Double(inputValue) else { return }
 
         let inputCurrency = activeCurrencies[inputIndex]
         let baseRate = convertingMode == .sell ? inputCurrency.sellRate : inputCurrency.buyRate
 
-        let valueInBaseCurrency = inputValue / baseRate
+        let valueInBaseCurrency = newDoubleValue / baseRate
 
         for currencyIndex in .zero..<activeCurrencies.count {
             let targetCurrency = activeCurrencies[currencyIndex]
@@ -188,8 +181,5 @@ extension MainPresenter {
         static let baseCurrencyUAH: String = "UAH"
         static let baseCurrencyUSD: String = "USD"
         static let baseCurrencyEUR: String = "EUR"
-
-        static let inputMaxCount: Int = 12
-        static let oneDot: Int = 1
     }
 }
