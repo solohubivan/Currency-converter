@@ -26,7 +26,7 @@ class NetworkService {
         let allCurrenciesURL = URL(string: "https://v6.exchangerate-api.com/v6/\(apiKey)/latest/USD")!
         let defaultCurrenciesURL = URL(string: "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")!
 
-        let firstTask = session.dataTask(with: defaultCurrenciesURL) { (data, response, error) in
+        let firstTask = session.dataTask(with: defaultCurrenciesURL) { (data, _, error) in
             guard error == nil, let data = data else { return }
 
             do {
@@ -37,7 +37,7 @@ class NetworkService {
             }
         }
 
-        let secondTask = session.dataTask(with: allCurrenciesURL) { (data, response, error) in
+        let secondTask = session.dataTask(with: allCurrenciesURL) { (data, _, error) in
             guard error == nil, let data = data else { return }
 
             do {

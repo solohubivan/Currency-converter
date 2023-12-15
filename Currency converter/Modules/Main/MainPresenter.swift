@@ -8,14 +8,12 @@
 import Foundation
 import UIKit
 
-
 struct CurrencyViewModel: Codable {
     var name: String
     var sellRate: Double
     var buyRate: Double
     var calculatedResult: Double?
 }
-
 
 protocol MainVCPresenterProtocol: AnyObject {
     func getCurrencyData(offlineMode: Bool)
@@ -31,30 +29,28 @@ protocol MainVCPresenterProtocol: AnyObject {
     func getActiveCurrenciesCount() -> Int
 }
 
-
 class MainPresenter: MainVCPresenterProtocol {
-    
+
     private var currencyData = CurrencyData()
     private var defaultCurrenciesData = DefaultCurrenciesData()
-    
+
     private weak var view: MainViewProtocol?
-    
+
     private var allCurrenciesData: [CurrencyViewModel] = []
     private var activeCurrencies: [CurrencyViewModel] = []
 
     private var convertingMode: ConvertingMode = .sell
-    
-    
+
     init(view: MainViewProtocol) {
         self.view = view
     }
-    
-    //MARK: - Public methods
-    
+
+    // MARK: - Public methods
+
     func getActiveCurrenciesCount() -> Int {
         return activeCurrencies.count
     }
-    
+
     func isInputValid(input: String) -> Bool {
         let allowedCharacters = CharacterSet(charactersIn: "0123456789.")
         let isCharactersValid = input.rangeOfCharacter(from: allowedCharacters.inverted) == nil
@@ -70,11 +66,11 @@ class MainPresenter: MainVCPresenterProtocol {
         view?.updateTableHeight()
         view?.reloadDataCurrencyInfoTable()
     }
-    
+
     func getAllCurrenciesData() -> [CurrencyViewModel] {
         return allCurrenciesData
     }
-    
+
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String {
         let combinedData = zip(currencyNames, currencyValues)
         let formattedStrings = combinedData.map { (name, value) in "\(name): \(String(format: "%.2f", value))\n"}
@@ -93,29 +89,29 @@ class MainPresenter: MainVCPresenterProtocol {
         convertingMode = mode
         recalculateValuesForAllCurrencies()
     }
-    
+
     func getActiveCurrencies() -> [CurrencyViewModel] {
         return activeCurrencies
     }
-    
+
     func updateCurrencyValues(inputValue: Double, atIndex inputIndex: Int) {
         guard inputIndex >= .zero && inputIndex < activeCurrencies.count else { return }
-        
+
         let inputCurrency = activeCurrencies[inputIndex]
         let baseRate = convertingMode == .sell ? inputCurrency.sellRate : inputCurrency.buyRate
 
         let valueInBaseCurrency = inputValue / baseRate
 
-        for i in .zero..<activeCurrencies.count {
-            let targetCurrency = activeCurrencies[i]
+        for currencyIndex in .zero..<activeCurrencies.count {
+            let targetCurrency = activeCurrencies[currencyIndex]
             let targetRate = convertingMode == .sell ? targetCurrency.sellRate : targetCurrency.buyRate
 
             let convertedValue = valueInBaseCurrency * targetRate
-            activeCurrencies[i].calculatedResult = convertedValue
+            activeCurrencies[currencyIndex].calculatedResult = convertedValue
         }
         view?.reloadDataCurrencyInfoTable()
     }
-    
+
     func getCurrencyData(offlineMode: Bool) {
         if offlineMode {
             self.activeCurrencies = UserDefaultsManager.shared.loadBaseCurrencies() ?? []
@@ -129,12 +125,12 @@ class MainPresenter: MainVCPresenterProtocol {
                         self?.activeCurrencies = self?.convertCurrenciesToUSD(currencies: defaultCurrencies) ?? []
                         UserDefaultsManager.shared.saveBaseCurrencies(self!.activeCurrencies)
                     }
-                    
+
                     if let allCurrenciesData = allCurrenciesData {
                         self?.allCurrenciesData = allCurrenciesData
                         UserDefaultsManager.shared.saveAllCurrenciesData(allCurrenciesData)
                     }
-                        
+
                     if let currencyData = currencyData {
                         self?.currencyData = currencyData
                         self?.view?.updateUI(with: currencyData)
@@ -153,15 +149,15 @@ class MainPresenter: MainVCPresenterProtocol {
         inputFormatter.dateFormat = "E, d MMM yyy HH:mm:ss Z"
         let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "dd MMM yyyy h:mm a"
-        
+
         if let date = inputFormatter.date(from: dateInfo) {
             result = "\(R.string.localizable.last_updated()) \n" + outputFormatter.string(from: date)
         }
         return result
     }
 
-    //MARK: - Private Methods
-    
+    // MARK: - Private Methods
+
     private func convertCurrenciesToUSD(currencies: [DefaultCurrenciesData]) -> [CurrencyViewModel] {
         guard let usdCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyUSD }),
               let usdBuyRate = Double(usdCurrency.buy),
@@ -192,7 +188,7 @@ extension MainPresenter {
         static let baseCurrencyUAH: String = "UAH"
         static let baseCurrencyUSD: String = "USD"
         static let baseCurrencyEUR: String = "EUR"
-        
+
         static let inputMaxCount: Int = 12
         static let oneDot: Int = 1
     }

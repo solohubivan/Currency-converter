@@ -7,36 +7,35 @@
 
 import UIKit
 
-
 class CurrencyValueTableViewCell: UITableViewCell {
 
     @IBOutlet weak private var currencyNameLabel: UILabel!
     @IBOutlet weak private var currencyValueTF: UITextField!
-    
+
     private var textFieldValueChanged: CallbackString?
     private var onTextFieldChange: CallbackTFChange?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         setupUI()
     }
-    
+
     func configure(with viewModel: CurrencyViewModel, textFieldChange: @escaping CallbackTFChange, textFieldValueChange: @escaping CallbackString) {
-        
+
         currencyNameLabel.text = "\(viewModel.name)"
         if let calculatedResult = viewModel.calculatedResult {
             currencyValueTF.text = String(format: "%.2f", calculatedResult)
         } else {
             currencyValueTF.text = ""
         }
-        
+
         self.onTextFieldChange = textFieldChange
         self.textFieldValueChanged = textFieldValueChange
     }
-    
-    //MARK: - Private Methods
-    
+
+    // MARK: - Private Methods
+
     private func setupUI() {
         setupCurrencyNameLabel()
         setupCurrencyTextField()
@@ -58,7 +57,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.textColor = UIColor.hex003166
         currencyValueTF.overrideUserInterfaceStyle = .light
     }
-    
+
     private func activateTextField(_ isActive: Bool) {
         currencyValueTF.layer.borderWidth = isActive ? Constants.borderWidth : .zero
         currencyValueTF.layer.borderColor = isActive ? UIColor.hex007AFF.cgColor : nil
@@ -66,24 +65,24 @@ class CurrencyValueTableViewCell: UITableViewCell {
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-     
+
         guard let onTextFieldChange = onTextFieldChange else { return true }
         let currentText = textField.text ?? ""
         let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
-        
+
         if newText == "." {
             textField.text = "0"
         }
-        
+
         return onTextFieldChange(newText, range, string)
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         activateTextField(true)
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         activateTextField(false)
         textFieldValueChanged?(textField.text)
@@ -93,10 +92,10 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
 extension CurrencyValueTableViewCell {
     private enum Constants {
         static let allowedCharacters: String = "0123456789."
-        
+
         static let borderWidth: CGFloat = 1
         static let cornerRadiusTF: CGFloat = 6
-        
+
         static let textLeftPadding: Int = 16
     }
 }

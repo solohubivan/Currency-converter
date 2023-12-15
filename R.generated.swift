@@ -76,7 +76,7 @@ struct _R {
     }
 
 
-    /// This `_R.string.localizable` struct is generated, and contains static references to 21 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 22 localization keys.
     struct localizable {
       let source: RswiftResources.StringResource.Source
 
@@ -130,10 +130,10 @@ struct _R {
       /// Key: exchange_rate
       var exchange_rate: RswiftResources.StringResource { .init(key: "exchange_rate", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
-      /// Value: National Bank Salling Rate is %f Buying Rate is %f
+      /// Value: National Bank Salling Rate is %f %@ Buying Rate is %f %@
       ///
       /// Key: info_alert_message
-      var info_alert_message: RswiftResources.StringResource2<Double, Double> { .init(key: "info_alert_message", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+      var info_alert_message: RswiftResources.StringResource4<Double, String, Double, String> { .init(key: "info_alert_message", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Last Updated
       ///
@@ -179,6 +179,11 @@ struct _R {
       ///
       /// Key: settings
       var settings: RswiftResources.StringResource { .init(key: "settings", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+
+      /// Value: UAH
+      ///
+      /// Key: uah
+      var uah: RswiftResources.StringResource { .init(key: "uah", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Use Offline
       ///

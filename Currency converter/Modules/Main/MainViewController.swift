@@ -207,7 +207,7 @@ class MainViewController: UIViewController {
         let paddingForKeyboard: CGFloat = 230
 
         if let activeTextField = self.view.findActiveTextField() {
-            let bottomOfTextField = activeTextField.convert(activeTextField.bounds, to: self.view).maxY;
+            let bottomOfTextField = activeTextField.convert(activeTextField.bounds, to: self.view).maxY
             let topOfKeyboard = self.view.frame.height - keyboardSize.height
 
             if bottomOfTextField > topOfKeyboard {
@@ -215,7 +215,7 @@ class MainViewController: UIViewController {
             }
         }
 
-        if(shouldMoveViewUp) {
+        if shouldMoveViewUp {
             self.view.frame.origin.y = paddingForKeyboard - keyboardSize.height
         }
     }
@@ -300,23 +300,23 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+
         return presenter.getActiveCurrenciesCount()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as! CurrencyValueTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as? CurrencyValueTableViewCell
 
         let currencyModel = presenter.getActiveCurrencies()[indexPath.row]
 
-        cell.configure(with: currencyModel, textFieldChange: { [weak self] text, range, replacementString in
+        cell!.configure(with: currencyModel, textFieldChange: { [weak self] text, _, _ in
             return self?.presenter.isInputValid(input: text) ?? true
         }, textFieldValueChange: { [weak self] newValue in
             guard let self = self, let newValue = newValue, let newDoubleValue = Double(newValue) else { return }
             self.presenter.updateCurrencyValues(inputValue: newDoubleValue, atIndex: indexPath.row)
         })
 
-        return cell
+        return cell!
     }
 }
 

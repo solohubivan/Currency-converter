@@ -272,7 +272,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22D96E472AB3E70C003F17A1 /* Build configuration list for PBXNativeTarget "Currency converter" */;
 			buildPhases = (
-				221260012B29E81600DCFEEC /* ShellScript */,
+				223FDA3E2B2B8EF200151125 /* ShellScript */,
 				9E183C55002557DF3D6ABC73 /* [CP] Check Pods Manifest.lock */,
 				22D96E4E2AB3FD6F003F17A1 /* ShellScript */,
 				22D96E2F2AB3E70B003F17A1 /* Sources */,
@@ -347,7 +347,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		221260012B29E81600DCFEEC /* ShellScript */ = {
+		223FDA3E2B2B8EF200151125 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -362,7 +362,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint --fix && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		22D96E4E2AB3FD6F003F17A1 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

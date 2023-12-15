@@ -8,16 +8,16 @@
 import UIKit
 
 extension UIView {
-    
+
     func applyShadow(color: UIColor = UIColor.black, opacity: Float = 1, offset: CGSize = CGSize(width: 2, height: 4), radius: CGFloat = 4, cornerRadius: CGFloat = 0) {
-        
+
         self.layer.cornerRadius = cornerRadius
         self.layer.shadowColor = color.cgColor
         self.layer.shadowOpacity = opacity
         self.layer.shadowOffset = offset
         self.layer.shadowRadius = radius
     }
-    
+
     func findActiveTextField() -> UITextField? {
         for subview in self.subviews {
             if let textField = subview as? UITextField, textField.isFirstResponder {

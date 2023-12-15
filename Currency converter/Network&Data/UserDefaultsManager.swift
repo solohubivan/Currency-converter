@@ -16,7 +16,7 @@ class UserDefaultsManager {
     func saveBaseCurrencies(_ currencies: [CurrencyViewModel]) {
         saveCurrencies(currencies, forKey: "baseCurrencies")
     }
-    
+
     func saveAllCurrenciesData(_ currencies: [CurrencyViewModel]) {
         saveCurrencies(currencies, forKey: "allCurrenciesData")
     }
@@ -24,7 +24,7 @@ class UserDefaultsManager {
     func loadAllCurrenciesData() -> [CurrencyViewModel]? {
         return loadCurrencies(forKey: "allCurrenciesData")
     }
-    
+
     func loadBaseCurrencies() -> [CurrencyViewModel]? {
         return loadCurrencies(forKey: "baseCurrencies")
     }

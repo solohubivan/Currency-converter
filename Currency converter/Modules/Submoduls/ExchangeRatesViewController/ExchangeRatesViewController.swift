@@ -101,8 +101,16 @@ class ExchangeRatesViewController: UIViewController {
     // MARK: - Private Methods
 
     private func showCurrencyInfoAlert(currencyCode: String, saleRateNB: Double, purchaseRateNB: Double) {
-        
-        let message = String(format: R.string.localizable.info_alert_message(saleRateNB, purchaseRateNB), saleRateNB, purchaseRateNB)
+
+        let message = String(
+            format: R.string.localizable.info_alert_message(
+                saleRateNB,
+                R.string.localizable.uah(),
+                purchaseRateNB,
+                R.string.localizable.uah()
+            ),
+            saleRateNB, currencyCode, purchaseRateNB, currencyCode
+        )
 
         let alertController = UIAlertController(
             title: R.string.localizable.exchange_rate(),
@@ -114,7 +122,7 @@ class ExchangeRatesViewController: UIViewController {
                             R.font.latoSemiBold(size: 15)]
         let messageAttrString = NSMutableAttributedString(string:
         alertController.message ?? "")
-        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key : Any], range: NSRange(location: .zero,
+        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key: Any], range: NSRange(location: .zero,
         length: messageAttrString.length))
         alertController.setValue(messageAttrString, forKey: Constants.keyAttributedMessage)
 
@@ -235,7 +243,7 @@ extension ExchangeRatesViewController: ExchangeRatesVCProtocol {
 extension ExchangeRatesViewController {
     private enum Constants {
         static let cellIdentifier: String = "ExchangeRateCellIdentifier"
-        static let ukrainianCurrency: String = "UAH"
+ //       static let ukrainianCurrency: String = "UAH"
         static let keyAttributedMessage: String = "attributedMessage"
 
         static let minDateToSearch: String = "01.12.2014"
