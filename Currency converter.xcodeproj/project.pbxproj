@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2242F9932AD9804C00776D78 /* CurrencyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */; };
 		2242F9952AD980F100776D78 /* CurrencyListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2242F9942AD980F100776D78 /* CurrencyListViewController.xib */; };
+		224FC9A62B2EADB0009493E7 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224FC9A52B2EADB0009493E7 /* String+Ext.swift */; };
 		2269F4142B2885D500796D34 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2269F4132B2885D500796D34 /* Config.plist */; };
 		226E5AF82AF52173006D923D /* ExchangeRatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E5AF72AF52173006D923D /* ExchangeRatesViewController.swift */; };
 		226E5AFA2AF52197006D923D /* ExchangeRatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 226E5AF92AF52197006D923D /* ExchangeRatesViewController.xib */; };
@@ -47,6 +48,7 @@
 		1CBF47A3F71B56E6207391C1 /* Pods_Currency_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Currency_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListViewController.swift; sourceTree = "<group>"; };
 		2242F9942AD980F100776D78 /* CurrencyListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyListViewController.xib; sourceTree = "<group>"; };
+		224FC9A52B2EADB0009493E7 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		2269F4132B2885D500796D34 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		226E5AF72AF52173006D923D /* ExchangeRatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesViewController.swift; sourceTree = "<group>"; };
 		226E5AF92AF52197006D923D /* ExchangeRatesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExchangeRatesViewController.xib; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			children = (
 				2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */,
 				22D234182ABD696F009B2B8F /* UIColorExtensions.swift */,
+				224FC9A52B2EADB0009493E7 /* String+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				226E5AF82AF52173006D923D /* ExchangeRatesViewController.swift in Sources */,
 				22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */,
 				22B56DF82B21472D005858E3 /* CallbackAliases.swift in Sources */,
+				224FC9A62B2EADB0009493E7 /* String+Ext.swift in Sources */,
 				22D96D512B16BA76007C1592 /* NetworkService.swift in Sources */,
 				22731D832AF556AB00CE0AEB /* ExchangeRatesPresenter.swift in Sources */,
 				22D96E502AB3FF01003F17A1 /* R.generated.swift in Sources */,

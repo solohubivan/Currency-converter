@@ -212,7 +212,6 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.tableRowHegiht
     }
-
 }
 
 extension CurrencyListViewController: UISearchBarDelegate {

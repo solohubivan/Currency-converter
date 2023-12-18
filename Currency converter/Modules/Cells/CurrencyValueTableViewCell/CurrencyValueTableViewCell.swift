@@ -24,7 +24,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
 
         currencyNameLabel.text = "\(viewModel.name)"
         if let calculatedResult = viewModel.calculatedResult {
-            currencyValueTF.text = String(format: "%.2f", calculatedResult)
+            currencyValueTF.text = String(format: "%.2f", calculatedResult).formattedWithSeparator()
         } else {
             currencyValueTF.text = ""
         }
@@ -60,30 +60,27 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.layer.borderWidth = isActive ? Constants.borderWidth : .zero
         currencyValueTF.layer.borderColor = isActive ? UIColor.hex007AFF.cgColor : nil
     }
-
-    private func isInputValid(input: String) -> Bool {
-        let allowedCharacters = CharacterSet(charactersIn: "0123456789.")
-        let isCharactersValid = input.rangeOfCharacter(from: allowedCharacters.inverted) == nil
-        let isLengthValid = input.count <= Constants.inputMaxCount
-        let dotCount = input.filter { $0 == "." }.count
-
-        return isCharactersValid && isLengthValid && dotCount <= Constants.oneDot
-    }
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
-        let currentText = textField.text ?? ""
-        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        let currentText: NSString = textField.text! as NSString
+        let newText = currentText.replacingCharacters(in: range, with: string.replacingCommaWithDot())
 
-        if newText == "." {
-            textField.text = "0"
+        if !newText.removingSpaces().isValidForTextField() {
             return false
         }
 
-        return isInputValid(input: newText)
+        if newText == "." {
+            textField.text = "0."
+            return false
+        }
+
+        textField.text = newText.formattedWithSeparator()
+
+        return false
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -92,7 +89,7 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         activateTextField(false)
-        textFieldValueChanged?(textField.text)
+        textFieldValueChanged?(textField.text?.removingSpaces())
     }
 }
 
