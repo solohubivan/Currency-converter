@@ -38,6 +38,13 @@ extension String {
         return self.replacingOccurrences(of: ",", with: ".")
     }
 
+    func replaceSingleDotIfNeeded() -> String {
+        if self == "." {
+            return "0."
+        }
+        return self
+    }
+
     func isValidForTextField() -> Bool {
 
         let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.")

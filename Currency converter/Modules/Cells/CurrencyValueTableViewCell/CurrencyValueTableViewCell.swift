@@ -67,14 +67,10 @@ extension CurrencyValueTableViewCell: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
         let currentText: NSString = textField.text! as NSString
-        let newText = currentText.replacingCharacters(in: range, with: string.replacingCommaWithDot())
+        let modifiedString = string.replacingCommaWithDot()
+        let newText = currentText.replacingCharacters(in: range, with: modifiedString).replaceSingleDotIfNeeded()
 
         if !newText.removingSpaces().isValidForTextField() {
-            return false
-        }
-
-        if newText == "." {
-            textField.text = "0."
             return false
         }
 
