@@ -68,7 +68,8 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
             .foregroundColor: UIColor.systemBlue
         ]
 
-        backToMainVCButton.setAttributedTitle(NSAttributedString(string: R.string.localizable.converter(), attributes: attributes), for: .normal)
+        let attributedTitle = NSAttributedString(string: R.string.localizable.converter(), attributes: attributes)
+        backToMainVCButton.setAttributedTitle(attributedTitle, for: .normal)
     }
 
     @IBAction func presentMainVC(_ sender: Any) {
@@ -78,7 +79,7 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
     private func setupCurrencyListTable() {
         currencyListTable.dataSource = self
         currencyListTable.delegate = self
-        currencyListTable.register(UITableViewCell.self, forCellReuseIdentifier: Constants.currencyListTableCellIdentifier)
+        currencyListTable.register(UITableViewCell.self, forCellReuseIdentifier: Constants.currencyListTableCellId)
 
         currencyListTable.backgroundColor = .clear
         currencyListTable.overrideUserInterfaceStyle = .light
@@ -145,7 +146,7 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyListTableCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyListTableCellId, for: indexPath)
 
         if searching {
             if indexPath.row < searchingCurrencies.count {
@@ -215,13 +216,18 @@ extension CurrencyListViewController: UITableViewDataSource, UITableViewDelegate
 }
 
 extension CurrencyListViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             searching = false
         } else {
             searchingCurrencies = currenciesList.filter { currency in
-                return currency.lowercased().contains(searchText.lowercased()) || currencyDescriptions[currency]?.lowercased().contains(searchText.lowercased()) ?? false
+                let currencyLowercased = currency.lowercased()
+                let searchTextLowercased = searchText.lowercased()
+                let matchesCurrency = currencyLowercased.contains(searchTextLowercased)
+                let descriptionMatches = currencyDescriptions[currency]?.lowercased().contains(searchTextLowercased) ?? false
+
+                return matchesCurrency || descriptionMatches
             }
             searching = true
         }
@@ -261,7 +267,7 @@ extension CurrencyListViewController {
     private enum Constants {
         static let sectionHeaderHeight: CGFloat = 40.0
         static let tableRowHegiht: CGFloat = 48.0
-        static let currencyListTableCellIdentifier: String = "CurrenciesListTableViewCell"
+        static let currencyListTableCellId: String = "CurrenciesListTableViewCell"
         static let one: Int = 1
     }
 }

@@ -20,7 +20,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
         setupUI()
     }
 
-    func configure(with viewModel: CurrencyViewModel, textFieldValueChange: @escaping CallbackString) {
+    func configure(with viewModel: CurrencyViewModel, textFieldValueChanged: @escaping CallbackString) {
 
         currencyNameLabel.text = "\(viewModel.name)"
         if let calculatedResult = viewModel.calculatedResult {
@@ -29,7 +29,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
             currencyValueTF.text = ""
         }
 
-        self.textFieldValueChanged = textFieldValueChange
+        self.textFieldValueChanged = textFieldValueChanged
     }
 
     // MARK: - Private Methods
@@ -44,9 +44,14 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyNameLabel.textColor = UIColor.hex003166
     }
 
+    private func paddingViewRect(forHeight height: CGFloat) -> CGRect {
+        return CGRect(x: .zero, y: .zero, width: Constants.textLeftPadding, height: height)
+    }
+
     private func setupCurrencyTextField() {
         currencyValueTF.delegate = self
-        let paddingView = UIView(frame: CGRect(x: .zero, y: .zero, width: Constants.textLeftPadding, height: Int(currencyValueTF.frame.height)))
+        let paddingViewRect = paddingViewRect(forHeight: currencyValueTF.frame.height)
+        let paddingView = UIView(frame: paddingViewRect)
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
         currencyValueTF.layer.cornerRadius = Constants.cornerRadiusTF
@@ -64,7 +69,11 @@ class CurrencyValueTableViewCell: UITableViewCell {
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+        ) -> Bool {
 
         let currentText: NSString = textField.text! as NSString
         let modifiedString = string.replacingCommaWithDot()
@@ -94,7 +103,7 @@ extension CurrencyValueTableViewCell {
         static let borderWidth: CGFloat = 1
         static let cornerRadiusTF: CGFloat = 6
 
-        static let textLeftPadding: Int = 16
+        static let textLeftPadding: CGFloat = 16
 
         static let inputMaxCount: Int = 12
         static let oneDot: Int = 1

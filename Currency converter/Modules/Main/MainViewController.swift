@@ -196,8 +196,18 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -305,15 +315,18 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.currencyValuesCellIdentifier, for: indexPath) as? CurrencyValueTableViewCell
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: Constants.currencyValuesCellIdentifier,
+            for: indexPath
+        ) as? CurrencyValueTableViewCell ?? CurrencyValueTableViewCell()
 
         let currencyModel = presenter.getActiveCurrencies()[indexPath.row]
 
-        cell!.configure(with: currencyModel, textFieldValueChange: { [weak self] newValue in
-            self!.presenter.updateCurrencyValues(inputValue: newValue!, atIndex: indexPath.row)
+        cell.configure(with: currencyModel, textFieldValueChanged: { [weak self] newValue in
+            self!.presenter.updateCurrencyValues(inputValue: newValue ?? "", atIndex: indexPath.row)
         })
 
-        return cell!
+        return cell
     }
 }
 
