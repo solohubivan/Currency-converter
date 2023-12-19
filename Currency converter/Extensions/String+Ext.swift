@@ -44,23 +44,4 @@ extension String {
         }
         return self
     }
-
-    func isValidForTextField() -> Bool {
-
-        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.")
-        if self.rangeOfCharacter(from: allowedCharacterSet.inverted) != nil {
-            return false
-        }
-
-        let dotCount = self.filter { $0 == "." }.count
-        if dotCount > 1 {
-            return false
-        }
-
-        if self.count > 13 {
-            return false
-        }
-
-        return true
-    }
 }

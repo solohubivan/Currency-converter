@@ -50,7 +50,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
 
     private func setupCurrencyTextField() {
         currencyValueTF.delegate = self
-        let paddingViewRect = paddingViewRect(forHeight: currencyValueTF.frame.height)
+        let paddingViewRect = Constants.paddingViewRect(forHeight: currencyValueTF.frame.height)
         let paddingView = UIView(frame: paddingViewRect)
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
@@ -65,21 +65,37 @@ class CurrencyValueTableViewCell: UITableViewCell {
         currencyValueTF.layer.borderWidth = isActive ? Constants.borderWidth : .zero
         currencyValueTF.layer.borderColor = isActive ? UIColor.hex007AFF.cgColor : nil
     }
+
+    private func isValidForTextField(_ text: String) -> Bool {
+        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.")
+        if text.rangeOfCharacter(from: allowedCharacterSet.inverted) != nil {
+            return false
+        }
+
+        let dotCount = text.filter { $0 == "." }.count
+        if dotCount > Constants.oneDot {
+            return false
+        }
+
+        if text.count > Constants.inputMaxCount {
+            return false
+        }
+
+        return true
+    }
 }
 
 extension CurrencyValueTableViewCell: UITextFieldDelegate {
 
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
-        ) -> Bool {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
 
         let currentText: NSString = textField.text! as NSString
         let modifiedString = string.replacingCommaWithDot()
         let newText = currentText.replacingCharacters(in: range, with: modifiedString).replaceSingleDotIfNeeded()
 
-        if !newText.removingSpaces().isValidForTextField() {
+        if !isValidForTextField(newText.removingSpaces()) {
             return false
         }
 
@@ -105,7 +121,11 @@ extension CurrencyValueTableViewCell {
 
         static let textLeftPadding: CGFloat = 16
 
-        static let inputMaxCount: Int = 12
+        static let inputMaxCount: Int = 13
         static let oneDot: Int = 1
+
+        static func paddingViewRect(forHeight height: CGFloat) -> CGRect {
+            return CGRect(x: .zero, y: .zero, width: textLeftPadding, height: height)
+        }
     }
 }

@@ -323,7 +323,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let currencyModel = presenter.getActiveCurrencies()[indexPath.row]
 
         cell.configure(with: currencyModel, textFieldValueChanged: { [weak self] newValue in
-            self!.presenter.updateCurrencyValues(inputValue: newValue ?? "", atIndex: indexPath.row)
+            self?.presenter.updateCurrencyValues(inputValue: newValue ?? "", atIndex: indexPath.row)
         })
 
         return cell

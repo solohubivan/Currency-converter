@@ -225,7 +225,9 @@ extension CurrencyListViewController: UISearchBarDelegate {
                 let currencyLowercased = currency.lowercased()
                 let searchTextLowercased = searchText.lowercased()
                 let matchesCurrency = currencyLowercased.contains(searchTextLowercased)
-                let descriptionMatches = currencyDescriptions[currency]?.lowercased().contains(searchTextLowercased) ?? false
+
+                let description = currencyDescriptions[currency]?.lowercased()
+                let descriptionMatches = description?.contains(searchTextLowercased) ?? false
 
                 return matchesCurrency || descriptionMatches
             }
