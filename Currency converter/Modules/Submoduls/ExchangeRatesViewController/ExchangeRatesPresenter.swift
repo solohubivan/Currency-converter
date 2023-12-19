@@ -8,13 +8,17 @@
 import Foundation
 import UIKit
 
-protocol ExchangeRatesPresenterProtocol: AnyObject {
+struct ExchangeRatesViewModel: Codable {
+    var name: String
+    var sellRateNB: Double
+    var buyRateNB: Double
+}
 
-    func getCurrencies() -> [String]
-    func getData(date: String)
-    func configureCellName(forCode code: String) -> String?
-    func getSaleRateNB() -> [Double]
-    func getPurchaseRateNB() -> [Double]
+protocol ExchangeRatesPresenterProtocol: AnyObject {
+    func createCellName(forCode code: String) -> String?
+    func getCurrenciesCount() -> Int
+    func getExchangeRates() -> [ExchangeRatesViewModel]
+    func fetchDate(date: String)
 }
 
 class ExchangeRatesPresenter: ExchangeRatesPresenterProtocol {
@@ -22,9 +26,7 @@ class ExchangeRatesPresenter: ExchangeRatesPresenterProtocol {
     private var exchangeRatesData = ExchangeRatesData()
     private weak var view: ExchangeRatesVCProtocol?
 
-    private var currencies: [String] = []
-    private var saleRateNB: [Double] = []
-    private var purchaseRateNB: [Double] = []
+    private var exchangeRates: [ExchangeRatesViewModel] = []
 
     init(view: ExchangeRatesVCProtocol) {
         self.view = view
@@ -32,53 +34,43 @@ class ExchangeRatesPresenter: ExchangeRatesPresenterProtocol {
 
     // MARK: - Public Methods
 
-    func getPurchaseRateNB() -> [Double] {
-        return purchaseRateNB
+    func fetchDate(date: String) {
+        getExchangeRatesData(date: date)
     }
 
-    func getSaleRateNB() -> [Double] {
-        return saleRateNB
+    func getExchangeRates() -> [ExchangeRatesViewModel] {
+        return exchangeRates
     }
 
-    func getCurrencies() -> [String] {
-        return currencies
+    func getCurrenciesCount() -> Int {
+        return exchangeRates.count
     }
 
-    func configureCellName(forCode code: String) -> String? {
+    func createCellName(forCode code: String) -> String? {
         return currencyDescriptions[code]
     }
 
-    func getData(date: String) {
-        let session = URLSession.shared
-        let url = URL(string: "https://api.privatbank.ua/p24api/exchange_rates?json&date=\(date)")!
-        let task = session.dataTask(with: url) { (data, _, error) in
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return
+    // MARK: - Private Methods
+
+    private func getExchangeRatesData(date: String) {
+        NetworkService.shared.getExchangeRates(forDate: date) { [weak self] exchangeRatesData in
+            guard let self = self, let exchangeRatesData = exchangeRatesData else { return }
+
+            self.exchangeRates = exchangeRatesData.exchangeRate.map { rate in
+                let formattedSellRateNB = Double(String(format: "%.2f", rate.saleRateNB)) ?? Constants.defaulValue
+                let formattedPurchaseRateNB = Double(String(format: "%.2f", rate.purchaseRateNB)) ?? Constants.defaulValue
+
+                return ExchangeRatesViewModel(
+                    name: rate.currency,
+                    sellRateNB: formattedSellRateNB,
+                    buyRateNB: formattedPurchaseRateNB
+                )
             }
 
-            do {
-
-                self.exchangeRatesData = try JSONDecoder().decode(ExchangeRatesData.self, from: data!)
-
-                self.currencies = self.exchangeRatesData.exchangeRate.map {
-                    $0.currency }
-                self.saleRateNB = self.exchangeRatesData.exchangeRate.map { rate in
-                    let formattedRate = String(format: "%.2f", rate.saleRateNB)
-                    return Double(formattedRate) ?? Constants.defaulValue }
-                self.purchaseRateNB = self.exchangeRatesData.exchangeRate.map { rate in
-                    let formattedRate = String(format: "%.2f", rate.purchaseRateNB)
-                    return Double(formattedRate) ?? Constants.defaulValue }
-
-                DispatchQueue.main.async {
-                    self.view?.reloadTable()
-                }
-
-            } catch {
-                print(error.localizedDescription)
+            DispatchQueue.main.async {
+                self.view?.reloadTable()
             }
         }
-        task.resume()
     }
 }
 

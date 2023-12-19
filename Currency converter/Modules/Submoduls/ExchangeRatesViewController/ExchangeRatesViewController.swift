@@ -91,7 +91,6 @@ class ExchangeRatesViewController: UIViewController {
         exchangeRateInfoTable.isHidden = true
 
         exchangeRateInfoTable.overrideUserInterfaceStyle = .light
-
     }
 
     @IBAction func dismissSelf(_ sender: Any) {
@@ -120,10 +119,8 @@ class ExchangeRatesViewController: UIViewController {
 
         let messageFont = [NSAttributedString.Key.font:
                             R.font.latoSemiBold(size: 15)]
-        let messageAttrString = NSMutableAttributedString(string:
-        alertController.message ?? "")
-        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key: Any], range: NSRange(location: .zero,
-        length: messageAttrString.length))
+        let messageAttrString = NSMutableAttributedString(string: alertController.message ?? "")
+        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key: Any], range: NSRange(location: .zero, length: messageAttrString.length))
         alertController.setValue(messageAttrString, forKey: Constants.keyAttributedMessage)
 
         let okAction = UIAlertAction(title: R.string.localizable.ok(), style: .default, handler: nil)
@@ -152,7 +149,7 @@ class ExchangeRatesViewController: UIViewController {
         if let minDate = dateFormatter.date(from: Constants.minDateToSearch) {
             datePicker.minimumDate = minDate
         }
-        if let maxDate = Calendar.current.date(byAdding: .day, value: -1, to: Date()) {
+        if let maxDate = Calendar.current.date(byAdding: .day, value: -Constants.one, to: Date()) {
             datePicker.maximumDate = maxDate
         }
 
@@ -171,9 +168,18 @@ class ExchangeRatesViewController: UIViewController {
 
         let dateFormForLink = DateFormatter()
         dateFormForLink.dateFormat = Constants.dateFormat
-        presenter.getData(date: dateFormForLink.string(from: datePicker.date))
+
+        presenter.fetchDate(date: dateFormForLink.string(from: datePicker.date))
 
         self.view.endEditing(true)
+    }
+
+    private func activeTextField(_ isActive: Bool) {
+        searchingDateTF.layer.borderWidth = isActive ? Constants.borderWidthTF : .zero
+        searchingDateTF.layer.borderColor = isActive ? UIColor.systemBlue.cgColor : nil
+        if isActive {
+            searchingDateTF.layer.cornerRadius = Constants.cornerRadiusTF
+        }
     }
 }
 
@@ -181,15 +187,12 @@ class ExchangeRatesViewController: UIViewController {
 
 extension ExchangeRatesViewController: UITextFieldDelegate {
 
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.layer.borderWidth = Constants.borderWidthTF
-        textField.layer.borderColor = UIColor.systemBlue.cgColor
-        textField.layer.cornerRadius = Constants.cornerRadiusTF
-        return true
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeTextField(true)
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.layer.borderWidth = .zero
+        activeTextField(false)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -199,17 +202,19 @@ extension ExchangeRatesViewController: UITextFieldDelegate {
 
 extension ExchangeRatesViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.getCurrencies().count
+        return presenter.getCurrenciesCount()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
         let disclosureIndicator = UITableViewCell.AccessoryType.disclosureIndicator
 
-        guard presenter.getCurrencies().indices.contains(indexPath.row) else { return UITableViewCell() }
-        let currencyCode = presenter.getCurrencies()[indexPath.row]
+        guard presenter.getExchangeRates().indices.contains(indexPath.row) else { return UITableViewCell() }
 
-        if let currencyName = presenter.configureCellName(forCode: currencyCode) {
+        let exchangeRate = presenter.getExchangeRates()[indexPath.row]
+        let currencyCode = exchangeRate.name
+
+        if let currencyName = presenter.createCellName(forCode: currencyCode) {
             cell.textLabel?.text = currencyName
         } else {
             cell.textLabel?.text = currencyCode
@@ -222,15 +227,16 @@ extension ExchangeRatesViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard presenter.getCurrencies().indices.contains(indexPath.row) else { return }
-        let currencyCode = presenter.getCurrencies()[indexPath.row]
+        guard presenter.getExchangeRates().indices.contains(indexPath.row) else { return }
+        let selectedExchangeRate = presenter.getExchangeRates()[indexPath.row]
+        let currencyCode = selectedExchangeRate.name
+        let saleRateNB = selectedExchangeRate.sellRateNB
+        let purchaseRateNB = selectedExchangeRate.buyRateNB
 
-        if let index = presenter.getCurrencies().firstIndex(of: currencyCode) {
-            showCurrencyInfoAlert(currencyCode: currencyCode, saleRateNB: presenter.getSaleRateNB()[index], purchaseRateNB: presenter.getPurchaseRateNB()[index])
-        }
+        showCurrencyInfoAlert(currencyCode: currencyCode, saleRateNB: saleRateNB, purchaseRateNB: purchaseRateNB)
 
         tableView.deselectRow(at: indexPath, animated: true)
-    }
+   }
 }
 
 extension ExchangeRatesViewController: ExchangeRatesVCProtocol {
@@ -250,5 +256,7 @@ extension ExchangeRatesViewController {
 
         static let borderWidthTF: CGFloat = 1
         static let cornerRadiusTF: CGFloat = 5
+
+        static let one: Int = 1
     }
 }

@@ -52,4 +52,24 @@ class NetworkService {
         firstTask.resume()
         secondTask.resume()
     }
+
+    func getExchangeRates(forDate date: String, completion: @escaping (ExchangeRatesData?) -> Void) {
+        let url = URL(string: "https://api.privatbank.ua/p24api/exchange_rates?json&date=\(date)")!
+        let session = URLSession.shared
+
+        let task = session.dataTask(with: url) { (data, _, error) in
+            guard error == nil, let data = data else {
+                completion(nil)
+                return
+            }
+
+            do {
+                let exchangeRatesData = try JSONDecoder().decode(ExchangeRatesData.self, from: data)
+                completion(exchangeRatesData)
+            } catch {
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
 }

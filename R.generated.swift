@@ -130,7 +130,7 @@ struct _R {
       /// Key: exchange_rate
       var exchange_rate: RswiftResources.StringResource { .init(key: "exchange_rate", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
-      /// Value: National Bank Salling Rate is %f %@ Buying Rate is %f %@
+      /// Value: National Bank Salling Rate is %.2f %@ Buying Rate is %.2f %@
       ///
       /// Key: info_alert_message
       var info_alert_message: RswiftResources.StringResource4<Double, String, Double, String> { .init(key: "info_alert_message", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
