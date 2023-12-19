@@ -67,12 +67,12 @@ class CurrencyValueTableViewCell: UITableViewCell {
     }
 
     private func isValidForTextField(_ text: String) -> Bool {
-        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789.")
+        let allowedCharacterSet = CharacterSet(charactersIn: Constants.allowedInput)
         if text.rangeOfCharacter(from: allowedCharacterSet.inverted) != nil {
             return false
         }
 
-        let dotCount = text.filter { $0 == "." }.count
+        let dotCount = text.filter { $0 == Constants.dot }.count
         if dotCount > Constants.oneDot {
             return false
         }
@@ -123,6 +123,9 @@ extension CurrencyValueTableViewCell {
 
         static let inputMaxCount: Int = 13
         static let oneDot: Int = 1
+
+        static let allowedInput: String = "0123456789."
+        static let dot: Character = "."
 
         static func paddingViewRect(forHeight height: CGFloat) -> CGRect {
             return CGRect(x: .zero, y: .zero, width: textLeftPadding, height: height)
