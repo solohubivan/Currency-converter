@@ -33,9 +33,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var currencyInfoTableHeight: NSLayoutConstraint!
     @IBOutlet weak private var currencyInfoTableWidth: NSLayoutConstraint!
     @IBOutlet weak private var indentUnderTitleLabel: NSLayoutConstraint!
-    
+
     private var initialTableViewWidth: CGFloat?
-    
+
     private let currencyValueCellNib = CurrencyValueTableViewCell.nib
 
     private var presenter: MainVCPresenterProtocol!
@@ -176,7 +176,7 @@ class MainViewController: UIViewController {
         exchangeRateButton.layer.cornerRadius = Constants.rateButtonCornerRadius
         exchangeRateButton.layer.borderColor = UIColor.hex007AFF.cgColor
     }
-    
+
     private func configureExchangeRateButtonStyle() {
         exchangeRateButton.titleLabel?.font = R.font.latoBold(size: 18)
         exchangeRateButton.titleLabel?.textColor = UIColor.hex007AFF
@@ -198,7 +198,7 @@ class MainViewController: UIViewController {
     }
 
     // MARK: - Private Methods
-    
+
     private func updateLayoutBasedOnOrientation() {
         let isLandscape = UIDevice.current.orientation.isLandscape
         let tableWidth = isIpad ? Constants.tableSizeForIpad : (initialTableViewWidth ?? currencyShowView.frame.width)
@@ -289,6 +289,23 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
         return cell
     }
+
+    func tableView(_ tableView: UITableView,
+                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+
+        if editingStyle == .delete {
+            tableView.beginUpdates()
+            presenter.removeActiveCurrencies(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+        }
+    }
 }
 
 extension MainViewController: MainViewProtocol {
@@ -337,22 +354,22 @@ extension MainViewController: MainViewProtocol {
 extension MainViewController {
     private enum Constants {
         static let currencyValuesCellId: String = "CurrencyValueTableViewCell"
-        
+
         static let viewCornerRadius: CGFloat = 10
         static let rateButtonCornerRadius: CGFloat = 14
         static let rateButtonBorderWidth: CGFloat = 1
-        
+
         static let viewShadowOpacity: Float = 0.2
         static let viewShadowHeight: CGFloat = 5
         static let viewShadowRadius: CGFloat = 2
         static let shadowOffset = CGSize(width: .zero, height: viewShadowHeight)
-        
+
         static let one: Int = 1
         static let threeRows: Int = 3
         static let fourRows: Int = 4
         static let fiveRows: Int = 5
         static let sixRows: Int = 6
-        
+
         static let tableHeight3Rows: CGFloat = 180
         static let tableHeight4Rows: CGFloat = 225
         static let tableHeight5Rows: CGFloat = 285

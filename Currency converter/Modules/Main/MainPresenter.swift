@@ -26,6 +26,7 @@ protocol MainVCPresenterProtocol: AnyObject {
     func createShareText (currencyNames: [String], currencyValues: [Double]) -> String
     func addCurrency(_ currencyCode: String)
     func getActiveCurrenciesCount() -> Int
+    func removeActiveCurrencies(at index: Int)
 }
 
 class MainPresenter: MainVCPresenterProtocol {
@@ -45,6 +46,13 @@ class MainPresenter: MainVCPresenterProtocol {
     }
 
     // MARK: - Public methods
+
+    func removeActiveCurrencies(at index: Int) {
+        guard index >= .zero && index < activeCurrencies.count else { return }
+        activeCurrencies.remove(at: index)
+        view?.updateTableHeight()
+        view?.reloadDataCurrencyInfoTable()
+    }
 
     func getActiveCurrenciesCount() -> Int {
         return activeCurrencies.count
