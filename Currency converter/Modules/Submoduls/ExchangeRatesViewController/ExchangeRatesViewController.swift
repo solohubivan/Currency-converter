@@ -59,7 +59,8 @@ class ExchangeRatesViewController: UIViewController {
             .foregroundColor: UIColor.systemBlue
         ]
 
-        selfDismissButton.setAttributedTitle(NSAttributedString(string: R.string.localizable.converter(), attributes: attributes), for: .normal)
+        let attributedTitle = NSAttributedString(string: R.string.localizable.converter(), attributes: attributes)
+        selfDismissButton.setAttributedTitle(attributedTitle, for: .normal)
     }
 
     private func setupDescriptionLabel() {
@@ -120,7 +121,8 @@ class ExchangeRatesViewController: UIViewController {
         let messageFont = [NSAttributedString.Key.font:
                             R.font.latoSemiBold(size: 15)]
         let messageAttrString = NSMutableAttributedString(string: alertController.message ?? "")
-        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key: Any], range: NSRange(location: .zero, length: messageAttrString.length))
+        let massageRange = NSRange(location: .zero, length: messageAttrString.length)
+        messageAttrString.addAttributes(messageFont as [NSAttributedString.Key: Any], range: massageRange)
         alertController.setValue(messageAttrString, forKey: Constants.keyAttributedMessage)
 
         let okAction = UIAlertAction(title: R.string.localizable.ok(), style: .default, handler: nil)

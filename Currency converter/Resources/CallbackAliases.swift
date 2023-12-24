@@ -8,3 +8,5 @@
 import Foundation
 
 typealias CallbackString = (String?) -> Void
+
+typealias CurrencyDataCompletion = ([DefaultCurrenciesData]?, CurrencyData?, [CurrencyViewModel]?) -> Void

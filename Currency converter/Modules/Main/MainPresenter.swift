@@ -153,25 +153,26 @@ class MainPresenter: MainVCPresenterProtocol {
 
     private func convertCurrenciesToUSD(currencies: [DefaultCurrenciesData]) -> [CurrencyViewModel] {
         guard let usdCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyUSD }),
+              let eurCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyEUR }),
               let usdBuyRate = Double(usdCurrency.buy),
-              let usdSellRate = Double(usdCurrency.sale) else {
+              let usdSellRate = Double(usdCurrency.sale),
+              let eurBuyRate = Double(eurCurrency.buy),
+              let eurSellRate = Double(eurCurrency.sale)
+        else {
             return []
         }
 
-        var convertedCurrencies: [CurrencyViewModel] = []
+        let currencyUahModel = CurrencyViewModel(name: Constants.baseCurrencyUAH,
+                                                 sellRate: usdSellRate,
+                                                 buyRate: usdBuyRate)
+        let currencyUsdModel = CurrencyViewModel(name: Constants.baseCurrencyUSD,
+                                                 sellRate: Constants.baseCurrencyValue,
+                                                 buyRate: Constants.baseCurrencyValue)
+        let currencyEurModel = CurrencyViewModel(name: Constants.baseCurrencyEUR,
+                                                 sellRate: usdSellRate / eurSellRate,
+                                                 buyRate: usdBuyRate / eurBuyRate)
 
-        convertedCurrencies.append(CurrencyViewModel(name: Constants.baseCurrencyUAH, sellRate: usdSellRate, buyRate: usdBuyRate))
-
-        convertedCurrencies.append(CurrencyViewModel(name: Constants.baseCurrencyUSD, sellRate: Constants.baseCurrencyValue, buyRate: Constants.baseCurrencyValue))
-
-        if let eurCurrency = currencies.first(where: { $0.ccy == Constants.baseCurrencyEUR }),
-           let eurBuyRate = Double(eurCurrency.buy),
-           let eurSellRate = Double(eurCurrency.sale) {
-            let eurToUsdBuyRate = usdBuyRate / eurBuyRate
-            let eurToUsdSellRate = usdSellRate / eurSellRate
-            convertedCurrencies.append(CurrencyViewModel(name: Constants.baseCurrencyEUR, sellRate: eurToUsdSellRate, buyRate: eurToUsdBuyRate))
-        }
-        return convertedCurrencies
+        return [currencyUahModel, currencyUsdModel, currencyEurModel]
     }
 }
 

@@ -50,7 +50,7 @@ class CurrencyValueTableViewCell: UITableViewCell {
 
     private func setupCurrencyTextField() {
         currencyValueTF.delegate = self
-        let paddingViewRect = Constants.paddingViewRect(forHeight: currencyValueTF.frame.height)
+        let paddingViewRect = Constants.paddingViewRect(for: currencyValueTF.frame.height)
         let paddingView = UIView(frame: paddingViewRect)
         currencyValueTF.leftView = paddingView
         currencyValueTF.leftViewMode = .always
@@ -127,7 +127,7 @@ extension CurrencyValueTableViewCell {
         static let allowedInput: String = "0123456789."
         static let dot: Character = "."
 
-        static func paddingViewRect(forHeight height: CGFloat) -> CGRect {
+        static func paddingViewRect(for height: CGFloat) -> CGRect {
             return CGRect(x: .zero, y: .zero, width: textLeftPadding, height: height)
         }
     }

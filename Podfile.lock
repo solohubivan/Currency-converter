@@ -1,20 +1,24 @@
 PODS:
   - InstantSearchVoiceOverlay (1.2.0)
+  - IQKeyboardManagerSwift (6.5.16)
   - R.swift (7.3.2)
 
 DEPENDENCIES:
   - InstantSearchVoiceOverlay
+  - IQKeyboardManagerSwift
   - R.swift
 
 SPEC REPOS:
   trunk:
     - InstantSearchVoiceOverlay
+    - IQKeyboardManagerSwift
     - R.swift
 
 SPEC CHECKSUMS:
   InstantSearchVoiceOverlay: d9d5db7314ec8416dcf4ed49df2000e8ee0abe2b
+  IQKeyboardManagerSwift: 12d89768845bb77b55cc092ecc2b1f9370f06b76
   R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
 
-PODFILE CHECKSUM: c089321b96472586e2fb822e4635d96713708ce6
+PODFILE CHECKSUM: 3a05de625ed92372b011a5aead2bfcc116516d15
 
 COCOAPODS: 1.12.1

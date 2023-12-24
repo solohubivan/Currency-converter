@@ -328,7 +328,7 @@ struct _R {
     var currencyListViewController: RswiftResources.NibReference<UIKit.UIView> { .init(name: "CurrencyListViewController", bundle: bundle) }
 
     /// Nib `CurrencyValueTableViewCell`.
-    var currencyValueTableViewCell: RswiftResources.NibReferenceReuseIdentifier<CurrencyValueTableViewCell, CurrencyValueTableViewCell> { .init(name: "CurrencyValueTableViewCell", bundle: bundle, identifier: "CurrencyValuesTableViewCell") }
+    var currencyValueTableViewCell: RswiftResources.NibReferenceReuseIdentifier<CurrencyValueTableViewCell, CurrencyValueTableViewCell> { .init(name: "CurrencyValueTableViewCell", bundle: bundle, identifier: "CurrencyValueTableViewCell") }
 
     /// Nib `ExchangeRatesViewController`.
     var exchangeRatesViewController: RswiftResources.NibReference<UIKit.UIView> { .init(name: "ExchangeRatesViewController", bundle: bundle) }
@@ -349,8 +349,8 @@ struct _R {
   /// This `_R.reuseIdentifier` struct is generated, and contains static references to 1 reuse identifiers.
   struct reuseIdentifier {
 
-    /// Reuse identifier `CurrencyValuesTableViewCell`.
-    let currencyValuesTableViewCell: RswiftResources.ReuseIdentifier<CurrencyValueTableViewCell> = .init(identifier: "CurrencyValuesTableViewCell")
+    /// Reuse identifier `CurrencyValueTableViewCell`.
+    let currencyValueTableViewCell: RswiftResources.ReuseIdentifier<CurrencyValueTableViewCell> = .init(identifier: "CurrencyValueTableViewCell")
   }
 
   /// This `_R.storyboard` struct is generated, and contains static references to 1 storyboards.

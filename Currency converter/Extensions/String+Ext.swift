@@ -15,10 +15,12 @@ extension String {
         let reversedIntegerPart = String(integerPart.reversed())
 
         let spacedIntegerPart = stride(from: 0, to: reversedIntegerPart.count, by: 3).map {
-                reversedIntegerPart.index(reversedIntegerPart.startIndex, offsetBy: $0)..<reversedIntegerPart.index(reversedIntegerPart.startIndex, offsetBy: min($0 + 3, reversedIntegerPart.count))
-            }.map {
-                reversedIntegerPart[$0]
-            }.joined(separator: " ")
+            let startIndex = reversedIntegerPart.index(reversedIntegerPart.startIndex, offsetBy: $0)
+            let offset = min($0 + 3, reversedIntegerPart.count)
+            let endIndex = reversedIntegerPart.index(reversedIntegerPart.startIndex, offsetBy: offset)
+            return String(reversedIntegerPart[startIndex..<endIndex])
+
+        }.joined(separator: " ")
 
         let formattedIntegerPart = String(spacedIntegerPart.reversed())
 

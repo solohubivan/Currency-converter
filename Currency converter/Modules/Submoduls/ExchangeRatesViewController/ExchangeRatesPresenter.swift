@@ -57,8 +57,8 @@ class ExchangeRatesPresenter: ExchangeRatesPresenterProtocol {
             guard let self = self, let exchangeRatesData = exchangeRatesData else { return }
 
             self.exchangeRates = exchangeRatesData.exchangeRate.map { rate in
-                let formattedSellRateNB = Double(String(format: "%.2f", rate.saleRateNB)) ?? Constants.defaulValue
-                let formattedPurchaseRateNB = Double(String(format: "%.2f", rate.purchaseRateNB)) ?? Constants.defaulValue
+                let formattedSellRateNB = Double(String(format: "%.2f", rate.saleRateNB)) ?? .zero
+                let formattedPurchaseRateNB = Double(String(format: "%.2f", rate.purchaseRateNB)) ?? .zero
 
                 return ExchangeRatesViewModel(
                     name: rate.currency,
@@ -71,11 +71,5 @@ class ExchangeRatesPresenter: ExchangeRatesPresenterProtocol {
                 self.view?.reloadTable()
             }
         }
-    }
-}
-
-extension ExchangeRatesPresenter {
-    private enum Constants {
-        static let defaulValue: Double = 0.0
     }
 }

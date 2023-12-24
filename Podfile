@@ -7,5 +7,6 @@ target 'Currency converter' do
   
   pod 'R.swift'
   pod 'InstantSearchVoiceOverlay'
+  pod 'IQKeyboardManagerSwift'
  
 end

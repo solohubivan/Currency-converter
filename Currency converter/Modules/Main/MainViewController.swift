@@ -33,7 +33,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var currencyInfoTableHeight: NSLayoutConstraint!
     @IBOutlet weak private var currencyInfoTableWidth: NSLayoutConstraint!
     @IBOutlet weak private var indentUnderTitleLabel: NSLayoutConstraint!
+    
     private var initialTableViewWidth: CGFloat?
+    
+    private let currencyValueCellNib = CurrencyValueTableViewCell.nib
 
     private var presenter: MainVCPresenterProtocol!
 
@@ -56,34 +59,16 @@ class MainViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if initialTableViewWidth == nil {
+        if initialTableViewWidth == nil && UIDevice.current.orientation.isPortrait {
             initialTableViewWidth = currencyShowView.frame.width
         }
     }
 
     override func viewWillLayoutSubviews() {
-            super.viewWillLayoutSubviews()
+        super.viewWillLayoutSubviews()
 
-        if UIDevice.current.orientation.isLandscape {
-            if isIpad {
-                currencyInfoTableWidth.constant = Constants.tableSizeForIpad
-                indentUnderTitleLabel.constant = Constants.landscapeTopIndent
-            } else {
-                currencyInfoTableWidth.constant = initialTableViewWidth!
-                indentUnderTitleLabel.constant = Constants.landscapeTopIndent
-            }
-
-        } else {
-            if isIpad {
-                currencyInfoTableWidth.constant = Constants.tableSizeForIpad
-                indentUnderTitleLabel.constant = Constants.standartTopIndent
-            } else {
-                if initialTableViewWidth == nil {
-                    currencyInfoTableWidth.constant = currencyShowView.frame.width
-                }
-                indentUnderTitleLabel.constant = Constants.standartTopIndent
-            }
-        }
+        updateLayoutBasedOnOrientation()
+        configureExchangeRateButtonStyle()
     }
 
     // MARK: - Setup UI
@@ -120,9 +105,17 @@ class MainViewController: UIViewController {
 
     private func setupSwitchModeSegmentedControl() {
         sellBuyModeSegmntContrl.setTitle(R.string.localizable.sell(), forSegmentAt: .zero)
-        sellBuyModeSegmntContrl.setTitle(R.string.localizable.buy(), forSegmentAt: Constants.firstSegment)
-        sellBuyModeSegmntContrl.backgroundColor = .white
+        sellBuyModeSegmntContrl.setTitle(R.string.localizable.buy(), forSegmentAt: Constants.one)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            for item in .zero...(self.sellBuyModeSegmntContrl.numberOfSegments-Constants.one) {
+                let backgroundSegmentView = self.sellBuyModeSegmntContrl.subviews[item]
+                backgroundSegmentView.isHidden = true
+            }
+        }
+
         sellBuyModeSegmntContrl.selectedSegmentTintColor = UIColor.hex007AFF
+
         let normalTextAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.hex003166,
             .font: R.font.latoRegular(size: 18)!
@@ -150,8 +143,7 @@ class MainViewController: UIViewController {
         currencyInfoTableView.delegate = self
         currencyInfoTableView.separatorColor = .clear
         currencyInfoTableView.backgroundColor = .clear
-        currencyInfoTableView.register(UINib(nibName: Constants.currencyInfoTableNibName, bundle: nil), forCellReuseIdentifier: Constants.currencyValuesCellIdentifier)
-
+        currencyInfoTableView.register(currencyValueCellNib, forCellReuseIdentifier: Constants.currencyValuesCellId)
         setupRefreshControl()
     }
 
@@ -184,50 +176,10 @@ class MainViewController: UIViewController {
         exchangeRateButton.layer.cornerRadius = Constants.rateButtonCornerRadius
         exchangeRateButton.layer.borderColor = UIColor.hex007AFF.cgColor
     }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    
+    private func configureExchangeRateButtonStyle() {
         exchangeRateButton.titleLabel?.font = R.font.latoBold(size: 18)
         exchangeRateButton.titleLabel?.textColor = UIColor.hex007AFF
-    }
-
-    // MARK: Methods which prevents objects from being overlaid by the keyboard
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-    }
-
-    @objc private func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-
-        var shouldMoveViewUp = false
-        let paddingForKeyboard: CGFloat = 230
-
-        if let activeTextField = self.view.findActiveTextField() {
-            let bottomOfTextField = activeTextField.convert(activeTextField.bounds, to: self.view).maxY
-            let topOfKeyboard = self.view.frame.height - keyboardSize.height
-
-            if bottomOfTextField > topOfKeyboard {
-                shouldMoveViewUp = true
-            }
-        }
-
-        if shouldMoveViewUp {
-            self.view.frame.origin.y = paddingForKeyboard - keyboardSize.height
-        }
     }
 
     // MARK: For allow dismiss keyboard by the tap on any free screen place
@@ -246,6 +198,15 @@ class MainViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+    
+    private func updateLayoutBasedOnOrientation() {
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let tableWidth = isIpad ? Constants.tableSizeForIpad : (initialTableViewWidth ?? currencyShowView.frame.width)
+        let topIndent = isLandscape ? Constants.landscapeTopIndent : Constants.standartTopIndent
+
+        currencyInfoTableWidth.constant = tableWidth
+        indentUnderTitleLabel.constant = topIndent
+    }
 
     private func checkInternetConnectionAndGetData() {
 
@@ -316,7 +277,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
-            withIdentifier: Constants.currencyValuesCellIdentifier,
+            withIdentifier: Constants.currencyValuesCellId,
             for: indexPath
         ) as? CurrencyValueTableViewCell ?? CurrencyValueTableViewCell()
 
@@ -375,29 +336,27 @@ extension MainViewController: MainViewProtocol {
 
 extension MainViewController {
     private enum Constants {
-        static let currencyValuesCellIdentifier: String = "CurrencyValuesTableViewCell"
-        static let currencyInfoTableNibName: String = "CurrencyValueTableViewCell"
-
+        static let currencyValuesCellId: String = "CurrencyValueTableViewCell"
+        
         static let viewCornerRadius: CGFloat = 10
         static let rateButtonCornerRadius: CGFloat = 14
         static let rateButtonBorderWidth: CGFloat = 1
-
-        static let firstSegment: Int = 1
-
+        
         static let viewShadowOpacity: Float = 0.2
         static let viewShadowHeight: CGFloat = 5
         static let viewShadowRadius: CGFloat = 2
         static let shadowOffset = CGSize(width: .zero, height: viewShadowHeight)
-
+        
+        static let one: Int = 1
         static let threeRows: Int = 3
         static let fourRows: Int = 4
         static let fiveRows: Int = 5
         static let sixRows: Int = 6
+        
         static let tableHeight3Rows: CGFloat = 180
         static let tableHeight4Rows: CGFloat = 225
         static let tableHeight5Rows: CGFloat = 285
         static let tableHeight6Rows: CGFloat = 320
-
         static let tableSizeForIpad: CGFloat = 400
         static let landscapeTopIndent: CGFloat = 10
         static let standartTopIndent: CGFloat = 38

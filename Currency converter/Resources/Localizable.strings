@@ -33,6 +33,5 @@
 "dd_mm_yyyy" = "dd.mm.yyyy";
 "currency_exchange_rates_are_available_from_december_1_2014" = "Currency exchange rates are available from December 1, 2014";
 "ok" = "OK";
-
 "info_alert_message" = "National Bank\nSalling Rate is %.2f %@\nBuying Rate is %.2f %@";
 "uah" = "UAH";
