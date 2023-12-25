@@ -27,6 +27,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var sellBuyModeSegmntContrl: UISegmentedControl!
     @IBOutlet weak private var currencyInfoTableView: UITableView!
     @IBOutlet weak private var addCurrencyButton: UIButton!
+    @IBOutlet weak private var shareCurrencyInfoButton: UIButton!
     @IBOutlet weak private var updatedInfoLabel: UILabel!
     @IBOutlet weak private var exchangeRateButton: UIButton!
 
@@ -263,8 +264,15 @@ class MainViewController: UIViewController {
         let textToShare = presenter.createShareText(currencyNames: currencyNames, currencyValues: currencyValues)
 
         let shareViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
+
+        if let popoverController = shareViewController.popoverPresentationController {
+                popoverController.sourceView = shareCurrencyInfoButton
+                popoverController.sourceRect = shareCurrencyInfoButton.bounds
+            }
+
         present(shareViewController, animated: true, completion: nil)
     }
+
 }
 
 // MARK: - Extentions

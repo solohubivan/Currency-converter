@@ -20,6 +20,7 @@
                 <outlet property="indentUnderTitleLabel" destination="WYl-t2-z3w" id="IOD-fz-god"/>
                 <outlet property="mainTitleLabel" destination="OjH-lN-Pbl" id="5Hc-K4-X2O"/>
                 <outlet property="sellBuyModeSegmntContrl" destination="lHc-n2-7O0" id="cQW-Yr-YNr"/>
+                <outlet property="shareCurrencyInfoButton" destination="Wbq-PQ-dWP" id="93K-gc-KIN"/>
                 <outlet property="updatedInfoLabel" destination="zYG-8O-5gs" id="CwX-ns-DsY"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ruc-12-SaE"/>
             </connections>

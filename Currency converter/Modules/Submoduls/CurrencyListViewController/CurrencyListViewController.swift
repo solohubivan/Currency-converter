@@ -84,6 +84,13 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
         currencyListTable.backgroundColor = .clear
         currencyListTable.overrideUserInterfaceStyle = .light
 
+        currencyListTable.applyShadow(
+            opacity: Constants.tableShadowOpacity,
+            offset: Constants.shadowOffset,
+            radius: Constants.tableShadowRadius,
+            cornerRadius: Constants.shadowCornerRadius
+        )
+
         currenciesList = presenter!.getAllCurrenciesData().map { $0.name }
         currenciesList.sort()
         configureSections()
@@ -271,5 +278,11 @@ extension CurrencyListViewController {
         static let tableRowHegiht: CGFloat = 48.0
         static let currencyListTableCellId: String = "CurrenciesListTableViewCell"
         static let one: Int = 1
+
+        static let tableShadowOpacity: Float = 0.2
+        static let tableShadowHeight: CGFloat = 5
+        static let tableShadowRadius: CGFloat = 2
+        static let shadowOffset = CGSize(width: .zero, height: tableShadowHeight)
+        static let shadowCornerRadius: CGFloat = 10
     }
 }
