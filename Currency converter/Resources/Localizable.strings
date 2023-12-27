@@ -29,9 +29,9 @@
 
 //MARK: - ExchangeRatesViewController
 "exchange_rate" = "Exchange Rate";
-"entere_the_date_to_view_currency_exchange_rates" = "Enter the date to view currency exchange rates";
+"enter_the_date_to_view_currency_exchange_rates" = "Enter the date to view currency exchange rates";
 "dd_mm_yyyy" = "dd.mm.yyyy";
-"currency_exchange_rates_are_available_from_december_1_2014" = "Currency exchange rates are available from December 1, 2014";
+"currency_exchange_rates_are_available_from" = "Currency exchange rates are available from %@";
 "ok" = "OK";
 "info_alert_message" = "National Bank\nSalling Rate is %.2f %@\nBuying Rate is %.2f %@";
 "uah" = "UAH";

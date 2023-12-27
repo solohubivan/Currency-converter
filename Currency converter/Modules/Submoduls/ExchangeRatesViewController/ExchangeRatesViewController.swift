@@ -28,9 +28,7 @@ class ExchangeRatesViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.hexF5F5F5
-
         presenter = ExchangeRatesPresenter(view: self)
-
         setupUI()
     }
 
@@ -41,9 +39,8 @@ class ExchangeRatesViewController: UIViewController {
         setupDismissButton()
         setupDescriptionLabel()
         setupSearchingDateTF()
-        setupDescribeTimeIntervalLabel()
+        setupDescribeTimeIntervalLabel(date: Constants.minDateToSearch)
         setupExchangeRateTable()
-
         createDatepicker()
     }
 
@@ -64,7 +61,7 @@ class ExchangeRatesViewController: UIViewController {
     }
 
     private func setupDescriptionLabel() {
-        descriptionLabel.text = R.string.localizable.entere_the_date_to_view_currency_exchange_rates()
+        descriptionLabel.text = R.string.localizable.enter_the_date_to_view_currency_exchange_rates()
         descriptionLabel.font = R.font.latoSemiBold(size: 17)
         descriptionLabel.textColor = UIColor.hex575757
     }
@@ -78,8 +75,10 @@ class ExchangeRatesViewController: UIViewController {
         searchingDateTF.overrideUserInterfaceStyle = .light
     }
 
-    private func setupDescribeTimeIntervalLabel() {
-        describeTimeInterval.text = R.string.localizable.currency_exchange_rates_are_available_from_december_1_2014()
+    private func setupDescribeTimeIntervalLabel(date: String) {
+        let localizedString = R.string.localizable.currency_exchange_rates_are_available_from(date)
+
+        describeTimeInterval.text = localizedString
         describeTimeInterval.font = R.font.latoBold(size: 20)
         describeTimeInterval.textColor = UIColor.lightGray
         describeTimeInterval.textAlignment = .center

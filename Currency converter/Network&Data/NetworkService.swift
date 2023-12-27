@@ -31,9 +31,12 @@ class NetworkService {
 
             do {
                 let defaultCurrencies = try JSONDecoder().decode([DefaultCurrenciesData].self, from: data)
-                completion(defaultCurrencies, nil, nil)
+                let response = CurrencyDataResponse(defaultCurrenciesData: defaultCurrencies,
+                                                    currencyData: nil,
+                                                    currencyViewModels: nil)
+                completion(response)
             } catch {
-                completion(nil, nil, nil)
+                completion(CurrencyDataResponse(defaultCurrenciesData: nil, currencyData: nil, currencyViewModels: nil))
             }
         }
 
@@ -47,9 +50,12 @@ class NetworkService {
                                                                               sellRate: $0.value,
                                                                               buyRate: $0.value)
                 }
-                completion(nil, currencyData, allCurrenciesData)
+                let response = CurrencyDataResponse(defaultCurrenciesData: nil,
+                                                    currencyData: currencyData,
+                                                    currencyViewModels: allCurrenciesData)
+                completion(response)
             } catch {
-                completion(nil, nil, nil)
+                completion(CurrencyDataResponse(defaultCurrenciesData: nil, currencyData: nil, currencyViewModels: nil))
             }
         }
         firstTask.resume()

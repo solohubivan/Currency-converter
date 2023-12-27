@@ -110,10 +110,10 @@ struct _R {
       /// Key: currency_converter
       var currency_converter: RswiftResources.StringResource { .init(key: "currency_converter", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
-      /// Value: Currency exchange rates are available from December 1, 2014
+      /// Value: Currency exchange rates are available from %@
       ///
-      /// Key: currency_exchange_rates_are_available_from_december_1_2014
-      var currency_exchange_rates_are_available_from_december_1_2014: RswiftResources.StringResource { .init(key: "currency_exchange_rates_are_available_from_december_1_2014", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+      /// Key: currency_exchange_rates_are_available_from
+      var currency_exchange_rates_are_available_from: RswiftResources.StringResource1<String> { .init(key: "currency_exchange_rates_are_available_from", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: dd.mm.yyyy
       ///
@@ -122,8 +122,8 @@ struct _R {
 
       /// Value: Enter the date to view currency exchange rates
       ///
-      /// Key: entere_the_date_to_view_currency_exchange_rates
-      var entere_the_date_to_view_currency_exchange_rates: RswiftResources.StringResource { .init(key: "entere_the_date_to_view_currency_exchange_rates", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
+      /// Key: enter_the_date_to_view_currency_exchange_rates
+      var enter_the_date_to_view_currency_exchange_rates: RswiftResources.StringResource { .init(key: "enter_the_date_to_view_currency_exchange_rates", tableName: "Localizable", source: source, developmentValue: nil, comment: nil) }
 
       /// Value: Exchange Rate
       ///

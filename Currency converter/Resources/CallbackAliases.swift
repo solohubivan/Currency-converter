@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct CurrencyDataResponse {
+    var defaultCurrenciesData: [DefaultCurrenciesData]?
+    var currencyData: CurrencyData?
+    var currencyViewModels: [CurrencyViewModel]?
+}
+
 typealias CallbackString = (String?) -> Void
 
-typealias CurrencyDataCompletion = ([DefaultCurrenciesData]?, CurrencyData?, [CurrencyViewModel]?) -> Void
+typealias CurrencyDataCompletion = (CurrencyDataResponse) -> Void

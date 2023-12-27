@@ -17,7 +17,6 @@ protocol MainViewProtocol: AnyObject {
     func updateUI(with currencyData: CurrencyData)
     func reloadDataCurrencyInfoTable()
     func updateTableHeight()
-    func showNoDataAlert()
 }
 
 class MainViewController: UIViewController {
@@ -43,17 +42,11 @@ class MainViewController: UIViewController {
 
     private var convertingMode = ConvertingMode.sell
 
-    private var isIpad: Bool {
-        return UIDevice.current.userInterfaceIdiom == .pad
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         presenter = MainPresenter(view: self)
-
         checkInternetConnectionAndGetData()
-
         setupUI()
     }
 
@@ -202,7 +195,9 @@ class MainViewController: UIViewController {
 
     private func updateLayoutBasedOnOrientation() {
         let isLandscape = UIDevice.current.orientation.isLandscape
-        let tableWidth = isIpad ? Constants.tableSizeForIpad : (initialTableViewWidth ?? currencyShowView.frame.width)
+        let tableWidth = UIDevice.isIpad
+            ? Constants.tableSizeForIpad
+            : (initialTableViewWidth ?? currencyShowView.frame.width)
         let topIndent = isLandscape ? Constants.landscapeTopIndent : Constants.standartTopIndent
 
         currencyInfoTableWidth.constant = tableWidth
@@ -223,18 +218,17 @@ class MainViewController: UIViewController {
     }
 
     private func showNoInternetAlert() {
-        let alertController = UIAlertController(
+        let alertController = AlertFactory.createAlert(
             title: R.string.localizable.no_internet_connection(),
-            message: R.string.localizable.please_allow_this_app_to_internet_access(),
-            preferredStyle: .alert)
+            message: R.string.localizable.please_allow_this_app_to_internet_access()
+        )
 
         let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel)
-
         let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(settingsURL)
-                }
+                UIApplication.shared.open(settingsURL)
             }
+        }
 
         alertController.addAction(cancelAction)
         alertController.addAction(settingsAction)
@@ -263,16 +257,13 @@ class MainViewController: UIViewController {
 
         let textToShare = presenter.createShareText(currencyNames: currencyNames, currencyValues: currencyValues)
 
-        let shareViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
-
-        if let popoverController = shareViewController.popoverPresentationController {
-                popoverController.sourceView = shareCurrencyInfoButton
-                popoverController.sourceRect = shareCurrencyInfoButton.bounds
-            }
+        let shareViewController = ShareUtility.createShareViewController(
+            textToShare: textToShare,
+            sourceView: shareCurrencyInfoButton
+        )
 
         present(shareViewController, animated: true, completion: nil)
     }
-
 }
 
 // MARK: - Extentions
@@ -324,21 +315,6 @@ extension MainViewController: MainViewProtocol {
 
     func reloadDataCurrencyInfoTable() {
         currencyInfoTableView.reloadData()
-    }
-
-    func showNoDataAlert() {
-        let alertController = UIAlertController(
-            title: R.string.localizable.no_data(),
-            message: R.string.localizable.please_allow_this_app_to_internet_access(),
-            preferredStyle: .alert)
-        let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(settingsURL)
-                }
-            }
-        alertController.addAction(settingsAction)
-
-        present(alertController, animated: true, completion: nil)
     }
 
     func updateTableHeight() {

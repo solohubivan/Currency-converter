@@ -11,6 +11,9 @@
 		2242F9932AD9804C00776D78 /* CurrencyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */; };
 		2242F9952AD980F100776D78 /* CurrencyListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2242F9942AD980F100776D78 /* CurrencyListViewController.xib */; };
 		224FC9A62B2EADB0009493E7 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224FC9A52B2EADB0009493E7 /* String+Ext.swift */; };
+		2260D3C42B3C86F000399743 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260D3C32B3C86F000399743 /* Utility.swift */; };
+		2260D3C62B3C8B8100399743 /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260D3C52B3C8B8100399743 /* AlertFactory.swift */; };
+		2260D3C82B3C909D00399743 /* ShareUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260D3C72B3C909D00399743 /* ShareUtility.swift */; };
 		2269F4142B2885D500796D34 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2269F4132B2885D500796D34 /* Config.plist */; };
 		226E5AF82AF52173006D923D /* ExchangeRatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226E5AF72AF52173006D923D /* ExchangeRatesViewController.swift */; };
 		226E5AFA2AF52197006D923D /* ExchangeRatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 226E5AF92AF52197006D923D /* ExchangeRatesViewController.xib */; };
@@ -20,7 +23,7 @@
 		2276AA0D2ABA049F0003BECB /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */; };
 		2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */; };
 		228080342AC840530090CC2C /* CurrencyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228080332AC840530090CC2C /* CurrencyData.swift */; };
-		228844BC2AE723DE004EA5B7 /* CurrencyDescribtions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */; };
+		228844BC2AE723DE004EA5B7 /* CurrencyDescriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228844BB2AE723DE004EA5B7 /* CurrencyDescriptions.swift */; };
 		2294D9412B1E333100CC52DF /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2294D9402B1E333100CC52DF /* NetworkMonitor.swift */; };
 		22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */; };
 		22997FCC2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */; };
@@ -51,6 +54,9 @@
 		2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListViewController.swift; sourceTree = "<group>"; };
 		2242F9942AD980F100776D78 /* CurrencyListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyListViewController.xib; sourceTree = "<group>"; };
 		224FC9A52B2EADB0009493E7 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		2260D3C32B3C86F000399743 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		2260D3C52B3C8B8100399743 /* AlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFactory.swift; sourceTree = "<group>"; };
+		2260D3C72B3C909D00399743 /* ShareUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareUtility.swift; sourceTree = "<group>"; };
 		2269F4132B2885D500796D34 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		226E5AF72AF52173006D923D /* ExchangeRatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesViewController.swift; sourceTree = "<group>"; };
 		226E5AF92AF52197006D923D /* ExchangeRatesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExchangeRatesViewController.xib; sourceTree = "<group>"; };
@@ -60,7 +66,7 @@
 		2276AA0C2ABA049F0003BECB /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		2276AA0F2ABA39DD0003BECB /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		228080332AC840530090CC2C /* CurrencyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyData.swift; sourceTree = "<group>"; };
-		228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDescribtions.swift; sourceTree = "<group>"; };
+		228844BB2AE723DE004EA5B7 /* CurrencyDescriptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyDescriptions.swift; sourceTree = "<group>"; };
 		2294D9402B1E333100CC52DF /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		22997FC92AC2553B00B7D200 /* CurrencyValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyValueTableViewCell.swift; sourceTree = "<group>"; };
 		22997FCA2AC2553B00B7D200 /* CurrencyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyValueTableViewCell.xib; sourceTree = "<group>"; };
@@ -215,6 +221,9 @@
 				22D234182ABD696F009B2B8F /* UIColorExtensions.swift */,
 				224FC9A52B2EADB0009493E7 /* String+Ext.swift */,
 				223205522B3616C0008DB247 /* NSObject+Nib.swift */,
+				2260D3C32B3C86F000399743 /* Utility.swift */,
+				2260D3C52B3C8B8100399743 /* AlertFactory.swift */,
+				2260D3C72B3C909D00399743 /* ShareUtility.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -224,7 +233,7 @@
 			children = (
 				22D96E562AB40963003F17A1 /* Fonts */,
 				22D96E3F2AB3E70C003F17A1 /* Assets.xcassets */,
-				228844BB2AE723DE004EA5B7 /* CurrencyDescribtions.swift */,
+				228844BB2AE723DE004EA5B7 /* CurrencyDescriptions.swift */,
 				22D96E512AB40016003F17A1 /* Localizable.strings */,
 				22B56DF72B21472D005858E3 /* CallbackAliases.swift */,
 			);
@@ -383,7 +392,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$SRCROOT/R.generated.swift",
+				$SRCROOT/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -438,10 +447,11 @@
 				22D96E3B2AB3E70B003F17A1 /* MainViewController.swift in Sources */,
 				2276AA102ABA39DD0003BECB /* UIViewExtensions.swift in Sources */,
 				228080342AC840530090CC2C /* CurrencyData.swift in Sources */,
-				228844BC2AE723DE004EA5B7 /* CurrencyDescribtions.swift in Sources */,
+				228844BC2AE723DE004EA5B7 /* CurrencyDescriptions.swift in Sources */,
 				22731D852AF560A000CE0AEB /* ExchangeRatesData.swift in Sources */,
 				22A022442AC969D700C53A2F /* MainPresenter.swift in Sources */,
 				22A115A12B190FBB00586F88 /* UserDefaultsManager.swift in Sources */,
+				2260D3C82B3C909D00399743 /* ShareUtility.swift in Sources */,
 				22D96E372AB3E70B003F17A1 /* AppDelegate.swift in Sources */,
 				2294D9412B1E333100CC52DF /* NetworkMonitor.swift in Sources */,
 				22D96E392AB3E70B003F17A1 /* SceneDelegate.swift in Sources */,
@@ -449,10 +459,12 @@
 				22997FCB2AC2553B00B7D200 /* CurrencyValueTableViewCell.swift in Sources */,
 				22B56DF82B21472D005858E3 /* CallbackAliases.swift in Sources */,
 				224FC9A62B2EADB0009493E7 /* String+Ext.swift in Sources */,
+				2260D3C42B3C86F000399743 /* Utility.swift in Sources */,
 				22D96D512B16BA76007C1592 /* NetworkService.swift in Sources */,
 				22731D832AF556AB00CE0AEB /* ExchangeRatesPresenter.swift in Sources */,
 				22D96E502AB3FF01003F17A1 /* R.generated.swift in Sources */,
 				223205532B3616C0008DB247 /* NSObject+Nib.swift in Sources */,
+				2260D3C62B3C8B8100399743 /* AlertFactory.swift in Sources */,
 				2242F9932AD9804C00776D78 /* CurrencyListViewController.swift in Sources */,
 				22D234192ABD696F009B2B8F /* UIColorExtensions.swift in Sources */,
 			);

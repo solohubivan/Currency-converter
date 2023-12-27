@@ -31,7 +31,6 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.hexF5F5F5
-
         setupUI()
     }
 

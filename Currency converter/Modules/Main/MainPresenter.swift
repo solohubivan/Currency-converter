@@ -120,19 +120,19 @@ class MainPresenter: MainVCPresenterProtocol {
             self.view?.reloadDataCurrencyInfoTable()
             self.view?.updateUI(with: self.currencyData)
         } else {
-            NetworkService.shared.getCurrencyData { [weak self] defaultCurrencies, currencyData, allCurrenciesData in
+            NetworkService.shared.getCurrencyData { [weak self]  response in
                 DispatchQueue.main.async {
-                    if let defaultCurrencies = defaultCurrencies {
+                    if let defaultCurrencies = response.defaultCurrenciesData {
                         self?.activeCurrencies = self?.convertCurrenciesToUSD(currencies: defaultCurrencies) ?? []
                         UserDefaultsManager.shared.saveBaseCurrencies(self!.activeCurrencies)
                     }
 
-                    if let allCurrenciesData = allCurrenciesData {
+                    if let allCurrenciesData = response.currencyViewModels {
                         self?.allCurrenciesData = allCurrenciesData
                         UserDefaultsManager.shared.saveAllCurrenciesData(allCurrenciesData)
                     }
 
-                    if let currencyData = currencyData {
+                    if let currencyData = response.currencyData {
                         self?.currencyData = currencyData
                         self?.view?.updateUI(with: currencyData)
                     }
