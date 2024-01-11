@@ -113,7 +113,7 @@ class MainPresenter: MainVCPresenterProtocol {
         view?.reloadDataCurrencyInfoTable()
     }
 
-    func getCurrencyData(offlineMode: Bool) {
+    public func getCurrencyData(offlineMode: Bool) {
         if offlineMode {
             self.activeCurrencies = UserDefaultsManager.shared.loadBaseCurrencies() ?? []
             self.allCurrenciesData = UserDefaultsManager.shared.loadAllCurrenciesData() ?? []

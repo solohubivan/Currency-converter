@@ -13,6 +13,7 @@ enum ConvertingMode {
     case buy
 }
 
+// sourcery: AutoMockable
 protocol MainViewProtocol: AnyObject {
     func updateUI(with currencyData: CurrencyData)
     func reloadDataCurrencyInfoTable()
@@ -218,20 +219,24 @@ class MainViewController: UIViewController {
     }
 
     private func showNoInternetAlert() {
-        let alertController = AlertFactory.createAlert(
-            title: R.string.localizable.no_internet_connection(),
-            message: R.string.localizable.please_allow_this_app_to_internet_access()
+        let cancelAction = AlertFactory.createAlertAction(
+            title: R.string.localizable.use_offline(),
+            style: .cancel
         )
-
-        let cancelAction = UIAlertAction(title: R.string.localizable.use_offline(), style: .cancel)
-        let settingsAction = UIAlertAction(title: R.string.localizable.settings(), style: .default) { _ in
+        let settingsAction = AlertFactory.createAlertAction(
+            title: R.string.localizable.settings(),
+            style: .default
+        ) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(settingsURL)
             }
         }
 
-        alertController.addAction(cancelAction)
-        alertController.addAction(settingsAction)
+        let alertController = AlertFactory.createAlert(
+            title: R.string.localizable.no_internet_connection(),
+            message: R.string.localizable.please_allow_this_app_to_internet_access(),
+            actions: [cancelAction, settingsAction]
+        )
 
         present(alertController, animated: true, completion: nil)
     }

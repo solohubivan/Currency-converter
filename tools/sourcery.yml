@@ -1,0 +1,5 @@
+sources:
+ - ../Currency converter
+templates:
+ - ./Templates/AutoMockable.stencil
+output: ../Currency converterTests/Generated
