@@ -45,7 +45,6 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         presenter = MainPresenter(view: self)
         checkInternetConnectionAndGetData()
         setupUI()

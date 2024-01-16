@@ -14,6 +14,12 @@ struct CurrencyViewModel: Codable {
     var buyRate: Double
     var calculatedResult: Double?
 }
+// sourcery: AutoMockable
+protocol PresenterProptocolMock: AnyObject {
+    var activeCurrencies: [CurrencyViewModel] { get set }
+    func getActiveCurrenciesCount() -> Int
+    func removeActiveCurrencies(at index: Int)
+}
 
 protocol MainVCPresenterProtocol: AnyObject {
     func getCurrencyData(offlineMode: Bool)

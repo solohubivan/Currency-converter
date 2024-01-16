@@ -12,16 +12,19 @@ final class MainPresenterPublicTests: XCTestCase {
 
     private var viewMock: MainViewProtocolMock!
     private var presenter: MainPresenter!
+//    private var mockPresenter: PresenterProptocolMock!
 
     override func setUp() {
         super.setUp()
         viewMock = MainViewProtocolMock()
         presenter = MainPresenter(view: viewMock)
+ //       mockPresenter = PresenterProptocolMockMock()
     }
 
     override func tearDown() {
         viewMock = nil
         presenter = nil
+ //       mockPresenter = nil
         super.tearDown()
     }
 
@@ -41,16 +44,46 @@ final class MainPresenterPublicTests: XCTestCase {
 
         XCTAssertEqual(resultString, expectedString)
     }
-    
+
     func testGetActiveCurrenciesCount() {
-        // Настроить мок так, чтобы он возвращал определенное количество активных валют
-        viewMock.getActiveCurrenciesCountReturnValue = 5
+        let mockPresenter = PresenterProptocolMockMock()
+        mockPresenter.activeCurrencies = [
+            CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0),
+            CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.85)
+        ]
 
-        // Вызов метода getActiveCurrenciesCount
-        let count = presenter.getActiveCurrenciesCount()
+        mockPresenter.getActiveCurrenciesCountReturnValue = mockPresenter.activeCurrencies.count
+        let count = mockPresenter.getActiveCurrenciesCount()
 
-        // Проверить, что возвращаемое значение соответствует ожидаемому
-        XCTAssertEqual(count, 5, "Метод getActiveCurrenciesCount должен возвращать правильное количество валют.")
+        XCTAssertEqual(count, 2)
+    }
+
+    func testRemoveActiveCurrency() {
+        let mockPresenter = PresenterProptocolMockMock()
+        mockPresenter.activeCurrencies = [
+            CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0),
+            CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.85)
+        ]
+
+        mockPresenter.getActiveCurrenciesCountReturnValue = mockPresenter.activeCurrencies.count
+
+        mockPresenter.getActiveCurrenciesCountClosure = {
+            return mockPresenter.getActiveCurrenciesCountReturnValue
+        }
+
+        XCTAssertEqual(mockPresenter.getActiveCurrenciesCount(), 2)
+
+        mockPresenter.removeActiveCurrencies(at: 0)
+        XCTAssertEqual(mockPresenter.getActiveCurrenciesCount(), 1)
+
+//        let remainingCurrency = mockPresenter.activeCurrencies.first
+//        XCTAssertEqual(remainingCurrency?.name, "EUR")
+//        XCTAssertEqual(remainingCurrency?.sellRate, 0.9)
+//        XCTAssertEqual(remainingCurrency?.buyRate, 0.85)
+    }
+
+    func testRemoveActiveCurrencyCallsViewMethods() {
+
     }
 
 /*

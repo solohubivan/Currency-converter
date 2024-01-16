@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2210CC372B4C8B010093C247 /* MainViewProtocol+AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2210CC362B4C8B010093C247 /* MainViewProtocol+AutoMockable.generated.swift */; };
+		221C51912B552C2B00B66B94 /* PresenterProptocolMock+AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C51902B552C2B00B66B94 /* PresenterProptocolMock+AutoMockable.generated.swift */; };
 		223205532B3616C0008DB247 /* NSObject+Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223205522B3616C0008DB247 /* NSObject+Nib.swift */; };
 		2242F9932AD9804C00776D78 /* CurrencyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */; };
 		2242F9952AD980F100776D78 /* CurrencyListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2242F9942AD980F100776D78 /* CurrencyListViewController.xib */; };
@@ -63,6 +64,7 @@
 		084A4766B39B267934172286 /* Pods-Currency converter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Currency converter.release.xcconfig"; path = "Target Support Files/Pods-Currency converter/Pods-Currency converter.release.xcconfig"; sourceTree = "<group>"; };
 		1CBF47A3F71B56E6207391C1 /* Pods_Currency_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Currency_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2210CC362B4C8B010093C247 /* MainViewProtocol+AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MainViewProtocol+AutoMockable.generated.swift"; sourceTree = "<group>"; };
+		221C51902B552C2B00B66B94 /* PresenterProptocolMock+AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PresenterProptocolMock+AutoMockable.generated.swift"; sourceTree = "<group>"; };
 		223205522B3616C0008DB247 /* NSObject+Nib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Nib.swift"; sourceTree = "<group>"; };
 		2242F9922AD9804C00776D78 /* CurrencyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyListViewController.swift; sourceTree = "<group>"; };
 		2242F9942AD980F100776D78 /* CurrencyListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrencyListViewController.xib; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				2210CC362B4C8B010093C247 /* MainViewProtocol+AutoMockable.generated.swift */,
+				221C51902B552C2B00B66B94 /* PresenterProptocolMock+AutoMockable.generated.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22730F292B4437DC00476BE6 /* MainPresenterPublicTests.swift in Sources */,
+				221C51912B552C2B00B66B94 /* PresenterProptocolMock+AutoMockable.generated.swift in Sources */,
 				2210CC372B4C8B010093C247 /* MainViewProtocol+AutoMockable.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
