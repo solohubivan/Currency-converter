@@ -8,20 +8,7 @@
 import Foundation
 import UIKit
 
-struct CurrencyViewModel: Codable {
-    var name: String
-    var sellRate: Double
-    var buyRate: Double
-    var calculatedResult: Double?
-}
-// sourcery: AutoMockable
-protocol PresenterProptocolMock: AnyObject {
-    var activeCurrencies: [CurrencyViewModel] { get set }
-    func getActiveCurrenciesCount() -> Int
-    func removeActiveCurrencies(at index: Int)
-}
-
-protocol MainVCPresenterProtocol: AnyObject {
+protocol MainPresenterProtocol: AnyObject {
     func getCurrencyData(offlineMode: Bool)
     func configureLastUpdatedLabel() -> String
     func getActiveCurrencies() -> [CurrencyViewModel]
@@ -35,7 +22,7 @@ protocol MainVCPresenterProtocol: AnyObject {
     func removeActiveCurrencies(at index: Int)
 }
 
-class MainPresenter: MainVCPresenterProtocol {
+class MainPresenter: MainPresenterProtocol {
 
     private var currencyData = CurrencyData()
     private var defaultCurrenciesData = DefaultCurrenciesData()

@@ -13,6 +13,7 @@ let R = _R(bundle: Bundle(for: BundleFinder.self))
 struct _R {
   let bundle: Foundation.Bundle
 
+  let id = id()
   let reuseIdentifier = reuseIdentifier()
 
   var string: string { .init(bundle: bundle, preferredLanguages: nil, locale: nil) }
@@ -318,6 +319,46 @@ struct _R {
 
     /// Resource file `SFProText-Semibold.ttf`.
     var sfProTextSemiboldTtf: RswiftResources.FileResource { .init(name: "SFProText-Semibold", pathExtension: "ttf", bundle: bundle, locale: LocaleReference.none) }
+  }
+
+  /// This `_R.id` struct is generated, and contains static references to 3 accessibility identifiers.
+  struct id {
+    let currencyListViewController = currencyListViewController()
+    let exchangeRatesViewController = exchangeRatesViewController()
+    let mainViewController = mainViewController()
+
+    /// This `_R.id.currencyListViewController` struct is generated, and contains static references to 1 accessibility identifiers.
+    struct currencyListViewController {
+
+      /// Accessibility identifier `currencyListVCTitleLabel`.
+      let currencyListVCTitleLabel = "currencyListVCTitleLabel"
+    }
+
+    /// This `_R.id.exchangeRatesViewController` struct is generated, and contains static references to 2 accessibility identifiers.
+    struct exchangeRatesViewController {
+
+      /// Accessibility identifier `exchangeRateVCInfoLabel`.
+      let exchangeRateVCInfoLabel = "exchangeRateVCInfoLabel"
+
+      /// Accessibility identifier `exchangeRatesTF`.
+      let exchangeRatesTF = "exchangeRatesTF"
+    }
+
+    /// This `_R.id.mainViewController` struct is generated, and contains static references to 4 accessibility identifiers.
+    struct mainViewController {
+
+      /// Accessibility identifier `exchangeRateVCButton`.
+      let exchangeRateVCButton = "exchangeRateVCButton"
+
+      /// Accessibility identifier `mainLastUpdatedLabel`.
+      let mainLastUpdatedLabel = "mainLastUpdatedLabel"
+
+      /// Accessibility identifier `mainTitleLabel`.
+      let mainTitleLabel = "mainTitleLabel"
+
+      /// Accessibility identifier `shareButton`.
+      let shareButton = "shareButton"
+    }
   }
 
   /// This `_R.nib` struct is generated, and contains static references to 4 nibs.

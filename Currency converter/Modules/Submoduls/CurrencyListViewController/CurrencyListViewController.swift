@@ -16,7 +16,7 @@ class CurrencyListViewController: UIViewController, VoiceOverlayDelegate {
     @IBOutlet weak var currencyListTable: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
-    var presenter: MainVCPresenterProtocol?
+    var presenter: MainPresenterProtocol?
 
     private var currenciesList = [String]()
     private let popularCurrencies = ["UAH", "USD", "EUR"]

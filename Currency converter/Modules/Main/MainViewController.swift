@@ -39,7 +39,7 @@ class MainViewController: UIViewController {
 
     private let currencyValueCellNib = CurrencyValueTableViewCell.nib
 
-    private var presenter: MainVCPresenterProtocol!
+    private var presenter: MainPresenterProtocol!
 
     private var convertingMode = ConvertingMode.sell
 

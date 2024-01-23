@@ -38,6 +38,7 @@
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currency Converter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OjH-lN-Pbl" userLabel="MainTitleLabel">
                     <rect key="frame" x="16" y="111" width="149.66666666666666" height="21"/>
+                    <accessibility key="accessibilityConfiguration" identifier="mainTitleLabel"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -78,6 +79,7 @@
                                         </button>
                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wbq-PQ-dWP" userLabel="shareButton">
                                             <rect key="frame" x="313" y="372.33333333333337" width="44" height="44"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="shareButton"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="7vK-Ud-ybx"/>
                                                 <constraint firstAttribute="height" constant="44" id="df5-wp-o2I"/>
@@ -114,6 +116,7 @@
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYG-8O-5gs">
                                     <rect key="frame" x="16" y="436.33333333333337" width="95.333333333333329" height="19.333333333333314"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="mainLastUpdatedLabel"/>
                                     <attributedString key="attributedText">
                                         <fragment content="Last updated">
                                             <attributes>
@@ -127,6 +130,7 @@
                                 </label>
                                 <button opaque="NO" tag="1" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uzr-vT-C38">
                                     <rect key="frame" x="16" y="498.66666666666663" width="361" height="48"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="exchangeRateVCButton"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="plain" title="Bank Exchange Rate">
                                         <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>

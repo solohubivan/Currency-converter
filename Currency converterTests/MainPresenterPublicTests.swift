@@ -12,19 +12,17 @@ final class MainPresenterPublicTests: XCTestCase {
 
     private var viewMock: MainViewProtocolMock!
     private var presenter: MainPresenter!
-//    private var mockPresenter: PresenterProptocolMock!
 
     override func setUp() {
         super.setUp()
         viewMock = MainViewProtocolMock()
         presenter = MainPresenter(view: viewMock)
- //       mockPresenter = PresenterProptocolMockMock()
     }
 
     override func tearDown() {
         viewMock = nil
         presenter = nil
- //       mockPresenter = nil
+        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
         super.tearDown()
     }
 
@@ -46,76 +44,82 @@ final class MainPresenterPublicTests: XCTestCase {
     }
 
     func testGetActiveCurrenciesCount() {
-        let mockPresenter = PresenterProptocolMockMock()
-        mockPresenter.activeCurrencies = [
-            CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0),
-            CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.85)
-        ]
+        UserDefaultsManager.shared.saveAllCurrenciesData([CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0)])
 
-        mockPresenter.getActiveCurrenciesCountReturnValue = mockPresenter.activeCurrencies.count
-        let count = mockPresenter.getActiveCurrenciesCount()
+        let sut = MainPresenter(view: viewMock)
+        sut.getCurrencyData(offlineMode: true)
 
-        XCTAssertEqual(count, 2)
+        XCTAssertEqual(sut.getActiveCurrenciesCount(), 0)
+
+        sut.addCurrency("USD")
+
+        XCTAssertEqual(sut.getActiveCurrenciesCount(), 1)
     }
 
-    func testRemoveActiveCurrency() {
-        let mockPresenter = PresenterProptocolMockMock()
-        mockPresenter.activeCurrencies = [
-            CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0),
-            CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.85)
-        ]
+    func testRemoveActiveCurrency1() {
+        let currencies = CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.8)
+        UserDefaultsManager.shared.saveBaseCurrencies([currencies])
 
-        mockPresenter.getActiveCurrenciesCountReturnValue = mockPresenter.activeCurrencies.count
+        let sut = MainPresenter(view: viewMock)
+        sut.getCurrencyData(offlineMode: true)
 
-        mockPresenter.getActiveCurrenciesCountClosure = {
-            return mockPresenter.getActiveCurrenciesCountReturnValue
-        }
+        sut.removeActiveCurrencies(at: 0)
+        XCTAssertEqual(sut.getActiveCurrenciesCount(), 0)
+    }
 
-        XCTAssertEqual(mockPresenter.getActiveCurrenciesCount(), 2)
+    func testRemoveActiveCurrency2() {
+        let currencies = [CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.8),
+                          CurrencyViewModel(name: "GBP", sellRate: 1.5, buyRate: 1.4),
+                          CurrencyViewModel(name: "CAD", sellRate: 2.0, buyRate: 1.9)]
+        UserDefaultsManager.shared.saveBaseCurrencies(currencies)
 
-        mockPresenter.removeActiveCurrencies(at: 0)
-        XCTAssertEqual(mockPresenter.getActiveCurrenciesCount(), 1)
+        let sut = MainPresenter(view: viewMock)
+        sut.getCurrencyData(offlineMode: true)
 
-//        let remainingCurrency = mockPresenter.activeCurrencies.first
-//        XCTAssertEqual(remainingCurrency?.name, "EUR")
-//        XCTAssertEqual(remainingCurrency?.sellRate, 0.9)
-//        XCTAssertEqual(remainingCurrency?.buyRate, 0.85)
+        sut.removeActiveCurrencies(at: 1)
+        XCTAssertEqual(sut.getActiveCurrenciesCount(), 2)
     }
 
     func testRemoveActiveCurrencyCallsViewMethods() {
-
+        let currencies = [CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.8),
+                          CurrencyViewModel(name: "GBP", sellRate: 1.5, buyRate: 1.4),
+                          CurrencyViewModel(name: "CAD", sellRate: 2.0, buyRate: 1.9)]
+        UserDefaultsManager.shared.saveBaseCurrencies(currencies)
+        presenter.getCurrencyData(offlineMode: true)
+        XCTAssertTrue(viewMock.reloadDataCurrencyInfoTableCalled)
     }
 
-/*
-    func testConfigureLastUpdatedLabel() {
-        let testDate = "Mon, 01 Jan 2024 12:00:00 GMT"
-        presenter.currencyData.timeLastUpdateUtc = testDate
-
-        let result = presenter.configureLastUpdatedLabel()
-
-        let expectedOutput = "last_updated \n01 Jan 2024 12:00 PM"
-        XCTAssertEqual(result, expectedOutput)
-    }
-
-    func testGetCurrencyDataOnlineMode() {
-
-    }
-
-    func testGetActiveCurrenciesCount() {
-        let initialCurrencies = [
-            CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0, calculatedResult: nil),
-            CurrencyViewModel(name: "EUR", sellRate: 1.0, buyRate: 1.0, calculatedResult: nil)
+    func testGetAllCurrenciesData() {
+        let testCurrencies = [
+            CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0),
+            CurrencyViewModel(name: "EUR", sellRate: 0.9, buyRate: 0.8),
+            CurrencyViewModel(name: "GBP", sellRate: 1.5, buyRate: 1.4)
         ]
-        
-        presenter.allCurrenciesData = initialCurrencies
-        
-        XCTAssertTrue(presenter.getActiveCurrencies().isEmpty)
-        XCTAssertEqual(presenter.getActiveCurrenciesCount(), 0)
+
+        UserDefaultsManager.shared.saveAllCurrenciesData(testCurrencies)
+        presenter.getCurrencyData(offlineMode: true)
+
+        let resultCurrencies = presenter.getAllCurrenciesData()
+        XCTAssertEqual(resultCurrencies, testCurrencies)
+    }
+
+    func testUpdateCurrencyValues() {
+
+        UserDefaultsManager.shared.saveBaseCurrencies([CurrencyViewModel(name: "USD", sellRate: 1.0, buyRate: 1.0)])
+        presenter.getCurrencyData(offlineMode: true)
 
         presenter.addCurrency("USD")
-        presenter.addCurrency("EUR")
 
-        XCTAssertEqual(presenter.getActiveCurrenciesCount(), 2)
+        presenter.setConvertingMode(.sell)
+
+        let inputValue = "2.0"
+        let inputIndexUSD = presenter.getActiveCurrencies().firstIndex { $0.name == "USD" } ?? 0
+        presenter.updateCurrencyValues(inputValue: inputValue, atIndex: inputIndexUSD)
+
+        let updatedCurrencies = presenter.getActiveCurrencies()
+
+        if let usdCurrency = updatedCurrencies.first(where: { $0.name == "USD" }) {
+            XCTAssertEqual(usdCurrency.calculatedResult, 2.0)
+        }
     }
- */
 }
